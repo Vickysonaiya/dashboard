@@ -4,7 +4,7 @@ import logoMain from '../src/assets/images/1Pass_Logo.svg'
 const Dashboard = () => {
     // State for filters
     const [selectedProperty, setSelectedProperty] = useState('All Properties');
-    const [dateRange, setDateRange] = useState('This Week');
+    const [dateRange, setDateRange] = useState('Today');
     const [activeTab, setActiveTab] = useState('All');
 
     // Mock data for stats
@@ -20,7 +20,7 @@ const Dashboard = () => {
             {/* Sidebar */}
             <div className="w-64 bg-gray-800 text-white flex flex-col">
                 <div className="p-4 flex items-center">
-                    <div className="w-10 h-10 bg-gray-300 rounded"><img src={logoMain} /></div>
+                    <div className="w-10 h-10 bg-gray-300 rounded"><img src={logoMain} alt='1/Pass' /></div>
                     <div className="ml-2 text-xl font-bold">1/Pass</div>
                 </div>
 
@@ -57,7 +57,7 @@ const Dashboard = () => {
             {/* Main Content */}
             <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Header */}
-                <header className="border-b p-4 flex justify-between items-center">
+                <header className="p-4 flex justify-between items-center">
                     <div className="flex items-center">
                         <span className="mr-2">☐</span>
                         <h1 className="text-2xl font-bold">Dashboard</h1>
@@ -65,7 +65,7 @@ const Dashboard = () => {
 
                     <div className="flex items-center">
                         <div className="relative mr-4">
-                            <span className="absolute right-0 top-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
+                            <span className="absolute right-2 top-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
                             <span>☐</span>
                         </div>
                         <span className="mx-2">☐</span>
@@ -89,22 +89,31 @@ const Dashboard = () => {
                                 <div>
                                     <label className="block text-sm mb-1">Select Property</label>
                                     <select
-                                        className="border p-2 rounded w-64"
+                                        className="border border-gray-300 shadow-lg rounded-lg p-2"
                                         value={selectedProperty}
                                         onChange={(e) => setSelectedProperty(e.target.value)}
                                     >
                                         <option>All Properties</option>
+                                        <option>Building A</option>
+                                        <option>Building B</option>
+                                        <option>Building C</option>
                                     </select>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm mb-1">Date Range</label>
                                     <select
-                                        className="border p-2 rounded w-64"
+                                        className="border border-gray-300 shadow-lg rounded-lg p-2"
                                         value={dateRange}
                                         onChange={(e) => setDateRange(e.target.value)}
                                     >
+                                        <option>Today</option>
+                                        <option>Yesterday</option>
                                         <option>This Week</option>
+                                        <option>Last Month</option>
+                                        <option>This Month</option>
+                                        <option>Last Month</option>
+                                        <option>Custom Range</option>
                                     </select>
                                 </div>
                             </div>
@@ -113,7 +122,7 @@ const Dashboard = () => {
                                 <input
                                     type="text"
                                     placeholder="Search..."
-                                    className="border p-2 rounded w-64"
+                                    className="border border-gray-300 shadow-lg rounded-lg p-4"
                                 />
                             </div>
                         </div>
@@ -123,7 +132,7 @@ const Dashboard = () => {
                                 {['All', 'Pending', 'Checked-in', 'Cancelled', 'Expired'].map(tab => (
                                     <button
                                         key={tab}
-                                        className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-gray-800 text-white' : 'bg-white border'}`}
+                                        className={`border border-gray-300 shadow-lg rounded-lg p-3 ${activeTab === tab ? 'bg-gray-800 text-white' : 'bg-white border'}`}
                                         onClick={() => setActiveTab(tab)}
                                     >
                                         {tab}
@@ -132,10 +141,10 @@ const Dashboard = () => {
                             </div>
 
                             <div className="flex gap-2 mt-4 md:mt-0">
-                                <button className="border px-4 py-2 rounded flex items-center">
+                                <button className="border border-gray-300 shadow-lg rounded-lg p-2 px-4 py-2 rounded flex items-center">
                                     <span className="mr-2">☐</span> Filter
                                 </button>
-                                <button className="border px-4 py-2 rounded flex items-center">
+                                <button className="border border-gray-300 shadow-lg rounded-lg p-2 px-4 py-2 rounded flex items-center">
                                     <span className="mr-2">☐</span> Sort
                                 </button>
                                 <button className="bg-gray-800 text-white px-4 py-2 rounded flex items-center">
