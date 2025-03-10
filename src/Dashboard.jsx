@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import logoMain from '../src/assets/images/1Pass_Logo.svg'
+import './dashboard.css'
 
 const Dashboard = () => {
     // State hooks for interactive elements
@@ -64,7 +65,8 @@ const Dashboard = () => {
                 </div>
 
                 {/* Navigation Menu */}
-                <ul className="nav flex-column">
+                <div>
+                <ul className="nav flex-column ">
                     {navItems.map(item => (
                         <li key={item.id} className="nav-item">
                             <a
@@ -83,9 +85,10 @@ const Dashboard = () => {
                         </li>
                     ))}
                 </ul>
+                </div>
 
                 {/* Footer Navigation */}
-                <div className="mt-auto">
+                <div className="mt-auto navHeight">
                     <ul className="nav flex-column">
                         {footerNavItems.map(item => (
                             <li key={item.id} className="nav-item">
@@ -126,7 +129,7 @@ const Dashboard = () => {
                     </div>
 
                     <div className="d-flex align-items-center">
-                        <div className="position-relative me-3">
+                        <div className="position-relative me-3 badges">
                             <i className="bi bi-bell fs-5"></i>
                             <span
                                 className="badge rounded-pill bg-danger"
@@ -137,11 +140,11 @@ const Dashboard = () => {
                                 }}
                             >3</span>
                         </div>
-                        <i className="bi bi-gear fs-5 me-3"></i>
-                        <i className="bi bi-question-circle fs-5 me-3"></i>
+                        <div className='badges'><span><i className="bi bi-gear fs-5 me-3"></i></span></div>
+                        <div className='badges'><span><i className="bi bi-question-circle fs-5 me-3"></i></span></div>
 
                         <div className="d-flex align-items-center">
-                            <div
+                            <div className='badges'
                                 style={{
                                     width: '40px',
                                     height: '40px',
@@ -156,8 +159,8 @@ const Dashboard = () => {
                                 }}
                             >JD</div>
                             <div>
-                                <div className="fw-medium">John Doe</div>
-                                <div className="small text-muted">Campus Admin</div>
+                                <div className="fw-medium badges">John Doe</div>
+                                <div className="small text-muted badges">Campus Admin</div>
                             </div>
                         </div>
                     </div>

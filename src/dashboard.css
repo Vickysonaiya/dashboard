@@ -47,3 +47,12 @@
         padding: 20px;
     }
 }
+
+.badges{
+    cursor: pointer;
+}
+
+.navHeight{
+    position: absolute;
+    bottom: 0;
+}
