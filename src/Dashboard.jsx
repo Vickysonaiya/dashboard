@@ -1,184 +1,270 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import logoMain from '../src/assets/images/1Pass_Logo.svg'
 
 const Dashboard = () => {
-    // State for filters
+    // State hooks for interactive elements
     const [selectedProperty, setSelectedProperty] = useState('All Properties');
     const [dateRange, setDateRange] = useState('Today');
     const [activeTab, setActiveTab] = useState('All');
+    const [sidebarVisible, setSidebarVisible] = useState(true);
+    const [activeNavItem, setActiveNavItem] = useState(1);
 
-    // Mock data for stats
-    const stats = {
-        totalInvites: { count: 523, change: 8.2, increasing: true },
-        checkIns: { count: 384, change: 5.3, increasing: true },
-        pending: { count: 87, change: 2.1, increasing: false },
-        cancelled: { count: 52, change: 3.7, increasing: true }
+    // Mock data for statistics
+    const stats = [
+        { id: 1, title: 'Total Invites', count: 523, change: 8.2, increasing: true },
+        { id: 2, title: 'Check-ins', count: 384, change: 5.3, increasing: true },
+        { id: 3, title: 'Pending', count: 87, change: 2.1, increasing: false },
+        { id: 4, title: 'Cancelled', count: 52, change: 3.7, increasing: true }
+    ];
+
+    // Navigation items
+    const navItems = [
+        { id: 1, title: 'Dashboard', icon: 'bi-grid' },
+        { id: 2, title: 'Visitors', icon: 'bi-person' },
+        { id: 3, title: 'Invites', icon: 'bi-envelope' },
+        { id: 4, title: 'Check-ins', icon: 'bi-check-square' },
+        { id: 5, title: 'Properties', icon: 'bi-building' },
+        { id: 6, title: 'Reports', icon: 'bi-file-earmark-bar-graph' }
+    ];
+
+    // Footer navigation items
+    const footerNavItems = [
+        { id: 1, title: 'Settings', icon: 'bi-gear' },
+        { id: 2, title: 'Help & Support', icon: 'bi-question-circle' },
+        { id: 3, title: 'Logout', icon: 'bi-box-arrow-right' }
+    ];
+
+    // Status tabs
+    const statusTabs = ['All', 'Pending', 'Checked-in', 'Cancelled', 'Expired'];
+
+    const handleNavItemClick = (id) => {
+        setActiveNavItem(id);
     };
 
     return (
-        <div className="flex h-screen bg-white">
+        <div style={{ display: 'flex', minHeight: '100vh', overflow: 'hidden' }}>
             {/* Sidebar */}
-            <div className="w-64 bg-gray-800 text-white flex flex-col">
-                <div className="p-4 flex items-center">
+            <div
+                className="bg-dark text-white"
+                style={{
+                    width: sidebarVisible ? '250px' : '0px',
+                    minHeight: '100vh',
+                    position: 'fixed',
+                    transition: 'width 0.3s ease',
+                    zIndex: 1000,
+                    backgroundColor: '#1e3a38'
+                }}
+            >
+                {/* Logo */}
+                <div className="d-flex align-items-center p-3">
                     <div className="w-10 h-10 bg-gray-300 rounded"><img src={logoMain} alt='1/Pass' /></div>
-                    <div className="ml-2 text-xl font-bold">1/Pass</div>
+                    <div className="fs-5 fw-bold ms-3">1/Pass</div>
                 </div>
 
-                <nav className="flex-1">
-                    <div className="px-4 py-3 bg-gray-700">
-                        <div className="flex items-center">
-                            <span className="mr-2">☐</span>
-                            <span>Dashboard</span>
-                        </div>
-                    </div>
-
-                    {['Visitors', 'Invites', 'Check-ins', 'Properties', 'Reports'].map(item => (
-                        <div key={item} className="px-4 py-3 hover:bg-gray-700">
-                            <div className="flex items-center">
-                                <span className="mr-2">☐</span>
-                                <span>{item}</span>
-                            </div>
-                        </div>
+                {/* Navigation Menu */}
+                <ul className="nav flex-column">
+                    {navItems.map(item => (
+                        <li key={item.id} className="nav-item">
+                            <a
+                                className={`nav-link ${activeNavItem === item.id ? 'active' : ''} d-flex align-items-center`}
+                                href="/"
+                                onClick={() => handleNavItemClick(item.id)}
+                                style={{
+                                    backgroundColor: activeNavItem === item.id ? '#2c5451' : 'transparent',
+                                    color: '#fff',
+                                    padding: '0.8rem 1rem'
+                                }}
+                            >
+                                <i className={`${item.icon} me-2`}></i>
+                                <span>{item.title}</span>
+                            </a>
+                        </li>
                     ))}
-                </nav>
+                </ul>
 
+                {/* Footer Navigation */}
                 <div className="mt-auto">
-                    {['Settings', 'Help & Support', 'Logout'].map(item => (
-                        <div key={item} className="px-4 py-3 hover:bg-gray-700">
-                            <div className="flex items-center">
-                                <span className="mr-2">☐</span>
-                                <span>{item}</span>
-                            </div>
-                        </div>
-                    ))}
+                    <ul className="nav flex-column">
+                        {footerNavItems.map(item => (
+                            <li key={item.id} className="nav-item">
+                                <a
+                                    className="nav-link d-flex align-items-center"
+                                    href="/"
+                                    style={{ color: '#fff', padding: '0.8rem 1rem' }}
+                                >
+                                    <i className={`${item.icon} me-2`}></i>
+                                    <span>{item.title}</span>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div
+                style={{
+                    marginLeft: sidebarVisible ? '250px' : '0px',
+                    flex: 1,
+                    transition: 'margin-left 0.3s ease',
+                    width: '100%'
+                }}
+            >
                 {/* Header */}
-                <header className="p-4 flex justify-between items-center">
-                    <div className="flex items-center">
-                        <span className="mr-2">☐</span>
-                        <h1 className="text-2xl font-bold">Dashboard</h1>
+                <header className="border-bottom d-flex justify-content-between align-items-center p-3">
+                    <div className="d-flex align-items-center">
+                        <button
+                            className="btn d-md-none me-2"
+                            onClick={() => setSidebarVisible(!sidebarVisible)}
+                        >
+                            <i className="bi bi-list"></i>
+                        </button>
+                        <i className="bi bi-grid me-2"></i>
+                        <h1 className="h4 mb-0">Dashboard</h1>
                     </div>
 
-                    <div className="flex items-center">
-                        <div className="relative mr-4">
-                            <span className="absolute right-2 top-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
-                            <span>☐</span>
+                    <div className="d-flex align-items-center">
+                        <div className="position-relative me-3">
+                            <i className="bi bi-bell fs-5"></i>
+                            <span
+                                className="badge rounded-pill bg-danger"
+                                style={{
+                                    position: 'absolute',
+                                    top: '-5px',
+                                    right: '-5px'
+                                }}
+                            >3</span>
                         </div>
-                        <span className="mx-2">☐</span>
-                        <span className="mx-2">☐</span>
-                        <div className="flex items-center ml-2">
-                            <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-white">JD</div>
-                            <div className="ml-2">
-                                <div className="text-sm font-medium">John Doe</div>
-                                <div className="text-xs text-gray-500">Campus Admin</div>
+                        <i className="bi bi-gear fs-5 me-3"></i>
+                        <i className="bi bi-question-circle fs-5 me-3"></i>
+
+                        <div className="d-flex align-items-center">
+                            <div
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '50%',
+                                    backgroundColor: '#1e3a38',
+                                    color: 'white',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginRight: '8px',
+                                    fontWeight: 'bold'
+                                }}
+                            >JD</div>
+                            <div>
+                                <div className="fw-medium">John Doe</div>
+                                <div className="small text-muted">Campus Admin</div>
                             </div>
                         </div>
                     </div>
                 </header>
 
                 {/* Main Dashboard Area */}
-                <main className="flex-1 overflow-y-auto p-4 bg-gray-100">
+                <div className="container-fluid bg-light p-3">
                     {/* Filters */}
-                    <div className="bg-white p-4 rounded shadow mb-4">
-                        <div className="flex flex-wrap items-center justify-between">
-                            <div className="flex flex-wrap items-center gap-4">
-                                <div>
-                                    <label className="block text-sm mb-1">Select Property</label>
-                                    <select
-                                        className="border border-gray-300 shadow-lg rounded-lg p-2"
-                                        value={selectedProperty}
-                                        onChange={(e) => setSelectedProperty(e.target.value)}
-                                    >
-                                        <option>All Properties</option>
-                                        <option>Building A</option>
-                                        <option>Building B</option>
-                                        <option>Building C</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm mb-1">Date Range</label>
-                                    <select
-                                        className="border border-gray-300 shadow-lg rounded-lg p-2"
-                                        value={dateRange}
-                                        onChange={(e) => setDateRange(e.target.value)}
-                                    >
-                                        <option>Today</option>
-                                        <option>Yesterday</option>
-                                        <option>This Week</option>
-                                        <option>Last Month</option>
-                                        <option>This Month</option>
-                                        <option>Last Month</option>
-                                        <option>Custom Range</option>
-                                    </select>
-                                </div>
+                    <div className="bg-white rounded p-3 shadow-sm mb-4">
+                        <div className="row mb-3 align-items-end">
+                            <div className="col-md-2 mb-2 mb-md-0">
+                                <label className="form-label">Select Property</label>
+                                <select
+                                    className="form-select"
+                                    value={selectedProperty}
+                                    onChange={(e) => setSelectedProperty(e.target.value)}
+                                >
+                                    <option>All Properties</option>
+                                    <option>Building A</option>
+                                    <option>Building B</option>
+                                    <option>Building C</option>
+                                </select>
                             </div>
-
-                            <div className="mt-4 md:mt-0">
-                                <input
-                                    type="text"
-                                    placeholder="Search..."
-                                    className="border border-gray-300 shadow-lg rounded-lg p-4"
-                                />
+                            <div className="col-md-2 mb-2 mb-md-0">
+                                <label className="form-label">Date Range</label>
+                                <select
+                                    className="form-select"
+                                    value={dateRange}
+                                    onChange={(e) => setDateRange(e.target.value)}
+                                >
+                                    <option>Today</option>
+                                    <option>Yesterday</option>
+                                    <option>This Week</option>
+                                    <option>Last Month</option>
+                                    <option>This Month</option>
+                                    <option>Last Month</option>
+                                    <option>Custom Range</option>
+                                </select>
+                            </div>
+                            <div className="col-md-3 ms-112">
+                                <div className="input-group">
+                                    <span className="input-group-text">
+                                        <i className="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" className="form-control" placeholder="Search..." />
+                                </div>
                             </div>
                         </div>
 
-                        <div className="mt-4 flex flex-wrap gap-2 items-center justify-between">
-                            <div className="flex flex-wrap gap-2">
-                                {['All', 'Pending', 'Checked-in', 'Cancelled', 'Expired'].map(tab => (
-                                    <button
-                                        key={tab}
-                                        className={`border border-gray-300 shadow-lg rounded-lg p-3 ${activeTab === tab ? 'bg-gray-800 text-white' : 'bg-white border'}`}
-                                        onClick={() => setActiveTab(tab)}
-                                    >
-                                        {tab}
-                                    </button>
-                                ))}
+                        <div className="row align-items-center">
+                            <div className="col-md-7 mb-2 mb-md-0">
+                                <div className="d-flex flex-wrap">
+                                    {statusTabs.map(tab => (
+                                        <div
+                                            key={tab}
+                                            className={`py-2 px-3 rounded me-2 mb-2 mb-md-0 cursor-pointer ${activeTab === tab ? 'bg-dark text-white' : 'border'}`}
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() => setActiveTab(tab)}
+                                        >
+                                            {tab}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-
-                            <div className="flex gap-2 mt-4 md:mt-0">
-                                <button className="border border-gray-300 shadow-lg rounded-lg p-2 px-4 py-2 rounded flex items-center">
-                                    <span className="mr-2">☐</span> Filter
-                                </button>
-                                <button className="border border-gray-300 shadow-lg rounded-lg p-2 px-4 py-2 rounded flex items-center">
-                                    <span className="mr-2">☐</span> Sort
-                                </button>
-                                <button className="bg-gray-800 text-white px-4 py-2 rounded flex items-center">
-                                    <span className="mr-2">+</span> New Invite
-                                </button>
+                            <div className="col-md-5">
+                                <div className="d-flex flex-wrap justify-content-md-end">
+                                    <button className="btn btn-outline-secondary me-2 mb-2 mb-md-0">
+                                        <i className="bi bi-funnel me-1"></i> Filter
+                                    </button>
+                                    <button className="btn btn-outline-secondary me-2 mb-2 mb-md-0">
+                                        <i className="bi bi-sort-down me-1"></i> Sort
+                                    </button>
+                                    <button className="btn btn-dark">
+                                        <i className="bi bi-plus me-1"></i> New Invite
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Stats Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                        {Object.entries(stats).map(([key, data]) => {
-                            const title = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-                            return (
-                                <div key={key} className="bg-white p-4 rounded shadow">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="text-gray-600">{title}</h3>
-                                        <span>☐</span>
+                    <div className="row mb-4">
+                        {stats.map(stat => (
+                            <div key={stat.id} className="col-md-6 col-lg-3 mb-3">
+                                <div className="bg-white rounded p-3 shadow-sm h-100">
+                                    <div className="d-flex justify-content-between align-items-start mb-2">
+                                        <div className="text-muted">{stat.title}</div>
+                                        <i className="bi bi-three-dots"></i>
                                     </div>
-                                    <div className="text-3xl font-bold mb-2">{data.count}</div>
-                                    <div className={`text-sm ${data.increasing ? 'text-green-500' : 'text-red-500'}`}>
-                                        <span>{data.increasing ? '↑' : '↓'} {data.change}% vs last week</span>
+                                    <div className="h3 mb-2">{stat.count}</div>
+                                    <div
+                                        className="small"
+                                        style={{ color: stat.increasing ? '#28a745' : '#dc3545' }}
+                                    >
+                                        <i className={`bi bi-arrow-${stat.increasing ? 'up' : 'down'}`}></i> {stat.change}% vs last week
                                     </div>
                                 </div>
-                            );
-                        })}
+                            </div>
+                        ))}
                     </div>
 
-                    {/* Recent Section */}
-                    <div className="bg-white p-4 rounded shadow">
-                        <h3 className="text-xl font-semibold mb-4">Recent</h3>
-                        {/* Add your recent items here */}
+                    {/* Recent */}
+                    <div className="bg-white rounded p-3 shadow-sm">
+                        <h5 className="mb-3">Recent</h5>
+                        {/* Recent content would go here */}
                     </div>
-                </main>
+                </div>
             </div>
         </div>
     );

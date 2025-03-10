@@ -1,0 +1,49 @@
+/* Make the sidebar responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    .sidebar.show {
+        transform: translateX(0);
+    }
+}
+
+/* Make the main content responsive */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+/* Make the filters responsive */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+    }
+    .filters .col-md-2 {
+        margin-bottom: 20px;
+    }
+}
+
+/* Make the stats cards responsive */
+@media (max-width: 768px) {
+    .stats-cards {
+        flex-direction: column;
+    }
+    .stats-cards .col-md-6 {
+        margin-bottom: 20px;
+    }
+}
+
+/* Make the recent content responsive */
+@media (max-width: 768px) {
+    .recent-content {
+        padding: 20px;
+    }
+}
