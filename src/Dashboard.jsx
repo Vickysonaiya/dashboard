@@ -65,7 +65,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Navigation Menu */}
-                <div className=''>
+                <div>
                 <ul className="nav flex-column ">
                     {navItems.map(item => (
                         <li key={item.id} className="nav-item">
