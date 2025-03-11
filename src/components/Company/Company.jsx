@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import logoMain from '../assets/images/1Pass_Logo.svg'
+import logoMain from '../../assets/images/1Pass_Logo.svg'
 import './dashboard.css'
 
 const Dashboard = () => {
