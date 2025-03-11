@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import logoMain from '../../assets/images/1Pass_Logo.svg'
-import './dashboard.css'
+import './property.css'
 
 const Dashboard = () => {
     // State hooks for interactive elements
@@ -102,7 +102,7 @@ const Dashboard = () => {
                         {footerNavItems.map(item => (
                             <li key={item.id} className="nav-item">
                                 <a
-                                    className={`nav-link ${activeFooterItem === item.id ? 'active' : ''} d-flex align-items-center`}
+                                    className="nav-link d-flex align-items-center"
                                     href="/"
                                     onClick={(e) => {
                                         e.preventDefault();

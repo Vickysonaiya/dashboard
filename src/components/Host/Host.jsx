@@ -102,7 +102,7 @@ const Dashboard = () => {
                         {footerNavItems.map(item => (
                             <li key={item.id} className="nav-item">
                                 <a
-                                    className={`nav-link ${activeFooterItem === item.id ? 'active' : ''} d-flex align-items-center`}
+                                    className="nav-link d-flex align-items-center"
                                     href="/"
                                     onClick={(e) => {
                                         e.preventDefault();
