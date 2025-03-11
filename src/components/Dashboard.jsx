@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import logoMain from '../src/assets/images/1Pass_Logo.svg'
+import logoMain from '../assets/images/1Pass_Logo.svg'
 import './dashboard.css'
 
 const Dashboard = () => {
@@ -212,6 +212,28 @@ const Dashboard = () => {
                                 </select>
                             </div>
                             <div className="col-md-2 mb-2 mb-md-0">
+                                <label className="form-label">Unit</label>
+                                <select
+                                    className="form-select"
+                                    value={dateRange}
+                                    onChange={(e) => setDateRange(e.target.value)}
+                                >
+                                    <option>All Unit</option>
+                                    
+                                </select>
+                            </div>
+                            <div className="col-md-2 mb-2 mb-md-0">
+                                <label className="form-label">Desk</label>
+                                <select
+                                    className="form-select"
+                                    value={dateRange}
+                                    onChange={(e) => setDateRange(e.target.value)}
+                                >
+                                    <option>All Desk</option>
+                                    
+                                </select>
+                            </div>
+                            <div className="col-md-2 mb-2 mb-md-0 ms-89">
                                 <label className="form-label">Date Range</label>
                                 <select
                                     className="form-select"
