@@ -11,6 +11,7 @@ const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('All');
     const [sidebarVisible, setSidebarVisible] = useState(true);
     const [activeNavItem, setActiveNavItem] = useState(1);
+    const [activeFooterItem, setActiveFooterItem] = useState(null);
 
     // Mock data for statistics
     const stats = [
@@ -26,8 +27,6 @@ const Dashboard = () => {
         { id: 2, title: 'Visitors', icon: 'bi-person' },
         { id: 3, title: 'Invites', icon: 'bi-envelope' },
         { id: 4, title: 'Check-ins', icon: 'bi-check-square' },
-        { id: 5, title: 'Properties', icon: 'bi-building' },
-        { id: 6, title: 'Reports', icon: 'bi-file-earmark-bar-graph' }
     ];
 
     // Footer navigation items
@@ -42,6 +41,12 @@ const Dashboard = () => {
 
     const handleNavItemClick = (id) => {
         setActiveNavItem(id);
+        setActiveFooterItem(null);
+    };
+
+    const handleFooterItemClick = (id) => {
+        setActiveFooterItem(id);
+        setActiveNavItem(null);
     };
 
     return (
@@ -72,7 +77,10 @@ const Dashboard = () => {
                             <a
                                 className={`nav-link ${activeNavItem === item.id ? 'active' : ''} d-flex align-items-center`}
                                 href="/"
-                                onClick={() => handleNavItemClick(item.id)}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleNavItemClick(item.id);
+                                }}
                                 style={{
                                     backgroundColor: activeNavItem === item.id ? '#2c5451' : 'transparent',
                                     color: '#fff',
@@ -86,6 +94,7 @@ const Dashboard = () => {
                     ))}
                 </ul>
                 </div>
+                
 
                 {/* Footer Navigation */}
                 <div className="mt-auto navHeight">
@@ -95,7 +104,15 @@ const Dashboard = () => {
                                 <a
                                     className="nav-link d-flex align-items-center"
                                     href="/"
-                                    style={{ color: '#fff', padding: '0.8rem 1rem' }}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleFooterItemClick(item.id);
+                                    }}
+                                    style={{
+                                        backgroundColor: activeFooterItem === item.id ? '#2c5451' : 'transparent',
+                                        color: '#fff',
+                                        padding: '0.8rem 1rem'
+                                    }}
                                 >
                                     <i className={`${item.icon} me-2`}></i>
                                     <span>{item.title}</span>
@@ -105,6 +122,7 @@ const Dashboard = () => {
                     </ul>
                 </div>
             </div>
+            
 
             {/* Main Content */}
             <div
@@ -127,6 +145,15 @@ const Dashboard = () => {
                         <i className="bi bi-grid me-2"></i>
                         <h1 className="h4 mb-0">Dashboard</h1>
                     </div>
+
+                    <div className="col-md-3 ms-11">
+                                <div className="input-group">
+                                    <span className="input-group-text">
+                                        <i className="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" className="form-control" placeholder="Search..." />
+                                </div>
+                            </div>
 
                     <div className="d-flex align-items-center">
                         <div className="position-relative me-3 badges">
@@ -200,14 +227,14 @@ const Dashboard = () => {
                                     <option>Custom Range</option>
                                 </select>
                             </div>
-                            <div className="col-md-3 ms-112">
+                            {/* <div className="col-md-3 ms-112">
                                 <div className="input-group">
                                     <span className="input-group-text">
                                         <i className="bi bi-search"></i>
                                     </span>
                                     <input type="text" className="form-control" placeholder="Search..." />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="row align-items-center">
