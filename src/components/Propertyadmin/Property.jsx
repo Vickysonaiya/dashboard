@@ -187,7 +187,7 @@ const Dashboard = () => {
                             >JD</div>
                             <div>
                                 <div className="fw-medium badges">John Doe</div>
-                                <div className="small text-muted badges">Campus Admin</div>
+                                <div className="small text-muted badges">Property Admin</div>
                             </div>
                         </div>
                     </div>

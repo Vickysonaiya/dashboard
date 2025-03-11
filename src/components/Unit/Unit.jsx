@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import logoMain from '../../assets/images/1Pass_Logo.svg'
-import './dashboard.css'
 
 const Dashboard = () => {
     // State hooks for interactive elements
@@ -187,7 +186,7 @@ const Dashboard = () => {
                             >JD</div>
                             <div>
                                 <div className="fw-medium badges">John Doe</div>
-                                <div className="small text-muted badges">Campus Admin</div>
+                                <div className="small text-muted badges">Unit Admin</div>
                             </div>
                         </div>
                     </div>
