@@ -1,38 +1,25 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Dashboard from './components/Dashboard/Dashboard'
-import Property from './components/Propertyadmin/Property'
-import Unit from './components/Unit/Unit'
-import Deskadmin from './components/Desk/Deskadmin'
-import Company from './components/Company/Company'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard/Dashboard'
+import Property from './pages/Propertyadmin/Property'
+import Unit from './pages/Unit/Unit'
+import Deskadmin from './pages/Desk/Deskadmin'
+import Company from './pages/Company/Company'
+import Visitors from './components/Visitors/Visitors';
 
 function App() {
-    const route = createBrowserRouter([
-    {
-      path: "/",
-      element:<Dashboard/>
-    },
-    {
-        path:"/property",
-        element:<Property/>
-    },
-    {
-        path:"/unit",
-        element:<Unit/>
-    },
-    {
-        path:"/deskadmin",
-        element:<Deskadmin/>
-    },
-    {
-        path:"/companyadmin",
-        element:<Company/>
-    }
     
-    ]);
     return (
-      <div className="App">
-        <RouterProvider router={route}></RouterProvider>
-      </div>
+      <Router>
+            <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/property" element={<Property />} />
+                <Route path="/unit" element={<Unit />} />
+                <Route path="/deskadmin" element={<Deskadmin />} />
+                <Route path="/companyadmin" element={<Company />} />
+                <Route path="/visitors" element={<Visitors />} />
+            </Routes>
+        </Router>
     );
   }
   

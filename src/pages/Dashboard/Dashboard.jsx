@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useNavigate } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import logoMain from '../../assets/images/1Pass_Logo.svg'
@@ -8,10 +8,10 @@ const Dashboard = () => {
     // State hooks for interactive elements
     const [selectedProperty, setSelectedProperty] = useState('All Properties');
     const [dateRange, setDateRange] = useState('Today');
-    const [activeTab, setActiveTab] = useState('All');
     const [sidebarVisible, setSidebarVisible] = useState(true);
     const [activeNavItem, setActiveNavItem] = useState(1);
     const [activeFooterItem, setActiveFooterItem] = useState(null);
+    const navigate = useNavigate()
 
     // Mock data for statistics
     const stats = [
@@ -23,10 +23,10 @@ const Dashboard = () => {
 
     // Navigation items
     const navItems = [
-        { id: 1, title: 'Dashboard', icon: 'bi-grid' },
-        { id: 2, title: 'Visitors', icon: 'bi-person' },
-        { id: 3, title: 'Invites', icon: 'bi-envelope' },
-        { id: 4, title: 'Check-ins', icon: 'bi-check-square' },
+        { id: 1, title: 'Dashboard', icon: 'bi-grid',  path: '/' },
+        { id: 2, title: 'Visitors', icon: 'bi-person', path: '/visitors' },
+        { id: 3, title: 'Invites', icon: 'bi-envelope', path: '/invites' },
+        { id: 4, title: 'Check-ins', icon: 'bi-check-square', path: '/checkins' },
     ];
 
     // Footer navigation items
@@ -39,9 +39,10 @@ const Dashboard = () => {
     // Status tabs
     // const statusTabs = ['All', 'Pending', 'Checked-in', 'Cancelled', 'Expired'];
 
-    const handleNavItemClick = (id) => {
+    const handleNavItemClick = (id, path) => {
         setActiveNavItem(id);
         setActiveFooterItem(null);
+        // navigate(path);
     };
 
     const handleFooterItemClick = (id) => {
@@ -79,7 +80,7 @@ const Dashboard = () => {
                                 href="/"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    handleNavItemClick(item.id);
+                                    handleNavItemClick(item.id, item.path);
                                 }}
                                 style={{
                                     backgroundColor: activeNavItem === item.id ? '#2c5451' : 'transparent',
