@@ -1,4 +1,3 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard'
 import Property from './pages/Propertyadmin/Property'

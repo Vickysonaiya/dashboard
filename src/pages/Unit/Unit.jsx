@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import logoMain from '../../assets/images/1Pass_Logo.svg'
@@ -7,10 +8,10 @@ const Dashboard = () => {
     // State hooks for interactive elements
     const [selectedProperty, setSelectedProperty] = useState('All Properties');
     const [dateRange, setDateRange] = useState('Today');
-    const [activeTab, setActiveTab] = useState('All');
     const [sidebarVisible, setSidebarVisible] = useState(true);
     const [activeNavItem, setActiveNavItem] = useState(1);
     const [activeFooterItem, setActiveFooterItem] = useState(null);
+    const navigate = useNavigate()
 
     // Mock data for statistics
     const stats = [
@@ -22,10 +23,10 @@ const Dashboard = () => {
 
     // Navigation items
     const navItems = [
-        { id: 1, title: 'Dashboard', icon: 'bi-grid' },
-        { id: 2, title: 'Visitors', icon: 'bi-person' },
-        { id: 3, title: 'Invites', icon: 'bi-envelope' },
-        { id: 4, title: 'Check-ins', icon: 'bi-check-square' },
+        { id: 1, title: 'Dashboard', icon: 'bi-grid',  path: '/' },
+        { id: 2, title: 'Visitors', icon: 'bi-person', path: '/visitors' },
+        { id: 3, title: 'Invites', icon: 'bi-envelope', path: '/invites' },
+        { id: 4, title: 'Check-ins', icon: 'bi-check-square', path: '/checkins' },
     ];
 
     // Footer navigation items
@@ -38,9 +39,10 @@ const Dashboard = () => {
     // Status tabs
     // const statusTabs = ['All', 'Pending', 'Checked-in', 'Cancelled', 'Expired'];
 
-    const handleNavItemClick = (id) => {
+    const handleNavItemClick = (id, path) => {
         setActiveNavItem(id);
         setActiveFooterItem(null);
+        navigate(path);
     };
 
     const handleFooterItemClick = (id) => {
@@ -78,7 +80,7 @@ const Dashboard = () => {
                                 href="/"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    handleNavItemClick(item.id);
+                                    handleNavItemClick(item.id, item.path);
                                 }}
                                 style={{
                                     backgroundColor: activeNavItem === item.id ? '#2c5451' : 'transparent',
@@ -197,7 +199,7 @@ const Dashboard = () => {
                     {/* Filters */}
                     <div className="bg-white rounded p-3 shadow-sm mb-4">
                         <div className="row mb-3 align-items-end">
-                            <div className="col-md-2 mb-2 mb-md-0">
+                            {/* <div className="col-md-2 mb-2 mb-md-0">
                                 <select
                                     className="form-select"
                                     value={selectedProperty}
@@ -218,18 +220,18 @@ const Dashboard = () => {
                                     <option>All Unit</option>
                                     
                                 </select>
-                            </div>
+                            </div> */}
                             <div className="col-md-2 mb-2 mb-md-0">
                                 <select
                                     className="form-select"
                                     value={dateRange}
                                     onChange={(e) => setDateRange(e.target.value)}
                                 >
-                                    <option>All Desk</option>
+                                    <option>All Desks</option>
                                     
                                 </select>
                             </div>
-                            <div className="col-md-2 mb-2 mb-md-0 ms-89">
+                            <div className="col-md-2 mb-2 mb-md-0 ms-179">
                                 <select
                                     className="form-select"
                                     value={dateRange}

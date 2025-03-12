@@ -1,4 +1,5 @@
-import React, { useState, useNavigate } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import logoMain from '../../assets/images/1Pass_Logo.svg'
@@ -42,7 +43,7 @@ const Dashboard = () => {
     const handleNavItemClick = (id, path) => {
         setActiveNavItem(id);
         setActiveFooterItem(null);
-        // navigate(path);
+        navigate(path);
     };
 
     const handleFooterItemClick = (id) => {
@@ -217,7 +218,7 @@ const Dashboard = () => {
                                     value={dateRange}
                                     onChange={(e) => setDateRange(e.target.value)}
                                 >
-                                    <option>All Unit</option>
+                                    <option>All Units</option>
                                     
                                 </select>
                             </div>
@@ -227,7 +228,7 @@ const Dashboard = () => {
                                     value={dateRange}
                                     onChange={(e) => setDateRange(e.target.value)}
                                 >
-                                    <option>All Desk</option>
+                                    <option>All Desks</option>
                                     
                                 </select>
                             </div>
