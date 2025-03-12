@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import logoMain from '../../assets/images/1Pass_Logo.svg'
-import './property.css'
 
 const Dashboard = () => {
     // State hooks for interactive elements
@@ -37,7 +36,7 @@ const Dashboard = () => {
     ];
 
     // Status tabs
-    const statusTabs = ['All', 'Pending', 'Checked-in', 'Cancelled', 'Expired'];
+    // const statusTabs = ['All', 'Pending', 'Checked-in', 'Cancelled', 'Expired'];
 
     const handleNavItemClick = (id) => {
         setActiveNavItem(id);
@@ -102,7 +101,7 @@ const Dashboard = () => {
                         {footerNavItems.map(item => (
                             <li key={item.id} className="nav-item">
                                 <a
-                                    className="nav-link d-flex align-items-center"
+                                    className={`nav-link ${activeFooterItem === item.id ? 'active' : ''} d-flex align-items-center`}
                                     href="/"
                                     onClick={(e) => {
                                         e.preventDefault();
@@ -146,7 +145,7 @@ const Dashboard = () => {
                         <h1 className="h4 mb-0">Dashboard</h1>
                     </div>
 
-                    <div className="col-md-3 ms-11">
+                    <div className="col-md-5 ms-11">
                                 <div className="input-group">
                                     <span className="input-group-text">
                                         <i className="bi bi-search"></i>
@@ -199,7 +198,6 @@ const Dashboard = () => {
                     <div className="bg-white rounded p-3 shadow-sm mb-4">
                         <div className="row mb-3 align-items-end">
                             <div className="col-md-2 mb-2 mb-md-0">
-                                <label className="form-label">Select Property</label>
                                 <select
                                     className="form-select"
                                     value={selectedProperty}
@@ -212,7 +210,6 @@ const Dashboard = () => {
                                 </select>
                             </div>
                             <div className="col-md-2 mb-2 mb-md-0">
-                                <label className="form-label">Unit</label>
                                 <select
                                     className="form-select"
                                     value={dateRange}
@@ -223,7 +220,6 @@ const Dashboard = () => {
                                 </select>
                             </div>
                             <div className="col-md-2 mb-2 mb-md-0">
-                                <label className="form-label">Desk</label>
                                 <select
                                     className="form-select"
                                     value={dateRange}
@@ -234,7 +230,6 @@ const Dashboard = () => {
                                 </select>
                             </div>
                             <div className="col-md-2 mb-2 mb-md-0 ms-89">
-                                <label className="form-label">Date Range</label>
                                 <select
                                     className="form-select"
                                     value={dateRange}
@@ -248,44 +243,6 @@ const Dashboard = () => {
                                     <option>Last Month</option>
                                     <option>Custom Range</option>
                                 </select>
-                            </div>
-                            {/* <div className="col-md-3 ms-112">
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        <i className="bi bi-search"></i>
-                                    </span>
-                                    <input type="text" className="form-control" placeholder="Search..." />
-                                </div>
-                            </div> */}
-                        </div>
-
-                        <div className="row align-items-center">
-                            <div className="col-md-7 mb-2 mb-md-0">
-                                <div className="d-flex flex-wrap">
-                                    {statusTabs.map(tab => (
-                                        <div
-                                            key={tab}
-                                            className={`py-2 px-3 rounded me-2 mb-2 mb-md-0 cursor-pointer ${activeTab === tab ? 'bg-dark text-white' : 'border'}`}
-                                            style={{ cursor: 'pointer' }}
-                                            onClick={() => setActiveTab(tab)}
-                                        >
-                                            {tab}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="col-md-5">
-                                <div className="d-flex flex-wrap justify-content-md-end">
-                                    <button className="btn btn-outline-secondary me-2 mb-2 mb-md-0">
-                                        <i className="bi bi-funnel me-1"></i> Filter
-                                    </button>
-                                    <button className="btn btn-outline-secondary me-2 mb-2 mb-md-0">
-                                        <i className="bi bi-sort-down me-1"></i> Sort
-                                    </button>
-                                    <button className="btn btn-dark">
-                                        <i className="bi bi-plus me-1"></i> New Invite
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
