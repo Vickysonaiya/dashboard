@@ -5,6 +5,9 @@ import Unit from './pages/Unit/Unit'
 import Deskadmin from './pages/Desk/Deskadmin'
 import Company from './pages/Company/Company'
 import Visitors from './components/Visitors/Visitors';
+import Checkin from './pages/Desk/Checkin/Checkin'
+import CheckOut from './pages/Desk/Checkout/Checkout';
+import Activitylog from './pages/Desk/Activitylog/Activitylog';
 
 function App() {
     
@@ -17,6 +20,10 @@ function App() {
                 <Route path="/deskadmin" element={<Deskadmin />} />
                 <Route path="/companyadmin" element={<Company />} />
                 <Route path="/visitors" element={<Visitors />} />
+                <Route path="/check-in" element={<Checkin />} />
+                <Route path="/check-out" element={<CheckOut />} />
+                <Route path="/activity-logs" element={<Activitylog />} />
+
             </Routes>
         </Router>
     );

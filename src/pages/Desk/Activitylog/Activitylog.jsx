@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState     } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import logoMain from '../../assets/images/1Pass_Logo.svg'
+import logoMain from '../../../assets/images/1Pass_Logo.svg'
 
-const Dashboard = () => {
+const CheckOut = () => {
   const [dateRange, setDateRange] = useState('Today');
   const [customDate, setCustomDate] = useState('');
   const [showCalendar, setShowCalendar] = useState(false);
@@ -14,11 +14,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const stats = [
-    { id: 1, title: 'Pending Check-ins', count: 10 },
-    { id: 2, title: 'Recent Check-ins', count: 20 },
-    { id: 3, title: 'Expected Departures', count: 15 },
-    { id: 4, title: 'Overdue Departures', count: 5 },
-    { id: 5, title: 'Failed Check-ins', count: 2 },
+    { id: 1, title: 'Desk Admin Sessions', count: 15 },
   ];
 
   const navItems = [
@@ -35,12 +31,10 @@ const Dashboard = () => {
   ];
 
   const handleNavItemClick = (id, path) => {
-    console.log('handleNavItemClick', id, path);
     setActiveNavItem(id);
     setActiveFooterItem(null);
     navigate(path);
   };
-  
 
   const handleFooterItemClick = (id) => {
     setActiveFooterItem(id);
@@ -52,7 +46,6 @@ const Dashboard = () => {
     setDateRange(selectedValue);
     setShowCalendar(selectedValue === 'Custom Range');
   };
-  console.log('activenav',activeNavItem);
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', overflow: 'hidden' }}>
@@ -82,14 +75,13 @@ const Dashboard = () => {
             {navItems.map((item) => (
               <li key={item.id} className="nav-item">
                 <a
-                href='#'
-                  className={`nav-link ${activeNavItem === item.id ? 'active' : ''} d-flex align-items-center`}
+                  className={`nav-link ${activeNavItem+3 === item.id ? 'active' : ''} d-flex align-items-center`}
                   onClick={(e) => {
                     e.preventDefault();
                     handleNavItemClick(item.id, item.path);
                   }}
                   style={{
-                    backgroundColor: activeNavItem === item.id ? '#2c5451' : 'transparent',
+                    backgroundColor: activeNavItem+3 === item.id ? '#2c5451' : 'transparent',
                     color: '#fff',
                     padding: '0.8rem 1rem',
                   }}
@@ -147,10 +139,10 @@ const Dashboard = () => {
               <i className="bi bi-list"></i>
             </button>
             <i className="bi bi-grid me-2"></i>
-            <h1 className="h4 mb-0">Dashboard</h1>
+            <h1 className="h4 mb-0">Check-Out management</h1>
           </div>
 
-          <div className="col-md-5 ms-11">
+          <div className="col-md-5">
             <div className="input-group">
               <span className="input-group-text">
                 <i className="bi bi-search"></i>
@@ -272,4 +264,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default CheckOut;

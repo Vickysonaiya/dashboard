@@ -1,0 +1,78 @@
+/* Ensure tables are responsive */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Style the table for better readability */
+  .table th,
+  .table td {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  /* Improve spacing and alignment */
+  h1,
+  h2 {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .filters-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .filters-container select,
+  .filters-container input {
+    min-width: 200px;
+    padding: 8px;
+  }
+  
+  /* Make the filters stack on smaller screens */
+  @media (max-width: 768px) {
+    .filters-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .table {
+      font-size: 14px;
+    }
+  
+    .table th,
+    .table td {
+      padding: 8px;
+    }
+  }
+  
+  /* Adjust table layout for very small screens */
+  @media (max-width: 576px) {
+    .table thead {
+      display: none;
+    }
+  
+    .table tr {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+  
+    .table td {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      border: none;
+    }
+  
+    .table td::before {
+      content: attr(data-label);
+      font-weight: bold;
+    }
+  }
+  
