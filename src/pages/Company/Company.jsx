@@ -5,15 +5,14 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import logoMain from '../../assets/images/1Pass_Logo.svg'
 
 const Dashboard = () => {
-    // State hooks for interactive elements
-    const [selectedProperty, setSelectedProperty] = useState('All Properties');
+    const [selectedUnit, setSelectedUnit] = useState('');
+    const [selectedDesk, setSelectedDesk] = useState('');
     const [dateRange, setDateRange] = useState('Today');
     const [sidebarVisible, setSidebarVisible] = useState(true);
     const [activeNavItem, setActiveNavItem] = useState(1);
     const [activeFooterItem, setActiveFooterItem] = useState(null);
     const navigate = useNavigate()
 
-    // Mock data for statistics
     const stats = [
         { id: 1, title: 'Total Invites', count: 523, change: 8.2, increasing: true },
         { id: 2, title: 'Check-ins', count: 384, change: 5.3, increasing: true },
@@ -21,23 +20,31 @@ const Dashboard = () => {
         { id: 4, title: 'Cancelled', count: 52, change: 3.7, increasing: true }
     ];
 
-    // Navigation items
     const navItems = [
-        { id: 1, title: 'Dashboard', icon: 'bi-grid',  path: '/' },
+        { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
         { id: 2, title: 'Visitors', icon: 'bi-person', path: '/visitors' },
         { id: 3, title: 'Invites', icon: 'bi-envelope', path: '/invites' },
         { id: 4, title: 'Check-ins', icon: 'bi-check-square', path: '/checkins' },
     ];
 
-    // Footer navigation items
+    const units = ['Unit A', 'Unit B', 'Unit C'];
+    const desks = {
+        'Unit A': ['Desk 1A', 'Desk 2A', 'Desk 3A'],
+        'Unit B': ['Desk 1B', 'Desk 2B', 'Desk 3B'],
+        'Unit C': ['Desk 1C', 'Desk 2C', 'Desk 3C'],
+    };
+
     const footerNavItems = [
         { id: 1, title: 'Settings', icon: 'bi-gear' },
         { id: 2, title: 'Help & Support', icon: 'bi-question-circle' },
         { id: 3, title: 'Logout', icon: 'bi-box-arrow-right' }
     ];
 
-    // Status tabs
-    // const statusTabs = ['All', 'Pending', 'Checked-in', 'Cancelled', 'Expired'];
+    const handleUnitChange = (e) => {
+        const selected = e.target.value;
+        setSelectedUnit(selected);
+        setSelectedDesk(desks[selected]?.[0] || '');
+    };
 
     const handleNavItemClick = (id, path) => {
         setActiveNavItem(id);
@@ -72,30 +79,30 @@ const Dashboard = () => {
 
                 {/* Navigation Menu */}
                 <div>
-                <ul className="nav flex-column ">
-                    {navItems.map(item => (
-                        <li key={item.id} className="nav-item">
-                            <a
-                                className={`nav-link ${activeNavItem === item.id ? 'active' : ''} d-flex align-items-center`}
-                                href="/"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    handleNavItemClick(item.id, item.path);
-                                }}
-                                style={{
-                                    backgroundColor: activeNavItem === item.id ? '#2c5451' : 'transparent',
-                                    color: '#fff',
-                                    padding: '0.8rem 1rem'
-                                }}
-                            >
-                                <i className={`${item.icon} me-2`}></i>
-                                <span>{item.title}</span>
-                            </a>
-                        </li>
-                    ))}
-                </ul>
+                    <ul className="nav flex-column ">
+                        {navItems.map(item => (
+                            <li key={item.id} className="nav-item">
+                                <a
+                                    className={`nav-link ${activeNavItem === item.id ? 'active' : ''} d-flex align-items-center`}
+                                    href="/"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleNavItemClick(item.id, item.path);
+                                    }}
+                                    style={{
+                                        backgroundColor: activeNavItem === item.id ? '#2c5451' : 'transparent',
+                                        color: '#fff',
+                                        padding: '0.8rem 1rem'
+                                    }}
+                                >
+                                    <i className={`${item.icon} me-2`}></i>
+                                    <span>{item.title}</span>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-                
+
 
                 {/* Footer Navigation */}
                 <div className="mt-auto navHeight">
@@ -123,7 +130,7 @@ const Dashboard = () => {
                     </ul>
                 </div>
             </div>
-            
+
 
             {/* Main Content */}
             <div
@@ -148,13 +155,13 @@ const Dashboard = () => {
                     </div>
 
                     <div className="col-md-5 ms-11">
-                                <div className="input-group">
-                                    <span className="input-group-text">
-                                        <i className="bi bi-search"></i>
-                                    </span>
-                                    <input type="text" className="form-control" placeholder="Search..." />
-                                </div>
-                            </div>
+                        <div className="input-group">
+                            <span className="input-group-text">
+                                <i className="bi bi-search"></i>
+                            </span>
+                            <input type="text" className="form-control" placeholder="Search..." />
+                        </div>
+                    </div>
 
                     <div className="d-flex align-items-center">
                         <div className="position-relative me-3 badges">
@@ -200,23 +207,23 @@ const Dashboard = () => {
                     <div className="bg-white rounded p-3 shadow-sm mb-4">
                         <div className="row mb-3 align-items-end">
                             <div className="col-md-2 mb-2 mb-md-0">
-                                <select
-                                    className="form-select"
-                                    value={dateRange}
-                                    onChange={(e) => setDateRange(e.target.value)}
-                                >
-                                    <option>All Units</option>
-                                    
+                                <select className="form-select" value={selectedUnit} onChange={handleUnitChange}>
+                                    <option value="">All Units</option>
+                                    {units.map((unit) => (
+                                        <option key={unit} value={unit}>
+                                            {unit}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div className="col-md-2 mb-2 mb-md-0">
-                                <select
-                                    className="form-select"
-                                    value={dateRange}
-                                    onChange={(e) => setDateRange(e.target.value)}
-                                >
-                                    <option>All Desks</option>
-                                    
+                                <select className="form-select" value={selectedDesk} onChange={(e) => setSelectedDesk(e.target.value)}>
+                                    <option value="">All Desks</option>
+                                    {desks[selectedUnit]?.map((desk) => (
+                                        <option key={desk} value={desk}>
+                                            {desk}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div className="col-md-2 mb-2 mb-md-0 ms-134">
@@ -262,6 +269,12 @@ const Dashboard = () => {
                     <div className="bg-white rounded p-3 shadow-sm">
                         <h5 className="mb-3">Recent</h5>
                         {/* Recent content would go here */}
+                    </div>
+                    <div className="bg-white rounded p-3 shadow-sm">
+                        <h5 className="mb-3">Dashboard Content</h5>
+                        <p>Selected Unit: <strong>{selectedUnit || "All Units"}</strong></p>
+                        <p>Selected Desk: <strong>{selectedDesk || "All Desks"}</strong></p>
+                        <p>Selected Date: <strong>{dateRange || "Today"}</strong></p>
                     </div>
                 </div>
             </div>
