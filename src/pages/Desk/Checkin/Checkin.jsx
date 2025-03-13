@@ -8,50 +8,39 @@ import "./checkin.css";
 const CheckIn = () => {
   const [pendingArrivals, setPendingArrivals] = useState([
     {
-      visitId: "01",
+        hostName: "John Doe",
+        visitorName: "Vicky",
+        visitPurpose: "Meeting",
       expectedArrivalTime: "02:00",
-      hostName: "John Doe",
-      visitorName: "Vicky",
-      visitPurpose: "Meeting",
-      otpQrStatus: "OTP",
     },
     {
-      visitId: "02",
+        hostName: "John Doe",
+        visitorName: "Karan",
+        visitPurpose: "Interview",
       expectedArrivalTime: "03:00",
-      hostName: "John Doe",
-      visitorName: "Karan",
-      visitPurpose: "Interview",
-      otpQrStatus: "OTP",
     },
     {
-      visitId: "03",
+        hostName: "Jane Doe",
+        visitorName: "Cina",
+        visitPurpose: "Meeting",
       expectedArrivalTime: "04:00",
-      hostName: "Jane Doe",
-      visitorName: "Cina",
-      visitPurpose: "Meeting",
-      otpQrStatus: "OTP",
     },
     {
-      visitId: "04",
+        hostName: "Jane Doe",
+        visitorName: "Hardik",
+        visitPurpose: "Interview",
       expectedArrivalTime: "05:00",
-      hostName: "Jane Doe",
-      visitorName: "Hardik",
-      visitPurpose: "Interview",
-      otpQrStatus: "OTP",
     },
     {
-      visitId: "05",
+        hostName: "John Doe",
+        visitorName: "Dhoni",
+        visitPurpose: "Meeting",
       expectedArrivalTime: "06:00",
-      hostName: "John Doe",
-      visitorName: "Dhoni",
-      visitPurpose: "Meeting",
-      otpQrStatus: "OTP",
     },
   ]);
 
   const [recentCheckins, setRecentCheckins] = useState([
     {
-      visitId: "01",
       checkinTime: "02:00",
       hostName: "John Doe",
       visitorName: "Vicky",
@@ -60,7 +49,6 @@ const CheckIn = () => {
       wifiProvided: "Yes",
     },
     {
-      visitId: "02",
       checkinTime: "03:00",
       hostName: "John Doe",
       visitorName: "Karan",
@@ -69,7 +57,6 @@ const CheckIn = () => {
       wifiProvided: "No",
     },
     {
-      visitId: "03",
       checkinTime: "04:00",
       hostName: "Jane Doe",
       visitorName: "Cina",
@@ -78,7 +65,6 @@ const CheckIn = () => {
       wifiProvided: "Yes",
     },
     {
-      visitId: "04",
       checkinTime: "05:00",
       hostName: "Jane Doe",
       visitorName: "Hardik",
@@ -87,7 +73,6 @@ const CheckIn = () => {
       wifiProvided: "No",
     },
     {
-      visitId: "05",
       checkinTime: "06:00",
       hostName: "John Doe",
       visitorName: "Dhoni",
@@ -178,7 +163,7 @@ const CheckIn = () => {
     { id: 1, title: "Dashboard", icon: "bi-grid", path: "/deskadmin" },
     {
       id: 2,
-      title: "Check-in Management",
+      title: "Check-ins Management",
       icon: "bi-person",
       path: "/check-in",
     },
@@ -393,9 +378,7 @@ const CheckIn = () => {
                   <option>Today</option>
                   <option>Yesterday</option>
                   <option>This Week</option>
-                  <option>Last Month</option>
                   <option>This Month</option>
-                  <option>Last Month</option>
                   <option>Custom Range</option>
                 </select>
               </div>
@@ -514,12 +497,10 @@ const CheckIn = () => {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>Visit ID</th>
-                    <th>Expected Arrival Time</th>
                     <th>Host Name</th>
                     <th>Visitor Name</th>
                     <th>Visit Purpose</th>
-                    <th>OTP/QR Status</th>
+                    <th>Expected Arrival Date and Time</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -543,13 +524,11 @@ const CheckIn = () => {
                       return true;
                     })
                     .map((arrival) => (
-                      <tr key={arrival.visitId}>
-                        <td>{arrival.visitId}</td>
-                        <td>{arrival.expectedArrivalTime}</td>
+                      <tr key={arrival.hostName}>
                         <td>{arrival.hostName}</td>
                         <td>{arrival.visitorName}</td>
                         <td>{arrival.visitPurpose}</td>
-                        <td>{arrival.otpQrStatus}</td>
+                        <td>{arrival.expectedArrivalTime}</td>
                       </tr>
                     ))}
                 </tbody>
@@ -609,13 +588,12 @@ const CheckIn = () => {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>Visit ID</th>
-                    <th>Check-in Time</th>
                     <th>Host Name</th>
                     <th>Visitor Name</th>
                     <th>NDA Status</th>
                     <th>Safety SOP Status</th>
                     <th>Wi-Fi Provided</th>
+                    <th>Check-in Time</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -650,26 +628,19 @@ const CheckIn = () => {
                       return true;
                     })
                     .map((checkin) => (
-                      <tr key={checkin.visitId}>
-                        <td>{checkin.visitId}</td>
-                        <td>{checkin.checkinTime}</td>
+                      <tr key={checkin.hostName}>
                         <td>{checkin.hostName}</td>
                         <td>{checkin.visitorName}</td>
                         <td>{checkin.ndaStatus}</td>
                         <td>{checkin.safetySopStatus}</td>
                         <td>{checkin.wifiProvided}</td>
+                        <td>{checkin.checkinTime}</td>
                       </tr>
                     ))}
                 </tbody>
               </table>
             </div>
           )}
-
-          {/* Recent */}
-          <div className="bg-white rounded p-3 shadow-sm">
-            <h5 className="mb-3">Recent</h5>
-            {/* Recent content would go here */}
-          </div>
         </div>
       </div>
     </div>
