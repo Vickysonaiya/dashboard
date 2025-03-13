@@ -3,11 +3,100 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import logoMain from "../../../assets/images/1Pass_Logo.svg";
-import './checkin.css'
+import "./checkin.css";
 
 const CheckIn = () => {
-  const [pendingArrivals, setPendingArrivals] = useState([]);
-  const [recentCheckins, setRecentCheckins] = useState([]);
+  const [pendingArrivals, setPendingArrivals] = useState([
+    {
+      visitId: "01",
+      expectedArrivalTime: "02:00",
+      hostName: "John Doe",
+      visitorName: "Vicky",
+      visitPurpose: "Meeting",
+      otpQrStatus: "OTP",
+    },
+    {
+      visitId: "02",
+      expectedArrivalTime: "03:00",
+      hostName: "John Doe",
+      visitorName: "Karan",
+      visitPurpose: "Interview",
+      otpQrStatus: "OTP",
+    },
+    {
+      visitId: "03",
+      expectedArrivalTime: "04:00",
+      hostName: "Jane Doe",
+      visitorName: "Cina",
+      visitPurpose: "Meeting",
+      otpQrStatus: "OTP",
+    },
+    {
+      visitId: "04",
+      expectedArrivalTime: "05:00",
+      hostName: "Jane Doe",
+      visitorName: "Hardik",
+      visitPurpose: "Interview",
+      otpQrStatus: "OTP",
+    },
+    {
+      visitId: "05",
+      expectedArrivalTime: "06:00",
+      hostName: "John Doe",
+      visitorName: "Dhoni",
+      visitPurpose: "Meeting",
+      otpQrStatus: "OTP",
+    },
+  ]);
+
+  const [recentCheckins, setRecentCheckins] = useState([
+    {
+      visitId: "01",
+      checkinTime: "02:00",
+      hostName: "John Doe",
+      visitorName: "Vicky",
+      ndaStatus: "Signed",
+      safetySopStatus: "Completed",
+      wifiProvided: "Yes",
+    },
+    {
+      visitId: "02",
+      checkinTime: "03:00",
+      hostName: "John Doe",
+      visitorName: "Karan",
+      ndaStatus: "Not Signed",
+      safetySopStatus: "Not Completed",
+      wifiProvided: "No",
+    },
+    {
+      visitId: "03",
+      checkinTime: "04:00",
+      hostName: "Jane Doe",
+      visitorName: "Cina",
+      ndaStatus: "Signed",
+      safetySopStatus: "Completed",
+      wifiProvided: "Yes",
+    },
+    {
+      visitId: "04",
+      checkinTime: "05:00",
+      hostName: "Jane Doe",
+      visitorName: "Hardik",
+      ndaStatus: "Not Signed",
+      safetySopStatus: "Not Completed",
+      wifiProvided: "No",
+    },
+    {
+      visitId: "05",
+      checkinTime: "06:00",
+      hostName: "John Doe",
+      visitorName: "Dhoni",
+      ndaStatus: "Signed",
+      safetySopStatus: "Completed",
+      wifiProvided: "Yes",
+    },
+  ]);
+
   const [dateRange, setDateRange] = useState("Today");
   const [customDate, setCustomDate] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
@@ -369,8 +458,26 @@ const CheckIn = () => {
                     onChange={handlePendingArrivalsFilterChange}
                   >
                     <option value="">Select Host</option>
-                    <option value="John Doe">John Doe</option>
-                    <option value="Jane Doe">Jane Doe</option>
+                    {pendingArrivals.map((arrival, index) => {
+                      if (
+                        !pendingArrivals
+                          .slice(0, index)
+                          .some(
+                            (prevArrival) =>
+                              prevArrival.hostName === arrival.hostName,
+                          )
+                      ) {
+                        return (
+                          <option
+                            key={arrival.hostName}
+                            value={arrival.hostName}
+                          >
+                            {arrival.hostName}
+                          </option>
+                        );
+                      }
+                      return null;
+                    })}
                   </select>
                 </div>
                 <div className="col-md-3 mb-2 mb-md-0 ms-20">
@@ -381,8 +488,26 @@ const CheckIn = () => {
                     onChange={handlePendingArrivalsFilterChange}
                   >
                     <option value="">Select Visit Purpose</option>
-                    <option value="meeting">Meeting</option>
-                    <option value="interview">Interview</option>
+                    {pendingArrivals.map((arrival, index) => {
+                      if (
+                        !pendingArrivals
+                          .slice(0, index)
+                          .some(
+                            (prevArrival) =>
+                              prevArrival.visitPurpose === arrival.visitPurpose,
+                          )
+                      ) {
+                        return (
+                          <option
+                            key={arrival.visitPurpose}
+                            value={arrival.visitPurpose}
+                          >
+                            {arrival.visitPurpose}
+                          </option>
+                        );
+                      }
+                      return null;
+                    })}
                   </select>
                 </div>
               </div>
@@ -395,46 +520,6 @@ const CheckIn = () => {
                     <th>Visitor Name</th>
                     <th>Visit Purpose</th>
                     <th>OTP/QR Status</th>
-                  </tr>
-                  <tr>
-                    <td>01</td>
-                    <td>02:00</td>
-                    <td>John Doe</td>
-                    <td>Vicky</td>
-                    <td>Meeting</td>
-                    <td>OTP</td>
-                  </tr>
-                  <tr>
-                    <td>02</td>
-                    <td>03:00</td>
-                    <td>John Doe</td>
-                    <td>Karan</td>
-                    <td>interview</td>
-                    <td>OTP</td>
-                  </tr>
-                  <tr>
-                    <td>03</td>
-                    <td>04:00</td>
-                    <td>Jane Doe</td>
-                    <td>Cina</td>
-                    <td>Meeting</td>
-                    <td>OTP</td>
-                  </tr>
-                  <tr>
-                    <td>04</td>
-                    <td>05:00</td>
-                    <td>Jane Doe</td>
-                    <td>Hardik</td>
-                    <td>interview</td>
-                    <td>OTP</td>
-                  </tr>
-                  <tr>
-                    <td>05</td>
-                    <td>06:00</td>
-                    <td>John Doe</td>
-                    <td>Dhoni</td>
-                    <td>Meeting</td>
-                    <td>OTP</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -471,6 +556,7 @@ const CheckIn = () => {
               </table>
             </div>
           )}
+
           {showRecentCheckins && (
             <div>
               {/* Recent Check-ins Table */}
@@ -480,7 +566,7 @@ const CheckIn = () => {
                   <select
                     className="form-select"
                     name="timeWindow"
-                    value={pendingArrivalsFilters.timeWindow}
+                    value={recentCheckinsFilters.timeWindow}
                     onChange={handleRecentCheckinsFilterChange}
                   >
                     <option value="">Select Time Window</option>
@@ -493,24 +579,30 @@ const CheckIn = () => {
                   <select
                     className="form-select"
                     name="host"
-                    value={pendingArrivalsFilters.host}
+                    value={recentCheckinsFilters.host}
                     onChange={handleRecentCheckinsFilterChange}
                   >
                     <option value="">Select Host</option>
-                    <option value="John Doe">John Doe</option>
-                    <option value="Jane Doe">Jane Doe</option>
-                  </select>
-                </div>
-                <div className="col-md-3 mb-2 mb-md-0 ms-20">
-                  <select
-                    className="form-select"
-                    name="visitPurpose"
-                    value={pendingArrivalsFilters.visitPurpose}
-                    onChange={handleRecentCheckinsFilterChange}
-                  >
-                    <option value="">Select Visit Purpose</option>
-                    <option value="meeting">Meeting</option>
-                    <option value="interview">Interview</option>
+                    {recentCheckins.map((checkin, index) => {
+                      if (
+                        !recentCheckins
+                          .slice(0, index)
+                          .some(
+                            (prevCheckin) =>
+                              prevCheckin.hostName === checkin.hostName,
+                          )
+                      ) {
+                        return (
+                          <option
+                            key={checkin.hostName}
+                            value={checkin.hostName}
+                          >
+                            {checkin.hostName}
+                          </option>
+                        );
+                      }
+                      return null;
+                    })}
                   </select>
                 </div>
               </div>
@@ -533,6 +625,15 @@ const CheckIn = () => {
                         return (
                           checkin.checkinTime >=
                           recentCheckinsFilters.timeWindow
+                        );
+                      }
+                      if (recentCheckinsFilters.host) {
+                        return checkin.hostName === recentCheckinsFilters.host;
+                      }
+                      if (recentCheckinsFilters.visitPurpose) {
+                        return (
+                          checkin.visitPurpose ===
+                          recentCheckinsFilters.visitPurpose
                         );
                       }
                       if (recentCheckinsFilters.ndaStatus) {
@@ -563,6 +664,7 @@ const CheckIn = () => {
               </table>
             </div>
           )}
+
           {/* Recent */}
           <div className="bg-white rounded p-3 shadow-sm">
             <h5 className="mb-3">Recent</h5>
