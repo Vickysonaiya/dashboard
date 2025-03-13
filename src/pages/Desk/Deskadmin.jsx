@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   const navItems = [
     { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/deskadmin' },
-    { id: 2, title: 'Check-in Management', icon: 'bi-person', path: '/check-in' },
+    { id: 2, title: 'Check-ins Management', icon: 'bi-person', path: '/check-in' },
     { id: 3, title: 'Check-out Management', icon: 'bi-check-square', path: '/check-out' },
     { id: 4, title: 'Activity Logs', icon: 'bi-question-circle', path: '/activity-logs' },
   ];
@@ -224,9 +224,7 @@ const Dashboard = () => {
                   <option>Today</option>
                   <option>Yesterday</option>
                   <option>This Week</option>
-                  <option>Last Month</option>
                   <option>This Month</option>
-                  <option>Last Month</option>
                   <option>Custom Range</option>
                 </select>
               </div>
@@ -259,12 +257,6 @@ const Dashboard = () => {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Recent */}
-          <div className="bg-white rounded p-3 shadow-sm">
-            <h5 className="mb-3">Recent</h5>
-            {/* Recent content would go here */}
           </div>
         </div>
       </div>
