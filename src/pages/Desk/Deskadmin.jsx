@@ -6,7 +6,8 @@ import logoMain from '../../assets/images/1Pass_Logo.svg'
 
 const Dashboard = () => {
   const [dateRange, setDateRange] = useState('Today');
-  const [customDate, setCustomDate] = useState('');
+  const [customDateFrom, setCustomDateFrom] = useState("");
+  const [customDateTo, setCustomDateTo] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
   const [activeNavItem, setActiveNavItem] = useState(1);
@@ -40,7 +41,7 @@ const Dashboard = () => {
     setActiveFooterItem(null);
     navigate(path);
   };
-  
+
 
   const handleFooterItemClick = (id) => {
     setActiveFooterItem(id);
@@ -50,9 +51,28 @@ const Dashboard = () => {
   const handleDateChange = (e) => {
     const selectedValue = e.target.value;
     setDateRange(selectedValue);
-    setShowCalendar(selectedValue === 'Custom Range');
+    if (selectedValue === "Today") {
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+      setCustomDateFrom(formattedDate);
+      setCustomDateTo(formattedDate);
+      setShowCalendar(false);
+    } else if (selectedValue === "Yesterday") {
+      const yesterday = new Date(new Date().getTime() - 86400000);
+      const formattedDate = yesterday.toISOString().split('T')[0];
+      setCustomDateFrom(formattedDate);
+      setCustomDateTo(formattedDate);
+      setShowCalendar(false);
+    } else if (selectedValue === "Custom Range") {
+      setShowCalendar(true);
+      setCustomDateFrom("");
+      setCustomDateTo("");
+    } else {
+      setShowCalendar(false);
+      setCustomDateFrom("");
+      setCustomDateTo("");
+    }
   };
-  console.log('activenav',activeNavItem);
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', overflow: 'hidden' }}>
@@ -82,7 +102,7 @@ const Dashboard = () => {
             {navItems.map((item) => (
               <li key={item.id} className="nav-item">
                 <a
-                href='#'
+                  href='#'
                   className={`nav-link ${activeNavItem === item.id ? 'active' : ''} d-flex align-items-center`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -228,14 +248,46 @@ const Dashboard = () => {
                   <option>Custom Range</option>
                 </select>
               </div>
-              {showCalendar && (
-                <div className="col-md-3">
+              {dateRange === "Today" && (
+                <div className="col-md-2">
                   <input
-                    type="date"
+                    type="text"
                     className="form-control"
-                    value={customDate}
-                    onChange={(e) => setCustomDate(e.target.value)}
+                    value={new Date().toISOString().split('T')[0]}
+                    readOnly
                   />
+                </div>
+              )}
+              {dateRange === "Yesterday" && (
+                <div className="col-md-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={new Date(new Date().getTime() - 86400000).toISOString().split('T')[0]}
+                    readOnly
+                  />
+                </div>
+              )}
+              {showCalendar && (
+                <div className="row">
+                  <div className="col-md-2">
+                    <label>From:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={customDateFrom}
+                      onChange={(e) => setCustomDateFrom(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <label>To:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={customDateTo}
+                      onChange={(e) => setCustomDateTo(e.target.value)}
+                    />
+                  </div>
                 </div>
               )}
             </div>
