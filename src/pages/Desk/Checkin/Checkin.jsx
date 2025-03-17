@@ -138,9 +138,11 @@ const CheckIn = () => {
   };
   const handleShowPendingCheckins = () => {
     setShowPendingCheckins(true);
+    setShowRecentCheckins(false)
   };
   const handleShowRecentCheckins = () => {
     setShowRecentCheckins(true);
+    setShowPendingCheckins(false)
   };
 
   const cardNavigation = (stat, e) => {
