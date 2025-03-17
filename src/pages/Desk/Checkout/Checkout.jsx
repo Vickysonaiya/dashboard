@@ -1,4 +1,4 @@
-import React, { useState     } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -6,7 +6,8 @@ import logoMain from '../../../assets/images/1Pass_Logo.svg'
 
 const CheckOut = () => {
   const [dateRange, setDateRange] = useState('Today');
-  const [customDate, setCustomDate] = useState('');
+  const [customDateFrom, setCustomDateFrom] = useState("");
+  const [customDateTo, setCustomDateTo] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
   const [activeNavItem, setActiveNavItem] = useState(1);
@@ -45,7 +46,27 @@ const CheckOut = () => {
   const handleDateChange = (e) => {
     const selectedValue = e.target.value;
     setDateRange(selectedValue);
-    setShowCalendar(selectedValue === 'Custom Range');
+    if (selectedValue === "Today") {
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+      setCustomDateFrom(formattedDate);
+      setCustomDateTo(formattedDate);
+      setShowCalendar(false);
+    } else if (selectedValue === "Yesterday") {
+      const yesterday = new Date(new Date().getTime() - 86400000);
+      const formattedDate = yesterday.toISOString().split('T')[0];
+      setCustomDateFrom(formattedDate);
+      setCustomDateTo(formattedDate);
+      setShowCalendar(false);
+    } else if (selectedValue === "Custom Range") {
+      setShowCalendar(true);
+      setCustomDateFrom("");
+      setCustomDateTo("");
+    } else {
+      setShowCalendar(false);
+      setCustomDateFrom("");
+      setCustomDateTo("");
+    }
   };
 
   return (
@@ -76,13 +97,13 @@ const CheckOut = () => {
             {navItems.map((item) => (
               <li key={item.id} className="nav-item">
                 <a
-                  className={`nav-link ${activeNavItem+2 === item.id ? 'active' : ''} d-flex align-items-center`}
+                  className={`nav-link ${activeNavItem + 2 === item.id ? 'active' : ''} d-flex align-items-center`}
                   onClick={(e) => {
                     e.preventDefault();
                     handleNavItemClick(item.id, item.path);
                   }}
                   style={{
-                    backgroundColor: activeNavItem+2 === item.id ? '#2c5451' : 'transparent',
+                    backgroundColor: activeNavItem + 2 === item.id ? '#2c5451' : 'transparent',
                     color: '#fff',
                     padding: '0.8rem 1rem',
                   }}
@@ -217,20 +238,50 @@ const CheckOut = () => {
                   <option>Today</option>
                   <option>Yesterday</option>
                   <option>This Week</option>
-                  <option>Last Month</option>
                   <option>This Month</option>
-                  <option>Last Month</option>
                   <option>Custom Range</option>
                 </select>
               </div>
-              {showCalendar && (
-                <div className="col-md-3">
+              {dateRange === "Today" && (
+                <div className="col-md-2">
                   <input
-                    type="date"
+                    type="text"
                     className="form-control"
-                    value={customDate}
-                    onChange={(e) => setCustomDate(e.target.value)}
+                    value={new Date().toISOString().split('T')[0]}
+                    readOnly
                   />
+                </div>
+              )}
+              {dateRange === "Yesterday" && (
+                <div className="col-md-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={new Date(new Date().getTime() - 86400000).toISOString().split('T')[0]}
+                    readOnly
+                  />
+                </div>
+              )}
+              {showCalendar && (
+                <div className="row">
+                  <div className="col-md-2">
+                    <label>From:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={customDateFrom}
+                      onChange={(e) => setCustomDateFrom(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <label>To:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={customDateTo}
+                      onChange={(e) => setCustomDateTo(e.target.value)}
+                    />
+                  </div>
                 </div>
               )}
             </div>

@@ -8,34 +8,34 @@ import "./checkin.css";
 const CheckIn = () => {
   const [pendingArrivals, setPendingArrivals] = useState([
     {
-        hostName: "John Doe",
-        visitorName: "Vicky",
-        visitPurpose: "Meeting",
-      expectedArrivalTime: "02:00",
+      hostName: "John Doe",
+      visitorName: "Vicky",
+      visitPurpose: "Meeting",
+      expectedArrivalTime: "2024-09-16T02:00:00.000Z",
     },
     {
-        hostName: "John Doe",
-        visitorName: "Karan",
-        visitPurpose: "Interview",
-      expectedArrivalTime: "03:00",
+      hostName: "John Doe",
+      visitorName: "Karan",
+      visitPurpose: "Interview",
+      expectedArrivalTime: "2024-09-16T03:00:00.000Z",
     },
     {
-        hostName: "Jane Doe",
-        visitorName: "Cina",
-        visitPurpose: "Meeting",
-      expectedArrivalTime: "04:00",
+      hostName: "Jane Doe",
+      visitorName: "Cina",
+      visitPurpose: "Meeting",
+      expectedArrivalTime: "2024-09-16T04:00:00.000Z",
     },
     {
-        hostName: "Jane Doe",
-        visitorName: "Hardik",
-        visitPurpose: "Interview",
-      expectedArrivalTime: "05:00",
+      hostName: "Jane Doe",
+      visitorName: "Hardik",
+      visitPurpose: "Interview",
+      expectedArrivalTime: "2024-09-16T08:00:00.000Z",
     },
     {
-        hostName: "John Doe",
-        visitorName: "Dhoni",
-        visitPurpose: "Meeting",
-      expectedArrivalTime: "06:00",
+      hostName: "John Doe",
+      visitorName: "Dhoni",
+      visitPurpose: "Meeting",
+      expectedArrivalTime: "2024-09-16T06:00:00.000Z",
     },
   ]);
 
@@ -83,7 +83,8 @@ const CheckIn = () => {
   ]);
 
   const [dateRange, setDateRange] = useState("Today");
-  const [customDate, setCustomDate] = useState("");
+  const [customDateFrom, setCustomDateFrom] = useState("");
+  const [customDateTo, setCustomDateTo] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
   const [activeNavItem, setActiveNavItem] = useState(1);
@@ -203,7 +204,27 @@ const CheckIn = () => {
   const handleDateChange = (e) => {
     const selectedValue = e.target.value;
     setDateRange(selectedValue);
-    setShowCalendar(selectedValue === "Custom Range");
+    if (selectedValue === "Today") {
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+      setCustomDateFrom(formattedDate);
+      setCustomDateTo(formattedDate);
+      setShowCalendar(false);
+    } else if (selectedValue === "Yesterday") {
+      const yesterday = new Date(new Date().getTime() - 86400000);
+      const formattedDate = yesterday.toISOString().split('T')[0];
+      setCustomDateFrom(formattedDate);
+      setCustomDateTo(formattedDate);
+      setShowCalendar(false);
+    } else if (selectedValue === "Custom Range") {
+      setShowCalendar(true);
+      setCustomDateFrom("");
+      setCustomDateTo("");
+    } else {
+      setShowCalendar(false);
+      setCustomDateFrom("");
+      setCustomDateTo("");
+    }
   };
 
   return (
@@ -384,14 +405,46 @@ const CheckIn = () => {
                   <option>Custom Range</option>
                 </select>
               </div>
-              {showCalendar && (
-                <div className="col-md-3">
+              {dateRange === "Today" && (
+                <div className="col-md-2">
                   <input
-                    type="date"
+                    type="text"
                     className="form-control"
-                    value={customDate}
-                    onChange={(e) => setCustomDate(e.target.value)}
+                    value={new Date().toISOString().split('T')[0]}
+                    readOnly
                   />
+                </div>
+              )}
+              {dateRange === "Yesterday" && (
+                <div className="col-md-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={new Date(new Date().getTime() - 86400000).toISOString().split('T')[0]}
+                    readOnly
+                  />
+                </div>
+              )}
+              {showCalendar && (
+                <div className="row">
+                  <div className="col-md-2">
+                    <label>From:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={customDateFrom}
+                      onChange={(e) => setCustomDateFrom(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <label>To:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={customDateTo}
+                      onChange={(e) => setCustomDateTo(e.target.value)}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -523,6 +576,33 @@ const CheckIn = () => {
                           pendingArrivalsFilters.visitPurpose
                         );
                       }
+                      if (customDateFrom && customDateTo) {
+                        const arrivalDate = new Date(arrival.expectedArrivalTime);
+                        const fromDate = new Date(customDateFrom);
+                        const toDate = new Date(customDateTo);
+                        return (
+                          arrivalDate >= fromDate && arrivalDate <= toDate
+                        );
+                      }
+                      if (dateRange === "Today") {
+                        const today = new Date();
+                        const formattedDate = today.toISOString().split('T')[0];
+                        const arrivalDate = new Date(arrival.expectedArrivalTime);
+                        const todayDate = new Date(formattedDate);
+                        return (
+                          arrivalDate.toDateString() === todayDate.toDateString()
+                        );
+                      }
+                      if (dateRange === "Yesterday") {
+                        const yesterday = new Date();
+                        yesterday.setDate(yesterday.getDate() - 1);
+                        const formattedDate = yesterday.toISOString().split('T')[0];
+                        const arrivalDate = new Date(arrival.expectedArrivalTime);
+                        const yesterdayDate = new Date(formattedDate);
+                        return (
+                          arrivalDate.toDateString() === yesterdayDate.toDateString()
+                        );
+                      }
                       return true;
                     })
                     .map((arrival) => (
@@ -610,21 +690,13 @@ const CheckIn = () => {
                       if (recentCheckinsFilters.host) {
                         return checkin.hostName === recentCheckinsFilters.host;
                       }
-                      if (recentCheckinsFilters.visitPurpose) {
+                      if (customDateFrom && customDateTo) {
+                        const checkinDate = new Date(checkin.checkinTime);
+                        const fromDate = new Date(customDateFrom);
+                        const toDate = new Date(customDateTo);
                         return (
-                          checkin.visitPurpose ===
-                          recentCheckinsFilters.visitPurpose
-                        );
-                      }
-                      if (recentCheckinsFilters.ndaStatus) {
-                        return (
-                          checkin.ndaStatus === recentCheckinsFilters.ndaStatus
-                        );
-                      }
-                      if (recentCheckinsFilters.safetySopStatus) {
-                        return (
-                          checkin.safetySopStatus ===
-                          recentCheckinsFilters.safetySopStatus
+                          checkinDate >= fromDate && checkinDate <= toDate
+
                         );
                       }
                       return true;
