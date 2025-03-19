@@ -11,37 +11,37 @@ const CheckIn = () => {
       hostName: "John Doe",
       visitorName: "Vicky",
       visitPurpose: "Meeting",
-      expectedArrivalTime: "2024-09-16T02:00:00.000Z",
+      expectedArrivalTime: "2025-03-18T02:00:00.000Z",
     },
     {
       hostName: "John Doe",
       visitorName: "Karan",
       visitPurpose: "Interview",
-      expectedArrivalTime: "2024-09-16T03:00:00.000Z",
+      expectedArrivalTime: "2025-03-18T03:00:00.000Z",
     },
     {
       hostName: "Jane Doe",
       visitorName: "Cina",
       visitPurpose: "Meeting",
-      expectedArrivalTime: "2024-09-16T04:00:00.000Z",
+      expectedArrivalTime: "2025-03-18T04:00:00.000Z",
     },
     {
       hostName: "Jane Doe",
       visitorName: "Hardik",
       visitPurpose: "Interview",
-      expectedArrivalTime: "2024-09-16T08:00:00.000Z",
+      expectedArrivalTime: "2025-03-18T08:00:00.000Z",
     },
     {
       hostName: "John Doe",
       visitorName: "Dhoni",
       visitPurpose: "Meeting",
-      expectedArrivalTime: "2024-09-16T06:00:00.000Z",
+      expectedArrivalTime: "2025-03-18T06:00:00.000Z",
     },
   ]);
 
   const [recentCheckins, setRecentCheckins] = useState([
     {
-      checkinTime: "02:00",
+      expectedArrivalTime: "2025-03-18T02:01:00.000Z",
       hostName: "John Doe",
       visitorName: "Vicky",
       ndaStatus: "Signed",
@@ -49,7 +49,7 @@ const CheckIn = () => {
       wifiProvided: "Yes",
     },
     {
-      checkinTime: "03:00",
+      expectedArrivalTime: "2025-03-18T08:00:00.000Z",
       hostName: "John Doe",
       visitorName: "Karan",
       ndaStatus: "Not Signed",
@@ -57,7 +57,7 @@ const CheckIn = () => {
       wifiProvided: "No",
     },
     {
-      checkinTime: "04:00",
+      expectedArrivalTime: "2025-03-18T06:00:00.000Z",
       hostName: "Jane Doe",
       visitorName: "Cina",
       ndaStatus: "Signed",
@@ -65,7 +65,7 @@ const CheckIn = () => {
       wifiProvided: "Yes",
     },
     {
-      checkinTime: "05:00",
+      expectedArrivalTime: "2025-03-18T02:00:00.000Z",
       hostName: "Jane Doe",
       visitorName: "Hardik",
       ndaStatus: "Not Signed",
@@ -73,7 +73,7 @@ const CheckIn = () => {
       wifiProvided: "No",
     },
     {
-      checkinTime: "06:00",
+      expectedArrivalTime: "2025-03-18T04:00:00.000Z",
       hostName: "John Doe",
       visitorName: "Dhoni",
       ndaStatus: "Signed",
@@ -91,6 +91,7 @@ const CheckIn = () => {
   const [activeFooterItem, setActiveFooterItem] = useState(null);
   const [showPendingCheckins, setShowPendingCheckins] = useState(false);
   const [showRecentCheckins, setShowRecentCheckins] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
   const [pendingArrivalsFilters, setPendingArrivalsFilters] = useState({
     timeWindow: "",
@@ -254,22 +255,82 @@ const CheckIn = () => {
           <ul className="nav flex-column">
             {navItems.map((item) => (
               <li key={item.id} className="nav-item">
-                <a
-                  className={`nav-link ${activeNavItem + 1 === item.id ? "active" : ""} d-flex align-items-center`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavItemClick(item.id, item.path);
-                  }}
-                  style={{
-                    backgroundColor:
-                      activeNavItem + 1 === item.id ? "#2c5451" : "transparent",
-                    color: "#fff",
-                    padding: "0.8rem 1rem",
-                  }}
-                >
-                  <i className={`${item.icon} me-2`}></i>
-                  <span>{item.title} </span>
-                </a>
+                {item.title === "Check-ins Management" ? (
+                  <div class>
+                    <a
+                      className={`nav-link ${activeNavItem + 1 === item.id ? "active" : ""} d-flex align-items-center`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavItemClick(item.id, item.path);
+                        setShowDropdown(!showDropdown);
+                      }}
+                      style={{
+                        backgroundColor:
+                          activeNavItem + 1 === item.id ? "#2c5451" : "transparent",
+                        color: "#fff",
+                        padding: "0.8rem 1rem",
+                      }}
+                    >
+                      <i className={`${item.icon} me-2`}></i>
+                      <span>{item.title} </span>
+                      <i className={`bi bi-caret-down ms-2 ${showDropdown ? "rotate-180" : ""}`}></i>
+                    </a>
+                    {showDropdown && (
+                      <ul className="nav flex-column dropdown-menu">
+                        <li>
+                          <a
+                            className="nav-link"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleShowPendingCheckins();
+                            }}
+                          >
+                            Pending Arrivals
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            className="nav-link"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleShowRecentCheckins();
+                            }}
+                          >
+                            Recent Check-ins
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            className="nav-link"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              // Add functionality for Failed Check-ins
+                            }}
+                          >
+                            Failed Check-ins
+                          </a>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                ) : (
+                  <a
+                    className={`nav-link ${activeNavItem + 1 === item.id ? "active" : ""} d-flex align-items-center`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavItemClick(item.id, item.path);
+                    }}
+                    style={{
+                      backgroundColor:
+                        activeNavItem + 1 === item.id ? "#2c5451" : "transparent",
+                      color: "#fff",
+                      padding: "0.8rem 1rem",
+                    }}
+                  >
+                    <i className={`${item.icon} me-2`}></i>
+                    <span>{item.title} </span>
+                  </a>
+                )}
               </li>
             ))}
           </ul>
@@ -683,7 +744,7 @@ const CheckIn = () => {
                     .filter((checkin) => {
                       if (recentCheckinsFilters.timeWindow) {
                         return (
-                          checkin.checkinTime >=
+                          checkin.expectedArrivalTime >=
                           recentCheckinsFilters.timeWindow
                         );
                       }
@@ -691,7 +752,7 @@ const CheckIn = () => {
                         return checkin.hostName === recentCheckinsFilters.host;
                       }
                       if (customDateFrom && customDateTo) {
-                        const checkinDate = new Date(checkin.checkinTime);
+                        const checkinDate = new Date(checkin.expectedArrivalTime);
                         const fromDate = new Date(customDateFrom);
                         const toDate = new Date(customDateTo);
                         return (
@@ -708,7 +769,7 @@ const CheckIn = () => {
                         <td>{checkin.ndaStatus}</td>
                         <td>{checkin.safetySopStatus}</td>
                         <td>{checkin.wifiProvided}</td>
-                        <td>{checkin.checkinTime}</td>
+                        <td>{checkin.expectedArrivalTime}</td>
                       </tr>
                     ))}
                 </tbody>
