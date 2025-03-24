@@ -4,40 +4,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import logoMain from "../../../assets/images/1Pass_Logo.svg";
 import "./checkin.css";
+import { useFetchHostInvitesQuery } from "../../../api/apiSlice";
 
 const CheckIn = () => {
-  const [pendingArrivals, setPendingArrivals] = useState([
-    {
-      hostName: "John Doe",
-      visitorName: "Vicky",
-      visitPurpose: "Meeting",
-      expectedArrivalTime: "2025-03-18T02:00:00.000Z",
-    },
-    {
-      hostName: "John Doe",
-      visitorName: "Karan",
-      visitPurpose: "Interview",
-      expectedArrivalTime: "2025-03-18T03:00:00.000Z",
-    },
-    {
-      hostName: "Jane Doe",
-      visitorName: "Cina",
-      visitPurpose: "Meeting",
-      expectedArrivalTime: "2025-03-18T04:00:00.000Z",
-    },
-    {
-      hostName: "Jane Doe",
-      visitorName: "Hardik",
-      visitPurpose: "Interview",
-      expectedArrivalTime: "2025-03-18T08:00:00.000Z",
-    },
-    {
-      hostName: "John Doe",
-      visitorName: "Dhoni",
-      visitPurpose: "Meeting",
-      expectedArrivalTime: "2025-03-18T06:00:00.000Z",
-    },
-  ]);
+  const { data, error, isLoading } = useFetchHostInvitesQuery();
+  const [pendingArrivals, setPendingArrivals] = useState([]);
 
   const [recentCheckins, setRecentCheckins] = useState([
     {
@@ -105,16 +76,9 @@ const CheckIn = () => {
   });
 
   useEffect(() => {
-    fetchPendingArrivals();
+    // fetchPendingArrivals();
     fetchRecentCheckins();
   }, []);
-
-  const fetchPendingArrivals = async () => {
-    // Fetch pending arrivals data from API or database
-    const response = await fetch("/api/pending-arrivals");
-    const data = await response.json();
-    setPendingArrivals(data);
-  };
 
   const fetchRecentCheckins = async () => {
     // Fetch recent check-ins data from API or database
@@ -226,6 +190,44 @@ const CheckIn = () => {
       setCustomDateFrom("");
       setCustomDateTo("");
     }
+  };
+  // useEffect(() => {
+  //   if (data) {
+  //     setPendingArrivals(data);
+  //   }
+  // }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      if (Array.isArray(data)) {
+        const guests = data.reduce((acc, current) => {
+          return acc.concat(current.guests);
+        }, []);
+        setPendingArrivals(guests.invitationDetails);
+        setRecentCheckins(guests.invitationDetails);
+        console.log("set from here")
+      } else {
+        setPendingArrivals(data.invitationDetails);
+        setRecentCheckins(data.invitationDetails);
+        console.log("set from here",data.invitationDetails)
+
+      }
+    }
+    console.log('data',data);
+    
+  }, [data]);
+
+  const formatDateTime = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  };
+
+  const formatDuration = (durationString) => {
+    const [hours, minutes, seconds] = durationString.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes;
+    const hoursDisplay = Math.floor(totalMinutes / 60);
+    const minutesDisplay = totalMinutes % 60;
+    return `${hoursDisplay} hours ${minutesDisplay} minutes`;
   };
 
   return (
@@ -557,7 +559,7 @@ const CheckIn = () => {
                     onChange={handlePendingArrivalsFilterChange}
                   >
                     <option value="">Select Host</option>
-                    {pendingArrivals.map((arrival, index) => {
+                    {pendingArrivals?.map((arrival, index) => {
                       if (
                         !pendingArrivals
                           .slice(0, index)
@@ -587,7 +589,7 @@ const CheckIn = () => {
                     onChange={handlePendingArrivalsFilterChange}
                   >
                     <option value="">Select Visit Purpose</option>
-                    {pendingArrivals.map((arrival, index) => {
+                    {pendingArrivals?.map((arrival, index) => {
                       if (
                         !pendingArrivals
                           .slice(0, index)
@@ -613,65 +615,70 @@ const CheckIn = () => {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>Host Name</th>
-                    <th>Visitor Name</th>
-                    <th>Visit Purpose</th>
-                    <th>Expected Arrival Date and Time</th>
+                    <th>Host Id</th>
+                    <th>Unit Id</th>
+                    <th>Start Time</th>
+                    <th>Check-in Time</th>
+                    <th>Check-out Time</th>
+                    <th>Duration</th>
                   </tr>
                 </thead>
                 <tbody>
                   {pendingArrivals
-                    .filter((arrival) => {
-                      if (pendingArrivalsFilters.timeWindow) {
-                        return (
-                          arrival.expectedArrivalTime >=
-                          pendingArrivalsFilters.timeWindow
-                        );
-                      }
-                      if (pendingArrivalsFilters.host) {
-                        return arrival.hostName === pendingArrivalsFilters.host;
-                      }
-                      if (pendingArrivalsFilters.visitPurpose) {
-                        return (
-                          arrival.visitPurpose ===
-                          pendingArrivalsFilters.visitPurpose
-                        );
-                      }
-                      if (customDateFrom && customDateTo) {
-                        const arrivalDate = new Date(arrival.expectedArrivalTime);
-                        const fromDate = new Date(customDateFrom);
-                        const toDate = new Date(customDateTo);
-                        return (
-                          arrivalDate >= fromDate && arrivalDate <= toDate
-                        );
-                      }
-                      if (dateRange === "Today") {
-                        const today = new Date();
-                        const formattedDate = today.toISOString().split('T')[0];
-                        const arrivalDate = new Date(arrival.expectedArrivalTime);
-                        const todayDate = new Date(formattedDate);
-                        return (
-                          arrivalDate.toDateString() === todayDate.toDateString()
-                        );
-                      }
-                      if (dateRange === "Yesterday") {
-                        const yesterday = new Date();
-                        yesterday.setDate(yesterday.getDate() - 1);
-                        const formattedDate = yesterday.toISOString().split('T')[0];
-                        const arrivalDate = new Date(arrival.expectedArrivalTime);
-                        const yesterdayDate = new Date(formattedDate);
-                        return (
-                          arrivalDate.toDateString() === yesterdayDate.toDateString()
-                        );
-                      }
-                      return true;
-                    })
+                  // .filter((arrival) => {
+                  //   if (pendingArrivalsFilters.timeWindow) {
+                  //     return (
+                  //       arrival.expectedArrivalTime >=
+                  //       pendingArrivalsFilters.timeWindow
+                  //     );
+                  //   }
+                  //   if (pendingArrivalsFilters.host) {
+                  //     return arrival.hostName === pendingArrivalsFilters.host;
+                  //   }
+                  //   if (pendingArrivalsFilters.visitPurpose) {
+                  //     return (
+                  //       arrival.visitPurpose ===
+                  //       pendingArrivalsFilters.visitPurpose
+                  //     );
+                  //   }
+                  //   if (customDateFrom && customDateTo) {
+                  //     const arrivalDate = new Date(arrival.expectedArrivalTime);
+                  //     const fromDate = new Date(customDateFrom);
+                  //     const toDate = new Date(customDateTo);
+                  //     return (
+                  //       arrivalDate >= fromDate && arrivalDate <= toDate
+                  //     );
+                  //   }
+                  //   if (dateRange === "Today") {
+                  //     const today = new Date();
+                  //     const formattedDate = today.toISOString().split('T')[0];
+                  //     const arrivalDate = new Date(arrival.expectedArrivalTime);
+                  //     const todayDate = new Date(formattedDate);
+                  //     return (
+                  //       arrivalDate.toDateString() === todayDate.toDateString()
+                  //     );
+                  //   }
+                  //   if (dateRange === "Yesterday") {
+                  //     const yesterday = new Date();
+                  //     yesterday.setDate(yesterday.getDate() - 1);
+                  //     const formattedDate = yesterday.toISOString().split('T')[0];
+                  //     const arrivalDate = new Date(arrival.expectedArrivalTime);
+                  //     const yesterdayDate = new Date(formattedDate);
+                  //     return (
+                  //       arrivalDate.toDateString() === yesterdayDate.toDateString()
+                  //     );
+                  //   }
+                  //   return true;
+                  // })
                     .map((arrival) => (
-                      <tr key={arrival.hostName}>
-                        <td>{arrival.hostName}</td>
-                        <td>{arrival.visitorName}</td>
-                        <td>{arrival.visitPurpose}</td>
-                        <td>{arrival.expectedArrivalTime}</td>
+                      <tr>
+                        <td>{arrival?.Invitation.HostId}</td>
+                        <td>{arrival?.Invitation?.UnitId}</td>
+                        <td>{formatDateTime(arrival?.Invitation?.StartTime)}</td>
+                        <td>{formatDateTime(arrival?.guests[0]?.CheckInTime)}</td>
+                        <td>{formatDateTime(arrival?.guests[0]?.CheckoutTime)}</td>
+                        <td>{formatDuration(arrival?.Invitation?.Duration)}</td>
+                        {/* <td>{arrival.expectedArrivalTime}</td> */}
                       </tr>
                     ))}
                 </tbody>
@@ -730,46 +737,46 @@ const CheckIn = () => {
               </div>
               <table className="table table-striped">
                 <thead>
-                  <tr>
-                    <th>Host Name</th>
-                    <th>Visitor Name</th>
-                    <th>NDA Status</th>
-                    <th>Safety SOP Status</th>
-                    <th>Wi-Fi Provided</th>
+                <tr>
+                    <th>Host Id</th>
+                    <th>Unit Id</th>
+                    <th>Start Time</th>
                     <th>Check-in Time</th>
+                    <th>Check-out Time</th>
+                    <th>Duration</th>
                   </tr>
                 </thead>
                 <tbody>
                   {recentCheckins
-                    .filter((checkin) => {
-                      if (recentCheckinsFilters.timeWindow) {
-                        return (
-                          checkin.expectedArrivalTime >=
-                          recentCheckinsFilters.timeWindow
-                        );
-                      }
-                      if (recentCheckinsFilters.host) {
-                        return checkin.hostName === recentCheckinsFilters.host;
-                      }
-                      if (customDateFrom && customDateTo) {
-                        const checkinDate = new Date(checkin.expectedArrivalTime);
-                        const fromDate = new Date(customDateFrom);
-                        const toDate = new Date(customDateTo);
-                        return (
-                          checkinDate >= fromDate && checkinDate <= toDate
+                    // .filter((checkin) => {
+                    //   if (recentCheckinsFilters.timeWindow) {
+                    //     return (
+                    //       checkin.expectedArrivalTime >=
+                    //       recentCheckinsFilters.timeWindow
+                    //     );
+                    //   }
+                    //   if (recentCheckinsFilters.host) {
+                    //     return checkin.hostName === recentCheckinsFilters.host;
+                    //   }
+                    //   if (customDateFrom && customDateTo) {
+                    //     const checkinDate = new Date(checkin.expectedArrivalTime);
+                    //     const fromDate = new Date(customDateFrom);
+                    //     const toDate = new Date(customDateTo);
+                    //     return (
+                    //       checkinDate >= fromDate && checkinDate <= toDate
 
-                        );
-                      }
-                      return true;
-                    })
-                    .map((checkin) => (
-                      <tr key={checkin.hostName}>
-                        <td>{checkin.hostName}</td>
-                        <td>{checkin.visitorName}</td>
-                        <td>{checkin.ndaStatus}</td>
-                        <td>{checkin.safetySopStatus}</td>
-                        <td>{checkin.wifiProvided}</td>
-                        <td>{checkin.expectedArrivalTime}</td>
+                    //     );
+                    //   }
+                    //   return true;
+                    // })
+                    .map((arrival) => (
+                      <tr>
+                        <td>{arrival?.Invitation.HostId}</td>
+                        <td>{arrival?.Invitation?.UnitId}</td>
+                        <td>{formatDateTime(arrival?.Invitation?.StartTime)}</td>
+                        <td>{formatDateTime(arrival?.guests[0]?.CheckInTime)}</td>
+                        <td>{formatDateTime(arrival?.guests[0]?.CheckoutTime)}</td>
+                        <td>{formatDuration(arrival?.Invitation?.Duration)}</td>
                       </tr>
                     ))}
                 </tbody>
