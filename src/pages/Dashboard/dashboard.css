@@ -1,58 +1,69 @@
-/* Make the sidebar responsive */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
+/* General Styles */
+.container-fluid {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 20px;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .sidebar-collapsed {
+    width: 0;
+    overflow: hidden;
+  }
+  
+  /* Filters Section */
+  .bg-white {
+    border-radius: 10px;
+  }
+  
+  .form-select, .form-control {
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive Grid Layout */
+  @media (max-width: 768px) {
+    .row.mb-1 {
+      flex-direction: column;
     }
-    .sidebar.show {
-        transform: translateX(0);
+  
+    .col-md-2 {
+      width: 100%;
+      margin-bottom: 10px;
     }
-}
-
-/* Make the main content responsive */
-@media (max-width: 768px) {
-    .main-content {
-        margin-left: 0;
+  
+    .col-md-2 input[type="date"] {
+      width: 100%;
     }
-}
-
-/* Make the filters responsive */
-@media (max-width: 768px) {
-    .filters {
-        flex-direction: column;
+  }
+  
+  @media (max-width: 576px) {
+    .row.mb-4 {
+      flex-direction: column;
     }
-    .filters .col-md-2 {
-        margin-bottom: 20px;
+  
+    .col-md-6, .col-lg-3 {
+      width: 100%;
+      margin-bottom: 10px;
     }
-}
-
-/* Make the stats cards responsive */
-@media (max-width: 768px) {
-    .stats-cards {
-        flex-direction: column;
-    }
-    .stats-cards .col-md-6 {
-        margin-bottom: 20px;
-    }
-}
-
-/* Make the recent content responsive */
-@media (max-width: 768px) {
-    .recent-content {
-        padding: 20px;
-    }
-}
-
-.badges{
-    cursor: pointer;
-}
-
-.navHeight{
-    position: absolute;
-    bottom: 0;
-}
+  }
+  
+  /* Stats Cards */
+  .bg-white.shadow-sm {
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .h3 {
+    font-weight: bold;
+  }
+  
+  .small {
+    font-size: 0.85rem;
+  }
+  

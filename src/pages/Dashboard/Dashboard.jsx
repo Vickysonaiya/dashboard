@@ -4,8 +4,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Dashboard = () => {
   // State hooks for interactive elements
-  const [selectedProperty, setSelectedProperty] = useState('All Properties');
   const [dateRange, setDateRange] = useState('Today');
+  const [selectedProperty, setSelectedProperty] = useState('All Properties');
+  const [customDateFrom, setCustomDateFrom] = useState("");
+    const [customDateTo, setCustomDateTo] = useState("");
+    const [showCalendar, setShowCalendar] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
 
   // Mock data for statistics
@@ -15,6 +18,32 @@ const Dashboard = () => {
     { id: 3, title: 'Pending', count: 87, change: 2.1, increasing: false },
     { id: 4, title: 'Cancelled', count: 52, change: 3.7, increasing: true }
   ];
+
+  const handleDateChange = (e) => {
+    const selectedValue = e.target.value;
+    setDateRange(selectedValue);
+    if (selectedValue === "Today") {
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+      setCustomDateFrom(formattedDate);
+      setCustomDateTo(formattedDate);
+      setShowCalendar(false);
+    } else if (selectedValue === "Yesterday") {
+      const yesterday = new Date(new Date().getTime() - 86400000);
+      const formattedDate = yesterday.toISOString().split('T')[0];
+      setCustomDateFrom(formattedDate);
+      setCustomDateTo(formattedDate);
+      setShowCalendar(false);
+    } else if (selectedValue === "Custom Range") {
+      setShowCalendar(true);
+      setCustomDateFrom("");
+      setCustomDateTo("");
+    } else {
+      setShowCalendar(false);
+      setCustomDateFrom("");
+      setCustomDateTo("");
+    }
+  };
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', overflow: 'hidden' }}>
@@ -29,9 +58,9 @@ const Dashboard = () => {
         {/* Main Dashboard Area */}
         <div className="container-fluid bg-light p-3">
           {/* Filters */}
-          <div className="bg-white rounded p-3 shadow-sm mb-4">
-            <div className="row mb-3 align-items-end">
-              <div className="col-md-2 mb-2 mb-md-0">
+          <div className="bg-white rounded p-4 shadow-sm mb-4">
+            <div className="row mb-1 align-items-end">
+            <div className="col-md-2 mb-2 mb-md-0">
                 <select
                   className="form-select"
                   value={selectedProperty}
@@ -47,8 +76,8 @@ const Dashboard = () => {
                 <select
                   className="form-select"
                   value={dateRange}
-                  onChange={(e) => setDateRange(e.target.value)}
-                >
+                  onChange={handleDateChange}
+                  >
                   <option>All Units</option>
                 </select>
               </div>
@@ -61,21 +90,61 @@ const Dashboard = () => {
                   <option>All Desks</option>
                 </select>
               </div>
-              <div className="col-md-2 mb-2 mb-md-0 ms-89">
+              <div className="col-md-2 mb-2 mb-md-0 ms-43">
                 <select
                   className="form-select"
                   value={dateRange}
-                  onChange={(e) => setDateRange(e.target.value)}
+                  onChange={handleDateChange}
                 >
                   <option>Today</option>
                   <option>Yesterday</option>
                   <option>This Week</option>
-                  <option>Last Month</option>
                   <option>This Month</option>
-                  <option>Last Month</option>
                   <option>Custom Range</option>
                 </select>
               </div>
+              {dateRange === "Today" && (
+                <div className="col-md-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={new Date().toISOString().split('T')[0]}
+                    readOnly
+                  />
+                </div>
+              )}
+              {dateRange === "Yesterday" && (
+                <div className="col-md-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={new Date(new Date().getTime() - 86400000).toISOString().split('T')[0]}
+                    readOnly
+                  />
+                </div>
+              )}
+              {showCalendar && (
+                <div className="row">
+                  <div className="col-md-2">
+                    <label>From:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={customDateFrom}
+                      onChange={(e) => setCustomDateFrom(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <label>To:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={customDateTo}
+                      onChange={(e) => setCustomDateTo(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

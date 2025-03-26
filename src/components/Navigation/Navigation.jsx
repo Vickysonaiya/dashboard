@@ -38,8 +38,8 @@ const Navigation = () => {
                 <Route path="/deskadmin" element={<Deskadmin />} />
                 <Route path="/companyadmin" element={<Company />} />
                 <Route path="/visitors" element={<Visitors />} />
-                <Route path="/check-in" element={<Checkin />} />
-                <Route path="/check-out" element={<CheckOut />} />
+                <Route path="/deskadmin/check-in" element={<Checkin />} />
+                <Route path="/deskadmin/check-out" element={<CheckOut />} />
                 <Route path="/activity-logs" element={<Activitylog />} />
             </Routes>
         </div>
