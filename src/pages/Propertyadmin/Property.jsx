@@ -51,7 +51,7 @@ const Dashboard = () => {
                                     
                                 </select>
                             </div>
-                            <div className="col-md-2 mb-2 mb-md-0 ms-134">
+                            <div className="col-md-2 mb-2 mb-md-0 ms-132">
                                 <select
                                     className="form-select"
                                     value={dateRange}

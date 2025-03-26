@@ -1,47 +1,81 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logoMain from '../../assets/images/1Pass_Logo.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useState } from 'react';
 
-const navItems = [
-  { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
-  { id: 2, title: 'Visitors', icon: 'bi-person', path: '/visitors' },
-  { id: 3, title: 'Invites', icon: 'bi-envelope', path: '/invites' },
-  {
-    id: 4,
-    title: 'Check-ins',
-    icon: 'bi-check-square',
-    path: '/check-in',
-    submenu: [
-      { id: 41, title: 'Check-in Management', path: '/check-in-management' },
-      { id: 42, title: 'Check-out Management', path: '/check-out-management' },
-      { id: 43, title: 'Check-in History', path: '/check-in-history' },
-    ],
-  },
-];
-
-
-const footerNavItems = [
-  { id: 1, title: 'Settings', icon: 'bi-gear' },
-  { id: 2, title: 'Help & Support', icon: 'bi-question-circle' },
-  { id: 3, title: 'Logout', icon: 'bi-box-arrow-right' }
-];
-
-const Sidebar = ({ activeNavItem, setActiveNavItem, activeFooterItem, setActiveFooterItem, sidebarVisible, setSidebarVisible }) => {
+const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [activeNavItem, setActiveNavItem] = useState(null);
   const [showSubmenu, setShowSubmenu] = useState(false);
 
-  const handleNavItemClick = (id, path) => {
-    setActiveNavItem(id);
-    setActiveFooterItem(null);
-    navigate(path);
+  const navItems = {
+    '/property': [
+      { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
+    ],
+    '/unit': [
+      { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
+    ],
+    '/deskadmin': [
+      { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
+      {
+        id: 2,
+        title: 'Check-ins',
+        icon: 'bi-check-square',
+        path: '/deskadmin/check-in',
+        submenu: [
+          { id: 41, title: 'Check-in Management', path: '/deskadmin/check-in' },
+          { id: 42, title: 'Check-out Management', path: '/deskadmin/check-out' },
+          { id: 43, title: 'Check-in History', path: '/check-in-history' },
+        ],
+      },
+      { id: 3, title: 'Check-outs', icon: 'bi-box-arrow-right', path: '/deskadmin/check-out' },
+      { id: 4, title: 'Activity Logs', icon: 'bi-clock-history', path: '/activity-logs' },
+    ],
+    '/companyadmin': [
+      { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
+    ],
+    '/visitors': [
+      { id: 1, title: 'Dashboard', icon: 'bi-person', path: '/' },
+      { id: 2, title: 'Visitor Management', icon: 'bi-people', path: '/visitors/manage' },
+      { id: 3, title: 'Visitor History', icon: 'bi-calendar', path: '/visitors/history' },
+    ],
+    '/activity-logs': [
+      { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
+    ],
+    'default': [
+      { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
+      { id: 2, title: 'Property', icon: 'bi-building', path: '/property' },
+      { id: 3, title: 'Units', icon: 'bi-door-open', path: '/unit' },
+      { id: 4, title: 'Desk Admin', icon: 'bi-briefcase', path: '/deskadmin' },
+      { id: 5, title: 'Company', icon: 'bi-briefcase', path: '/companyadmin' },
+      { id: 6, title: 'Visitors', icon: 'bi-briefcase', path: '/visitors' },
+      { id: 7, title: 'Activity-log', icon: 'bi-briefcase', path: '/activity-logs' },
+    ]
   };
 
-  const handleFooterItemClick = (id) => {
-    setActiveFooterItem(id);
-    setActiveNavItem(null);
+  const getActiveNavItems = () => {
+    if (location.pathname.startsWith('/deskadmin')) return navItems['/deskadmin'];
+    if (location.pathname.startsWith('/visitors')) return navItems['/visitors'];
+    if (location.pathname.startsWith('/property')) return navItems['/property'];
+    if (location.pathname.startsWith('/unit')) return navItems['/unit'];
+    if (location.pathname.startsWith('/companyadmin')) return navItems['/companyadmin'];
+    if (location.pathname.startsWith('/activity-logs')) return navItems['/activity-logs'];
+    return navItems['default'];
+  };
+  
+  const currentNavItems = getActiveNavItems();
+
+  useEffect(() => {
+    const allNavItems = Object.values(navItems).flat();
+    const activeItem = allNavItems.find(item => location.pathname.startsWith(item.path));
+    setActiveNavItem(activeItem ? activeItem.id : null);
+  }, [location]);
+
+  const handleNavItemClick = (id, path, submenuId = null) => {
+    setActiveNavItem(submenuId || id);
+    navigate(path);
   };
 
   const handleSubmenuClick = (id) => {
@@ -60,20 +94,16 @@ const Sidebar = ({ activeNavItem, setActiveNavItem, activeFooterItem, setActiveF
         backgroundColor: '#1e3a38'
       }}
     >
-      {/* Logo */}
       <div className="d-flex align-items-center p-3">
-        <div className="w-10 h-10 bg-gray-300 rounded"><img src={logoMain} alt='1/Pass' /></div>
+        <img src={logoMain} alt='1/Pass' className="w-10 h-10" />
         <div className="fs-5 fw-bold ms-3">1/Pass</div>
       </div>
-
-      {/* Navigation Menu */}
       <div>
-        <ul className="nav flex-column ">
-          {navItems.map(item => (
+        <ul className="nav flex-column">
+          {currentNavItems.map(item => (
             <li key={item.id} className="nav-item">
               <a
                 className={`nav-link ${activeNavItem === item.id ? 'active' : ''} d-flex align-items-center`}
-                href="/"
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavItemClick(item.id, item.path);
@@ -99,7 +129,6 @@ const Sidebar = ({ activeNavItem, setActiveNavItem, activeFooterItem, setActiveF
                     <li key={subitem.id} className="nav-item">
                       <a
                         className={`nav-link ${activeNavItem === subitem.id ? 'active' : ''} d-flex align-items-center`}
-                        href="/"
                         onClick={(e) => {
                           e.preventDefault();
                           handleNavItemClick(subitem.id, subitem.path);
@@ -117,32 +146,6 @@ const Sidebar = ({ activeNavItem, setActiveNavItem, activeFooterItem, setActiveF
                   ))}
                 </ul>
               )}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Footer Navigation */}
-      <div className="mt-auto navHeight">
-        <ul className="nav flex-column">
-          {footerNavItems.map(item => (
-            <li key={item.id} className="nav-item">
-              <a
-                className={`nav-link ${activeFooterItem === item.id ? 'active' : ''} d-flex align-items-center`}
-                href="/"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleFooterItemClick(item.id);
-                }}
-                style={{
-                  backgroundColor: activeFooterItem === item.id ? '#2c5451' : 'transparent',
-                  color: '#fff',
-                  padding: '0.8rem 1rem'
-                }}
-              >
-                <i className={`${item.icon} me-2`}></i>
-                <span>{item.title}</span>
-              </a>
             </li>
           ))}
         </ul>
