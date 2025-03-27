@@ -11,6 +11,7 @@ import CheckOut from '../../pages/Desk/Checkout/Checkout';
 import Activitylog from '../../pages/Desk/Activitylog/Activitylog';
 import Sidebar from '../Sidebar/Sidebar';
 import Header from '../Header/Header';
+import CheckInHistory from '../../pages/Desk/Check-in-history/CheckInHistory';
 
 const Navigation = () => {
 
@@ -40,6 +41,7 @@ const Navigation = () => {
                 <Route path="/visitors" element={<Visitors />} />
                 <Route path="/deskadmin/check-in" element={<Checkin />} />
                 <Route path="/deskadmin/check-out" element={<CheckOut />} />
+                <Route path="/deskadmin/check-in-history" element={<CheckInHistory />} />
                 <Route path="/activity-logs" element={<Activitylog />} />
             </Routes>
         </div>

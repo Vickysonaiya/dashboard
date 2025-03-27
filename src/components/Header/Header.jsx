@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import './header.css'
 
 const Header = ({ sidebarVisible, setSidebarVisible }) => {
   const location = useLocation();
@@ -30,17 +31,7 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
 
       {/* Middle Section: Role Name & Search Bar */}
       <div className="d-flex flex-grow-1 justify-content-start ms-35">
-        <span
-          className="fw-bold text-truncate"
-          style={{
-            maxWidth: '150px',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {getAdminRole()}
-        </span>
+        <span className="fw-bold text-truncate headerStyle">{getAdminRole()}</span>
         <div className="input-group" style={{ maxWidth: '500px' }}>
           <span className="input-group-text ms-30">
             <i className="bi bi-search"></i>
