@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./checkin.css";
 import { useFetchHostInvitesQuery } from "../../../api/apiSlice";
 
-const CheckIn = () => {
+const CheckInHistory = () => {
   const { data, error, isLoading } = useFetchHostInvitesQuery();
   const [pendingArrivals, setPendingArrivals] = useState([]);
   const [recentCheckins, setRecentCheckins] = useState([]);
@@ -638,4 +637,4 @@ const CheckIn = () => {
   );
 };
 
-export default CheckIn;
+export default CheckInHistory;

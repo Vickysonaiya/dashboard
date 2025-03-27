@@ -27,7 +27,7 @@ const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
         submenu: [
           { id: 41, title: 'Check-in Management', path: '/deskadmin/check-in' },
           { id: 42, title: 'Check-out Management', path: '/deskadmin/check-out' },
-          { id: 43, title: 'Check-in History', path: '/check-in-history' },
+          { id: 43, title: 'Check-in History', path: '/deskadmin/check-in-history' },
         ],
       },
       { id: 3, title: 'Check-outs', icon: 'bi-box-arrow-right', path: '/deskadmin/check-out' },

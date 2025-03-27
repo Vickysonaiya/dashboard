@@ -17,12 +17,10 @@ import { createSlice } from "@reduxjs/toolkit";
        const { token, user } = action.payload.data;
        state.token = token;
        state.user = user;
-       console.log("user:>>>", user);
        localStorage.setItem("token", token);
        localStorage.setItem("user", JSON.stringify(user));
      },
      logout: (state) => {
-       // console.log("logout:>>>", state);
        state.token = null;
        state.user = null;
  
