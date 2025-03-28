@@ -7,8 +7,8 @@ const Dashboard = () => {
   const [dateRange, setDateRange] = useState('Today');
   const [selectedProperty, setSelectedProperty] = useState('All Properties');
   const [customDateFrom, setCustomDateFrom] = useState("");
-    const [customDateTo, setCustomDateTo] = useState("");
-    const [showCalendar, setShowCalendar] = useState(false);
+  const [customDateTo, setCustomDateTo] = useState("");
+  const [showCalendar, setShowCalendar] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
 
   // Mock data for statistics
@@ -60,7 +60,7 @@ const Dashboard = () => {
           {/* Filters */}
           <div className="bg-white rounded p-4 shadow-sm mb-4">
             <div className="row mb-1 align-items-end">
-            <div className="col-md-2 mb-2 mb-md-0">
+              <div className="col-md-2 mb-2 mb-md-0">
                 <select
                   className="form-select"
                   value={selectedProperty}
@@ -77,7 +77,7 @@ const Dashboard = () => {
                   className="form-select"
                   value={dateRange}
                   onChange={handleDateChange}
-                  >
+                >
                   <option>All Units</option>
                 </select>
               </div>

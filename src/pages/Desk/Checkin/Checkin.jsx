@@ -9,7 +9,6 @@ const CheckIn = () => {
   const [pendingArrivals, setPendingArrivals] = useState([]);
   const [recentCheckins, setRecentCheckins] = useState([]);
   const [failedCheckins, setFailedCheckins] = useState([]);
-
   const [dateRange, setDateRange] = useState("Today");
   const [customDateFrom, setCustomDateFrom] = useState("");
   const [customDateTo, setCustomDateTo] = useState("");
