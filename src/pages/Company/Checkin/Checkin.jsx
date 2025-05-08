@@ -6,6 +6,7 @@ import { useFetchHostInvitesQuery } from "../../../api/apiSlice";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import autoTable from "jspdf-autotable";
+import logo from "../../../assets/images/1Pass_Logo.svg";
 
 const CheckIn = () => {
   const { data, error, isLoading } = useFetchHostInvitesQuery();

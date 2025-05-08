@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./checkin.css";
 import { useFetchHostInvitesQuery } from "../../../api/apiSlice";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-import autoTable from "jspdf-autotable";
 
-const CheckIn = () => {
+const CheckInHistory = () => {
   const { data, error, isLoading } = useFetchHostInvitesQuery();
   const [pendingArrivals, setPendingArrivals] = useState([]);
   const [recentCheckins, setRecentCheckins] = useState([]);
   const [failedCheckins, setFailedCheckins] = useState([]);
+
   const [dateRange, setDateRange] = useState("Today");
   const [customDateFrom, setCustomDateFrom] = useState("");
   const [customDateTo, setCustomDateTo] = useState("");
@@ -149,7 +146,7 @@ const CheckIn = () => {
   useEffect(() => {
     if (data) {
       const now = new Date();
-      const fourHoursAgo = new Date(now.getTime() - 36 * 60 * 60 * 1000);
+      const fourHoursAgo = new Date(now.getTime() - 4 * 60 * 60 * 1000);
       const filteredCheckins = (data.invitationDetails || []).filter(invite => {
         if (invite?.guests?.length > 0) {
           const checkInTime = new Date(invite.guests[0]?.CheckInTime);
@@ -183,141 +180,6 @@ const CheckIn = () => {
     const hoursDisplay = Math.floor(totalMinutes / 60);
     const minutesDisplay = totalMinutes % 60;
     return `${hoursDisplay} hours ${minutesDisplay} minutes`;
-  };
-
-  const exportInvitationsToPDF = () => {
-    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-    doc.setFontSize(16);
-    doc.text("Invitation List", 14, 20);
-  
-    const allInvites = [...pendingArrivals, ...recentCheckins, ...failedCheckins];
-  
-    const tableColumn = [
-      "Guest Name",
-      "Host ID",
-      "Unit ID",
-      "Start Time",
-      "Check-in Time",
-      "Check-out Time",
-      "Duration",
-      "Status",
-    ];
-  
-    const tableRows = allInvites.map((invite) => {
-      const guest = invite?.guests?.[0] || {};
-      return [
-        guest.name || "N/A",
-        invite?.Invitation?.HostId || "N/A",
-        invite?.Invitation?.UnitId || "N/A",
-        formatDateTime(invite?.Invitation?.StartTime),
-        formatDateTime(guest?.CheckInTime),
-        formatDateTime(guest?.CheckoutTime),
-        formatDuration(invite?.Invitation?.Duration),
-        guest?.status || "Pending",
-      ];
-    });
-  
-    autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      startY: 30,
-      theme: "striped",
-      styles: { fontSize: 8, cellPadding: 2 },
-    });
-  
-    doc.save("invitation_list.pdf");
-  };
-  
-  const exportRecentCheckinsPDF = () => {
-    const filteredRecentCheckins = recentCheckins;
-    if (!filteredRecentCheckins || filteredRecentCheckins.length === 0) {
-      alert("No recent check-in data to export.");
-      return;
-    }
-  
-    const doc = new jsPDF();
-    doc.text("Recent Check-ins", 14, 10);
-  
-    const tableColumn = [
-      "Guest Name",
-      "Host ID",
-      "Unit ID",
-      "Start Time",
-      "Check-in Time",
-      "Check-out Time",
-      "Duration",
-      "Status",
-    ];
-  
-    const tableRows = filteredRecentCheckins.map((invite) => {
-      const guest = invite?.guests?.[0] || {};
-      return [
-        guest.name || "N/A",
-        invite?.Invitation?.HostId || "N/A",
-        invite?.Invitation?.UnitId || "N/A",
-        formatDateTime(invite?.Invitation?.StartTime),
-        formatDateTime(guest?.CheckInTime),
-        formatDateTime(guest?.CheckoutTime),
-        formatDuration(invite?.Invitation?.Duration),
-        guest?.status || "N/A",
-      ];
-    });
-  
-    autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      startY: 20,
-      theme: "striped",
-      styles: { fontSize: 8, cellPadding: 2 },
-    });
-  
-    doc.save("Recent_Checkins.pdf");
-  };
-  
-  const exportFailedCheckinsPDF = () => {
-    const filteredFailedCheckins = failedCheckins;
-    if (!filteredFailedCheckins || filteredFailedCheckins.length === 0) {
-      alert("No failed check-in data to export.");
-      return;
-    }
-  
-    const doc = new jsPDF();
-    doc.text("Failed Check-ins", 14, 10);
-  
-    const tableColumn = [
-      "Guest Name",
-      "Host ID",
-      "Unit ID",
-      "Start Time",
-      "Check-in Time",
-      "Check-out Time",
-      "Duration",
-      "Reason",
-    ];
-  
-    const tableRows = filteredFailedCheckins.map((invite) => {
-      const guest = invite?.guests?.[0] || {};
-      return [
-        guest.name || "N/A",
-        invite?.Invitation?.HostId || "N/A",
-        invite?.Invitation?.UnitId || "N/A",
-        formatDateTime(invite?.Invitation?.StartTime),
-        formatDateTime(guest?.CheckInTime),
-        formatDateTime(guest?.CheckoutTime),
-        formatDuration(invite?.Invitation?.Duration),
-        invite?.failureReason || "N/A",
-      ];
-    });
-  
-    autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      startY: 20,
-      theme: "striped",
-      styles: { fontSize: 8, cellPadding: 2 },
-    });
-  
-    doc.save("Failed_Checkins.pdf");
   };
 
   return (
@@ -441,7 +303,7 @@ const CheckIn = () => {
                     <option value="thisWeek">This Week</option>
                   </select>
                 </div>
-                <div className="col-md-2 mb-2 mb-md-0">
+                <div className="col-md-2 mb-2 mb-md-0 ms-10">
                   <select
                     className="form-select"
                     name="host"
@@ -453,10 +315,16 @@ const CheckIn = () => {
                       if (
                         !pendingArrivals
                           .slice(0, index)
-                          .some((prev) => prev.hostName === arrival.hostName)
+                          .some(
+                            (prevArrival) =>
+                              prevArrival.hostName === arrival.hostName,
+                          )
                       ) {
                         return (
-                          <option key={arrival.hostName} value={arrival.hostName}>
+                          <option
+                            key={arrival.hostName}
+                            value={arrival.hostName}
+                          >
                             {arrival.hostName}
                           </option>
                         );
@@ -465,8 +333,7 @@ const CheckIn = () => {
                     })}
                   </select>
                 </div>
-
-                <div className="col-md-3 mb-2 mb-md-0">
+                <div className="col-md-3 mb-2 mb-md-0 ms-20">
                   <select
                     className="form-select"
                     name="visitPurpose"
@@ -478,10 +345,16 @@ const CheckIn = () => {
                       if (
                         !pendingArrivals
                           .slice(0, index)
-                          .some((prev) => prev.visitPurpose === arrival.visitPurpose)
+                          .some(
+                            (prevArrival) =>
+                              prevArrival.visitPurpose === arrival.visitPurpose,
+                          )
                       ) {
                         return (
-                          <option key={arrival.visitPurpose} value={arrival.visitPurpose}>
+                          <option
+                            key={arrival.visitPurpose}
+                            value={arrival.visitPurpose}
+                          >
                             {arrival.visitPurpose}
                           </option>
                         );
@@ -489,14 +362,6 @@ const CheckIn = () => {
                       return null;
                     })}
                   </select>
-                </div>
-                <div className="col-md-2 mb-2 mb-md-0">
-                  <button
-                    className="btn btn-primary w-100"
-                    onClick={exportInvitationsToPDF}
-                  >
-                    Export PDF
-                  </button>
                 </div>
               </div>
               <table className="table table-striped">
@@ -512,6 +377,51 @@ const CheckIn = () => {
                 </thead>
                 <tbody>
                   {pendingArrivals
+                    // .filter((arrival) => {
+                    //   if (pendingArrivalsFilters.timeWindow) {
+                    //     return (
+                    //       arrival.expectedArrivalTime >=
+                    //       pendingArrivalsFilters.timeWindow
+                    //     );
+                    //   }
+                    //   if (pendingArrivalsFilters.host) {
+                    //     return arrival.hostName === pendingArrivalsFilters.host;
+                    //   }
+                    //   if (pendingArrivalsFilters.visitPurpose) {
+                    //     return (
+                    //       arrival.visitPurpose ===
+                    //       pendingArrivalsFilters.visitPurpose
+                    //     );
+                    //   }
+                    //   if (customDateFrom && customDateTo) {
+                    //     const arrivalDate = new Date(arrival.expectedArrivalTime);
+                    //     const fromDate = new Date(customDateFrom);
+                    //     const toDate = new Date(customDateTo);
+                    //     return (
+                    //       arrivalDate >= fromDate && arrivalDate <= toDate
+                    //     );
+                    //   }
+                    //   if (dateRange === "Today") {
+                    //     const today = new Date();
+                    //     const formattedDate = today.toISOString().split('T')[0];
+                    //     const arrivalDate = new Date(arrival.expectedArrivalTime);
+                    //     const todayDate = new Date(formattedDate);
+                    //     return (
+                    //       arrivalDate.toDateString() === todayDate.toDateString()
+                    //     );
+                    //   }
+                    //   if (dateRange === "Yesterday") {
+                    //     const yesterday = new Date();
+                    //     yesterday.setDate(yesterday.getDate() - 1);
+                    //     const formattedDate = yesterday.toISOString().split('T')[0];
+                    //     const arrivalDate = new Date(arrival.expectedArrivalTime);
+                    //     const yesterdayDate = new Date(formattedDate);
+                    //     return (
+                    //       arrivalDate.toDateString() === yesterdayDate.toDateString()
+                    //     );
+                    //   }
+                    //   return true;
+                    // })
                     .map((arrival) => (
                       <tr>
                         <td>{arrival?.Invitation.HostId}</td>
@@ -575,14 +485,6 @@ const CheckIn = () => {
                     })}
                   </select>
                 </div>
-                <div className="col-md-2 mb-2 mb-md-0">
-                  <button
-                    className="btn btn-primary w-100"
-                    onClick={exportRecentCheckinsPDF}
-                  >
-                    Export PDF
-                  </button>
-                </div>
               </div>
               <table className="table table-striped">
                 <thead>
@@ -597,6 +499,27 @@ const CheckIn = () => {
                 </thead>
                 <tbody>
                   {recentCheckins
+                    // .filter((checkin) => {
+                    //   if (recentCheckinsFilters.timeWindow) {
+                    //     return (
+                    //       checkin.expectedArrivalTime >=
+                    //       recentCheckinsFilters.timeWindow
+                    //     );
+                    //   }
+                    //   if (recentCheckinsFilters.host) {
+                    //     return checkin.hostName === recentCheckinsFilters.host;
+                    //   }
+                    //   if (customDateFrom && customDateTo) {
+                    //     const checkinDate = new Date(checkin.expectedArrivalTime);
+                    //     const fromDate = new Date(customDateFrom);
+                    //     const toDate = new Date(customDateTo);
+                    //     return (
+                    //       checkinDate >= fromDate && checkinDate <= toDate
+
+                    //     );
+                    //   }
+                    //   return true;
+                    // })
                     .map((arrival) => (
                       <tr>
                         <td>{arrival?.Invitation.HostId}</td>
@@ -659,14 +582,6 @@ const CheckIn = () => {
                     })}
                   </select>
                 </div>
-                <div className="col-md-2 mb-2 mb-md-0">
-                  <button
-                    className="btn btn-primary w-100"
-                    onClick={exportFailedCheckinsPDF}
-                  >
-                    Export PDF
-                  </button>
-                </div>
               </div>
               <table className="table table-striped">
                 <thead>
@@ -681,6 +596,27 @@ const CheckIn = () => {
                 </thead>
                 <tbody>
                   {failedCheckins
+                    // .filter((checkin) => {
+                    //   if (failedCheckinsFilters.timeWindow) {
+                    //     return (
+                    //       checkin.expectedArrivalTime >=
+                    //       failedCheckinsFilters.timeWindow
+                    //     );
+                    //   }
+                    //   if (failedCheckinsFilters.host) {
+                    //     return checkin.hostName === failedCheckinsFilters.host;
+                    //   }
+                    //   if (customDateFrom && customDateTo) {
+                    //     const checkinDate = new Date(checkin.expectedArrivalTime);
+                    //     const fromDate = new Date(customDateFrom);
+                    //     const toDate = new Date(customDateTo);
+                    //     return (
+                    //       checkinDate >= fromDate && checkinDate <= toDate
+
+                    //     );
+                    //   }
+                    //   return true;
+                    // })
                     .map((arrival) => (
                       <tr>
                         <td>{arrival?.Invitation.HostId}</td>
@@ -701,4 +637,4 @@ const CheckIn = () => {
   );
 };
 
-export default CheckIn;
+export default CheckInHistory;

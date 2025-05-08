@@ -40,8 +40,11 @@ const Navigation = () => {
                 <Route path="/companyadmin" element={<Company />} />
                 <Route path="/visitors" element={<Visitors />} />
                 <Route path="/deskadmin/check-in" element={<Checkin />} />
+                <Route path="/companyadmin/check-in" element={<Checkin />} />
                 <Route path="/deskadmin/check-out" element={<CheckOut />} />
+                <Route path="/companyadmin/check-out" element={<CheckOut />} />
                 <Route path="/deskadmin/check-in-history" element={<CheckInHistory />} />
+                <Route path="/companyadmin/check-in-history" element={<CheckInHistory />} />
                 <Route path="/activity-logs" element={<Activitylog />} />
             </Routes>
         </div>

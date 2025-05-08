@@ -29,7 +29,22 @@ const Sidebar = ({ sidebarVisible }) => {
       { id: 3, title: 'Check-outs', icon: 'bi-box-arrow-right', path: '/deskadmin/check-out-history' },
       { id: 4, title: 'Activity Logs', icon: 'bi-clock-history', path: '/activity-logs' },
     ],
-    '/companyadmin': [{ id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' }],
+    '/companyadmin': [
+      { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
+      {
+        id: 2,
+        title: 'Check-ins',
+        icon: 'bi-check-square',
+        // path: '/deskadmin/check-in',
+        submenu: [
+          { id: 41, title: 'Check-in Management', path: '/companyadmin/check-in' },
+          { id: 42, title: 'Check-out Management', path: '/companyadmin/check-out' },
+          { id: 43, title: 'Check-in History', path: '/companyadmin/check-in-history' },
+        ],
+      },
+      { id: 3, title: 'Check-outs', icon: 'bi-box-arrow-right', path: '/companyadmin/check-out-history' },
+      { id: 4, title: 'Activity Logs', icon: 'bi-clock-history', path: '/activity-logs' },
+    ],
     '/visitors': [
       { id: 1, title: 'Dashboard', icon: 'bi-person', path: '/' },
       { id: 2, title: 'Visitor Management', icon: 'bi-people', path: '/visitors/manage' },

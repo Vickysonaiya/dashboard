@@ -1,9 +1,11 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import './header.css'
+import { useLocation, useNavigate } from 'react-router-dom';
+import './header.css';
+import unitolLogo from '../../assets/images/Unitol_logo.jpeg';
 
 const Header = ({ sidebarVisible, setSidebarVisible }) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Determine the admin role based on the active sidebar section
   const getAdminRole = () => {
@@ -12,7 +14,33 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
     if (location.pathname.startsWith('/deskadmin')) return 'Desk Admin';
     if (location.pathname.startsWith('/companyadmin')) return 'Company Admin';
     if (location.pathname.startsWith('/visitors')) return 'Visitor Admin';
-    return 'Campus Admin'; // Default role
+    return 'Campus Admin'; // Default
+  };
+
+  const isCompanyAdmin = getAdminRole() === 'Company Admin';
+
+  // Redirect to the appropriate dashboard
+  const handleRoleClick = () => {
+    const role = getAdminRole();
+    switch (role) {
+      case 'Company Admin':
+        navigate('/companyadmin');
+        break;
+      case 'Unit Admin':
+        navigate('/unit');
+        break;
+      case 'Desk Admin':
+        navigate('/deskadmin');
+        break;
+      case 'Property Admin':
+        navigate('/property');
+        break;
+      case 'Visitor Admin':
+        navigate('/visitors');
+        break;
+      default:
+        navigate('/campus');
+    }
   };
 
   return (
@@ -29,9 +57,15 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
         <h1 className="h5 mb-0">Dashboard</h1>
       </div>
 
-      {/* Middle Section: Role Name & Search Bar */}
+      {/* Middle Section: Role & Search */}
       <div className="d-flex flex-grow-1 justify-content-start ms-35">
-        <span className="fw-bold text-truncate headerStyle">{getAdminRole()}</span>
+        <span
+          className="fw-bold text-truncate headerStyle"
+          style={{ cursor: 'pointer', color: '#000' }}
+          onClick={handleRoleClick}
+        >
+          {getAdminRole()}
+        </span>
         <div className="input-group" style={{ maxWidth: '500px' }}>
           <span className="input-group-text ms-30">
             <i className="bi bi-search"></i>
@@ -58,6 +92,19 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
         <i className="bi bi-question-circle fs-5 me-3"></i>
 
         {/* Profile Section */}
+        {isCompanyAdmin ? (
+          <div className="d-flex align-items-center">
+            <img
+              src={unitolLogo}
+              alt="Unitol Logo"
+              style={{ height: '40px', width: '40px', borderRadius: '50%', marginRight: '8px' }}
+            />
+            <div>
+              <div className="fw-medium">Unitol Training Solutions</div>
+              <div className="small text-muted">{getAdminRole()}</div>
+            </div>
+          </div>
+        ) : (
         <div className="d-flex align-items-center">
           <div
             className="d-flex align-items-center justify-content-center"
@@ -78,6 +125,7 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
             <div className="small text-muted">{getAdminRole()}</div>
           </div>
         </div>
+        )}
       </div>
     </header>
   );
