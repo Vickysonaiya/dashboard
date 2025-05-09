@@ -14,7 +14,8 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
     if (location.pathname.startsWith('/deskadmin')) return 'Desk Admin';
     if (location.pathname.startsWith('/companyadmin')) return 'Company Admin';
     if (location.pathname.startsWith('/visitors')) return 'Visitor Admin';
-    return 'Campus Admin'; // Default
+    return 'Company Admin'; // Default
+    // return 'Campus Admin'; // Default
   };
 
   const isCompanyAdmin = getAdminRole() === 'Company Admin';

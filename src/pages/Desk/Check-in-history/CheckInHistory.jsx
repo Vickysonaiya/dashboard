@@ -6,8 +6,8 @@ import { useFetchHostInvitesQuery } from "../../../api/apiSlice";
 const CheckInHistory = () => {
   const { data, error, isLoading } = useFetchHostInvitesQuery();
   const [pendingArrivals, setPendingArrivals] = useState([]);
-  const [recentCheckins, setRecentCheckins] = useState([]);
-  const [failedCheckins, setFailedCheckins] = useState([]);
+  // const [recentCheckins, setRecentCheckins] = useState([]);
+  // const [failedCheckins, setFailedCheckins] = useState([]);
 
   const [dateRange, setDateRange] = useState("Today");
   const [customDateFrom, setCustomDateFrom] = useState("");
@@ -15,42 +15,42 @@ const CheckInHistory = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
   const [showPendingCheckins, setShowPendingCheckins] = useState(false);
-  const [showRecentCheckins, setShowRecentCheckins] = useState(false);
-  const [showFailedCheckins, setShowFailedCheckins] = useState(false);
+  // const [showRecentCheckins, setShowRecentCheckins] = useState(false);
+  // const [showFailedCheckins, setShowFailedCheckins] = useState(false);
   const [pendingArrivalsFilters, setPendingArrivalsFilters] = useState({
     timeWindow: "",
     host: "",
     visitPurpose: "",
   });
-  const [recentCheckinsFilters, setRecentCheckinsFilters] = useState({
-    timeWindow: "",
-    ndaStatus: "",
-    safetySopStatus: "",
-  });
-  const [failedCheckinsFilters, setFailedCheckinsFilters] = useState({
-    timeWindow: "",
-    ndaStatus: "",
-    safetySopStatus: "",
-  });
+  // const [recentCheckinsFilters, setRecentCheckinsFilters] = useState({
+  //   timeWindow: "",
+  //   ndaStatus: "",
+  //   safetySopStatus: "",
+  // });
+  // const [failedCheckinsFilters, setFailedCheckinsFilters] = useState({
+  //   timeWindow: "",
+  //   ndaStatus: "",
+  //   safetySopStatus: "",
+  // });
 
-  useEffect(() => {
-    // fetchPendingArrivals();
-    fetchRecentCheckins();
-    fetchFailedCheckins()
-  }, []);
+  // useEffect(() => {
+  //   // fetchPendingArrivals();
+  //   fetchRecentCheckins();
+  //   fetchFailedCheckins()
+  // }, []);
 
-  const fetchRecentCheckins = async () => {
-    // Fetch recent check-ins data from API or database
-    const response = await fetch("/api/recent-checkins");
-    const data = await response.json();
-    setRecentCheckins(data);
-  };
-  const fetchFailedCheckins = async () => {
-    // Fetch recent check-ins data from API or database
-    const response = await fetch("/api/recent-checkins");
-    const data = await response.json();
-    setFailedCheckins(data);
-  };
+  // const fetchRecentCheckins = async () => {
+  //   // Fetch recent check-ins data from API or database
+  //   const response = await fetch("/api/recent-checkins");
+  //   const data = await response.json();
+  //   setRecentCheckins(data);
+  // };
+  // const fetchFailedCheckins = async () => {
+  //   // Fetch recent check-ins data from API or database
+  //   const response = await fetch("/api/recent-checkins");
+  //   const data = await response.json();
+  //   setFailedCheckins(data);
+  // };
 
   const handlePendingArrivalsFilterChange = (e) => {
     const { name, value } = e.target;
@@ -60,50 +60,51 @@ const CheckInHistory = () => {
     }));
   };
 
-  const handleRecentCheckinsFilterChange = (e) => {
-    const { name, value } = e.target;
-    setRecentCheckinsFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-  };
-  const handleFailedCheckinsFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFailedCheckinsFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-  };
+  // const handleRecentCheckinsFilterChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setRecentCheckinsFilters((prevFilters) => ({
+  //     ...prevFilters,
+  //     [name]: value,
+  //   }));
+  // };
+  // const handleFailedCheckinsFilterChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFailedCheckinsFilters((prevFilters) => ({
+  //     ...prevFilters,
+  //     [name]: value,
+  //   }));
+  // };
   const handleShowPendingCheckins = () => {
     setShowPendingCheckins(true);
-    setShowRecentCheckins(false);
-    setShowFailedCheckins(false);
+    // setShowRecentCheckins(false);
+    // setShowFailedCheckins(false);
   };
-  const handleShowRecentCheckins = () => {
-    setShowRecentCheckins(true);
-    setShowPendingCheckins(false);
-    setShowFailedCheckins(false);
-  };
-  const handleShowFailedCheckins = () => {
-    setShowFailedCheckins(true);
-    setShowPendingCheckins(false);
-    setShowRecentCheckins(false);
-  };
+  // const handleShowRecentCheckins = () => {
+  //   setShowRecentCheckins(true);
+  //   setShowPendingCheckins(false);
+  //   setShowFailedCheckins(false);
+  // };
+  // const handleShowFailedCheckins = () => {
+  //   setShowFailedCheckins(true);
+  //   setShowPendingCheckins(false);
+  //   setShowRecentCheckins(false);
+  // };
 
   const cardNavigation = (stat, e) => {
     if (stat.title === "Pending Arrivals") {
       handleShowPendingCheckins();
-    } else if (stat.title === "Recent Check-ins") {
-      handleShowRecentCheckins();
-    } else if (stat.title === "Failed Check-ins") {
-      handleShowFailedCheckins();
-    }
+    } 
+    // else if (stat.title === "Recent Check-ins") {
+    //   handleShowRecentCheckins();
+    // } else if (stat.title === "Failed Check-ins") {
+    //   handleShowFailedCheckins();
+    // }
   };
 
   const stats = [
-    { id: 1, title: "Pending Arrivals", count: pendingArrivals.length, color: "Yellow", increase: true },
-    { id: 2, title: "Recent Check-ins", count: recentCheckins.length, color: "Green", increase: true },
-    { id: 3, title: "Failed Check-ins", count: failedCheckins.length, color: "Red", increase: false },
+    { id: 1, title: "Pending Arrivals", count: pendingArrivals.length, increase: true },
+    // { id: 2, title: "Recent Check-ins", count: recentCheckins.length, increase: true },
+    // { id: 3, title: "Failed Check-ins", count: failedCheckins.length, increase: false },
   ];
 
   const handleDateChange = (e) => {
@@ -143,31 +144,31 @@ const CheckInHistory = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (data) {
-      const now = new Date();
-      const fourHoursAgo = new Date(now.getTime() - 4 * 60 * 60 * 1000);
-      const filteredCheckins = (data.invitationDetails || []).filter(invite => {
-        if (invite?.guests?.length > 0) {
-          const checkInTime = new Date(invite.guests[0]?.CheckInTime);
-          return checkInTime >= fourHoursAgo && checkInTime <= now;
-        }
-        return false;
-      });
-      setRecentCheckins(filteredCheckins);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     const now = new Date();
+  //     const fourHoursAgo = new Date(now.getTime() - 4 * 60 * 60 * 1000);
+  //     const filteredCheckins = (data.invitationDetails || []).filter(invite => {
+  //       if (invite?.guests?.length > 0) {
+  //         const checkInTime = new Date(invite.guests[0]?.CheckInTime);
+  //         return checkInTime >= fourHoursAgo && checkInTime <= now;
+  //       }
+  //       return false;
+  //     });
+  //     setRecentCheckins(filteredCheckins);
+  //   }
+  // }, [data]);
 
-  useEffect(() => {
-    if (data) {
-      if (Array.isArray(data)) {
-        const guests = data.reduce((acc, current) => acc.concat(current.guests), []);
-        setFailedCheckins(guests.invitationDetails || []);
-      } else {
-        setFailedCheckins(data.invitationDetails || []);
-      }
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     if (Array.isArray(data)) {
+  //       const guests = data.reduce((acc, current) => acc.concat(current.guests), []);
+  //       setFailedCheckins(guests.invitationDetails || []);
+  //     } else {
+  //       setFailedCheckins(data.invitationDetails || []);
+  //     }
+  //   }
+  // }, [data]);
 
   const formatDateTime = (isoString) => {
     const date = new Date(isoString);
@@ -290,7 +291,7 @@ const CheckInHistory = () => {
             <div>
               <h2>Pending Arrivals</h2>
               <div className="row mb-3 align-items-start">
-                <div className="col-md-3 mb-2 mb-md-0">
+                {/* <div className="col-md-3 mb-2 mb-md-0">
                   <select
                     className="form-select"
                     name="timeWindow"
@@ -302,7 +303,7 @@ const CheckInHistory = () => {
                     <option value="yesterday">Yesterday</option>
                     <option value="thisWeek">This Week</option>
                   </select>
-                </div>
+                </div> */}
                 <div className="col-md-2 mb-2 mb-md-0 ms-10">
                   <select
                     className="form-select"
@@ -367,61 +368,16 @@ const CheckInHistory = () => {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>Host Id</th>
-                    <th>Unit Id</th>
-                    <th>Start Time</th>
-                    <th>Check-in Time</th>
-                    <th>Check-out Time</th>
+                    <th>Host</th>
+                    <th>Unit</th>
+                    <th>Start</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
                     <th>Duration</th>
                   </tr>
                 </thead>
                 <tbody>
                   {pendingArrivals
-                    // .filter((arrival) => {
-                    //   if (pendingArrivalsFilters.timeWindow) {
-                    //     return (
-                    //       arrival.expectedArrivalTime >=
-                    //       pendingArrivalsFilters.timeWindow
-                    //     );
-                    //   }
-                    //   if (pendingArrivalsFilters.host) {
-                    //     return arrival.hostName === pendingArrivalsFilters.host;
-                    //   }
-                    //   if (pendingArrivalsFilters.visitPurpose) {
-                    //     return (
-                    //       arrival.visitPurpose ===
-                    //       pendingArrivalsFilters.visitPurpose
-                    //     );
-                    //   }
-                    //   if (customDateFrom && customDateTo) {
-                    //     const arrivalDate = new Date(arrival.expectedArrivalTime);
-                    //     const fromDate = new Date(customDateFrom);
-                    //     const toDate = new Date(customDateTo);
-                    //     return (
-                    //       arrivalDate >= fromDate && arrivalDate <= toDate
-                    //     );
-                    //   }
-                    //   if (dateRange === "Today") {
-                    //     const today = new Date();
-                    //     const formattedDate = today.toISOString().split('T')[0];
-                    //     const arrivalDate = new Date(arrival.expectedArrivalTime);
-                    //     const todayDate = new Date(formattedDate);
-                    //     return (
-                    //       arrivalDate.toDateString() === todayDate.toDateString()
-                    //     );
-                    //   }
-                    //   if (dateRange === "Yesterday") {
-                    //     const yesterday = new Date();
-                    //     yesterday.setDate(yesterday.getDate() - 1);
-                    //     const formattedDate = yesterday.toISOString().split('T')[0];
-                    //     const arrivalDate = new Date(arrival.expectedArrivalTime);
-                    //     const yesterdayDate = new Date(formattedDate);
-                    //     return (
-                    //       arrivalDate.toDateString() === yesterdayDate.toDateString()
-                    //     );
-                    //   }
-                    //   return true;
-                    // })
                     .map((arrival) => (
                       <tr>
                         <td>{arrival?.Invitation.HostId}</td>
@@ -438,7 +394,7 @@ const CheckInHistory = () => {
             </div>
           )}
           {/* //recentCheckins data */}
-          {showRecentCheckins && (
+          {/* {showRecentCheckins && (
             <div>
               <h2>Recent Check-ins (last 4 Hours)</h2>
               <div className="row mb-3 align-items-start">
@@ -489,37 +445,16 @@ const CheckInHistory = () => {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>Host Id</th>
-                    <th>Unit Id</th>
-                    <th>Start Time</th>
-                    <th>Check-in Time</th>
-                    <th>Check-out Time</th>
+                    <th>Host</th>
+                    <th>Unit</th>
+                    <th>Start</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
                     <th>Duration</th>
                   </tr>
                 </thead>
                 <tbody>
                   {recentCheckins
-                    // .filter((checkin) => {
-                    //   if (recentCheckinsFilters.timeWindow) {
-                    //     return (
-                    //       checkin.expectedArrivalTime >=
-                    //       recentCheckinsFilters.timeWindow
-                    //     );
-                    //   }
-                    //   if (recentCheckinsFilters.host) {
-                    //     return checkin.hostName === recentCheckinsFilters.host;
-                    //   }
-                    //   if (customDateFrom && customDateTo) {
-                    //     const checkinDate = new Date(checkin.expectedArrivalTime);
-                    //     const fromDate = new Date(customDateFrom);
-                    //     const toDate = new Date(customDateTo);
-                    //     return (
-                    //       checkinDate >= fromDate && checkinDate <= toDate
-
-                    //     );
-                    //   }
-                    //   return true;
-                    // })
                     .map((arrival) => (
                       <tr>
                         <td>{arrival?.Invitation.HostId}</td>
@@ -533,9 +468,9 @@ const CheckInHistory = () => {
                 </tbody>
               </table>
             </div>
-          )}
+          )} */}
           {/* //Failed Check-ins data */}
-          {showFailedCheckins && (
+          {/* {showFailedCheckins && (
             <div>
               <h2>Failed Check-ins</h2>
               <div className="row mb-3 align-items-start">
@@ -586,37 +521,16 @@ const CheckInHistory = () => {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>Host Id</th>
-                    <th>Unit Id</th>
-                    <th>Start Time</th>
-                    <th>Check-in Time</th>
-                    <th>Check-out Time</th>
+                    <th>Host</th>
+                    <th>Unit</th>
+                    <th>Start</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
                     <th>Duration</th>
                   </tr>
                 </thead>
                 <tbody>
                   {failedCheckins
-                    // .filter((checkin) => {
-                    //   if (failedCheckinsFilters.timeWindow) {
-                    //     return (
-                    //       checkin.expectedArrivalTime >=
-                    //       failedCheckinsFilters.timeWindow
-                    //     );
-                    //   }
-                    //   if (failedCheckinsFilters.host) {
-                    //     return checkin.hostName === failedCheckinsFilters.host;
-                    //   }
-                    //   if (customDateFrom && customDateTo) {
-                    //     const checkinDate = new Date(checkin.expectedArrivalTime);
-                    //     const fromDate = new Date(customDateFrom);
-                    //     const toDate = new Date(customDateTo);
-                    //     return (
-                    //       checkinDate >= fromDate && checkinDate <= toDate
-
-                    //     );
-                    //   }
-                    //   return true;
-                    // })
                     .map((arrival) => (
                       <tr>
                         <td>{arrival?.Invitation.HostId}</td>
@@ -630,7 +544,7 @@ const CheckInHistory = () => {
                 </tbody>
               </table>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

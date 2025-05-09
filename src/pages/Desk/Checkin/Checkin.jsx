@@ -4,56 +4,59 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "./checkin.css";
 import { useFetchHostInvitesQuery } from "../../../api/apiSlice";
 import jsPDF from "jspdf";
+import * as XLSX from "xlsx";
+import { utils, writeFile } from "xlsx";
 import "jspdf-autotable";
 import autoTable from "jspdf-autotable";
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
 const CheckIn = () => {
   const { data, error, isLoading } = useFetchHostInvitesQuery();
   const [pendingArrivals, setPendingArrivals] = useState([]);
-  const [recentCheckins, setRecentCheckins] = useState([]);
-  const [failedCheckins, setFailedCheckins] = useState([]);
+  // const [recentCheckins, setRecentCheckins] = useState([]);
+  // const [failedCheckins, setFailedCheckins] = useState([]);
   const [dateRange, setDateRange] = useState("Today");
   const [customDateFrom, setCustomDateFrom] = useState("");
   const [customDateTo, setCustomDateTo] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
   const [showPendingCheckins, setShowPendingCheckins] = useState(false);
-  const [showRecentCheckins, setShowRecentCheckins] = useState(false);
-  const [showFailedCheckins, setShowFailedCheckins] = useState(false);
+  // const [showRecentCheckins, setShowRecentCheckins] = useState(false);
+  // const [showFailedCheckins, setShowFailedCheckins] = useState(false);
   const [pendingArrivalsFilters, setPendingArrivalsFilters] = useState({
     timeWindow: "",
     host: "",
     visitPurpose: "",
   });
-  const [recentCheckinsFilters, setRecentCheckinsFilters] = useState({
-    timeWindow: "",
-    ndaStatus: "",
-    safetySopStatus: "",
-  });
-  const [failedCheckinsFilters, setFailedCheckinsFilters] = useState({
-    timeWindow: "",
-    ndaStatus: "",
-    safetySopStatus: "",
-  });
+  // const [recentCheckinsFilters, setRecentCheckinsFilters] = useState({
+  //   timeWindow: "",
+  //   ndaStatus: "",
+  //   safetySopStatus: "",
+  // });
+  // const [failedCheckinsFilters, setFailedCheckinsFilters] = useState({
+  //   timeWindow: "",
+  //   ndaStatus: "",
+  //   safetySopStatus: "",
+  // });
 
-  useEffect(() => {
-    // fetchPendingArrivals();
-    fetchRecentCheckins();
-    fetchFailedCheckins()
-  }, []);
+  // useEffect(() => {
+  //   // fetchPendingArrivals();
+  //   fetchRecentCheckins();
+  //   fetchFailedCheckins()
+  // }, []);
 
-  const fetchRecentCheckins = async () => {
-    // Fetch recent check-ins data from API or database
-    const response = await fetch("/api/recent-checkins");
-    const data = await response.json();
-    setRecentCheckins(data);
-  };
-  const fetchFailedCheckins = async () => {
-    // Fetch recent check-ins data from API or database
-    const response = await fetch("/api/recent-checkins");
-    const data = await response.json();
-    setFailedCheckins(data);
-  };
+  // const fetchRecentCheckins = async () => {
+  //   // Fetch recent check-ins data from API or database
+  //   const response = await fetch("/api/recent-checkins");
+  //   const data = await response.json();
+  //   setRecentCheckins(data);
+  // };
+  // const fetchFailedCheckins = async () => {
+  //   // Fetch recent check-ins data from API or database
+  //   const response = await fetch("/api/recent-checkins");
+  //   const data = await response.json();
+  //   setFailedCheckins(data);
+  // };
 
   const handlePendingArrivalsFilterChange = (e) => {
     const { name, value } = e.target;
@@ -63,50 +66,51 @@ const CheckIn = () => {
     }));
   };
 
-  const handleRecentCheckinsFilterChange = (e) => {
-    const { name, value } = e.target;
-    setRecentCheckinsFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-  };
-  const handleFailedCheckinsFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFailedCheckinsFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-  };
+  // const handleRecentCheckinsFilterChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setRecentCheckinsFilters((prevFilters) => ({
+  //     ...prevFilters,
+  //     [name]: value,
+  //   }));
+  // };
+  // const handleFailedCheckinsFilterChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFailedCheckinsFilters((prevFilters) => ({
+  //     ...prevFilters,
+  //     [name]: value,
+  //   }));
+  // };
   const handleShowPendingCheckins = () => {
     setShowPendingCheckins(true);
-    setShowRecentCheckins(false);
-    setShowFailedCheckins(false);
+    // setShowRecentCheckins(false);
+    // setShowFailedCheckins(false);
   };
-  const handleShowRecentCheckins = () => {
-    setShowRecentCheckins(true);
-    setShowPendingCheckins(false);
-    setShowFailedCheckins(false);
-  };
-  const handleShowFailedCheckins = () => {
-    setShowFailedCheckins(true);
-    setShowPendingCheckins(false);
-    setShowRecentCheckins(false);
-  };
+  // const handleShowRecentCheckins = () => {
+  //   setShowRecentCheckins(true);
+  //   setShowPendingCheckins(false);
+  //   setShowFailedCheckins(false);
+  // };
+  // const handleShowFailedCheckins = () => {
+  //   setShowFailedCheckins(true);
+  //   setShowPendingCheckins(false);
+  //   setShowRecentCheckins(false);
+  // };
 
   const cardNavigation = (stat, e) => {
     if (stat.title === "Pending Arrivals") {
       handleShowPendingCheckins();
-    } else if (stat.title === "Recent Check-ins") {
-      handleShowRecentCheckins();
-    } else if (stat.title === "Failed Check-ins") {
-      handleShowFailedCheckins();
     }
+    // else if (stat.title === "Recent Check-ins") {
+    //   handleShowRecentCheckins();
+    // } else if (stat.title === "Failed Check-ins") {
+    //   handleShowFailedCheckins();
+    // }
   };
 
   const stats = [
-    { id: 1, title: "Pending Arrivals", count: pendingArrivals.length, color: "Yellow", increase: true },
-    { id: 2, title: "Recent Check-ins", count: recentCheckins.length, color: "Green", increase: true },
-    { id: 3, title: "Failed Check-ins", count: failedCheckins.length, color: "Red", increase: false },
+    { id: 1, title: "Pending Arrivals", count: pendingArrivals.length, increase: true },
+    // { id: 2, title: "Recent Check-ins", count: recentCheckins.length, increase: true },
+    // { id: 3, title: "Failed Check-ins", count: failedCheckins.length, increase: false },
   ];
 
   const handleDateChange = (e) => {
@@ -146,31 +150,31 @@ const CheckIn = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (data) {
-      const now = new Date();
-      const fourHoursAgo = new Date(now.getTime() - 36 * 60 * 60 * 1000);
-      const filteredCheckins = (data.invitationDetails || []).filter(invite => {
-        if (invite?.guests?.length > 0) {
-          const checkInTime = new Date(invite.guests[0]?.CheckInTime);
-          return checkInTime >= fourHoursAgo && checkInTime <= now;
-        }
-        return false;
-      });
-      setRecentCheckins(filteredCheckins);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     const now = new Date();
+  //     const fourHoursAgo = new Date(now.getTime() - 36 * 60 * 60 * 1000);
+  //     const filteredCheckins = (data.invitationDetails || []).filter(invite => {
+  //       if (invite?.guests?.length > 0) {
+  //         const checkInTime = new Date(invite.guests[0]?.CheckInTime);
+  //         return checkInTime >= fourHoursAgo && checkInTime <= now;
+  //       }
+  //       return false;
+  //     });
+  //     setRecentCheckins(filteredCheckins);
+  //   }
+  // }, [data]);
 
-  useEffect(() => {
-    if (data) {
-      if (Array.isArray(data)) {
-        const guests = data.reduce((acc, current) => acc.concat(current.guests), []);
-        setFailedCheckins(guests.invitationDetails || []);
-      } else {
-        setFailedCheckins(data.invitationDetails || []);
-      }
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     if (Array.isArray(data)) {
+  //       const guests = data.reduce((acc, current) => acc.concat(current.guests), []);
+  //       setFailedCheckins(guests.invitationDetails || []);
+  //     } else {
+  //       setFailedCheckins(data.invitationDetails || []);
+  //     }
+  //   }
+  // }, [data]);
 
   const formatDateTime = (isoString) => {
     const date = new Date(isoString);
@@ -189,16 +193,19 @@ const CheckIn = () => {
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
     doc.setFontSize(16);
     doc.text("Invitation List", 14, 20);
-  
-    const allInvites = [...pendingArrivals, ...recentCheckins, ...failedCheckins];
-  
+
+    const allInvites = [...pendingArrivals,
+      // ...recentCheckins, 
+      // ...failedCheckins
+    ];
+
     const tableColumn = [
       "Guest Name",
-      "Host ID",
-      "Unit ID",
-      "Start Time",
-      "Check-in Time",
-      "Check-out Time",
+      "Host",
+      "Unit",
+      "Start",
+      "Check-in",
+      "Check-out",
       "Duration",
       "Status",
     ];
@@ -227,98 +234,122 @@ const CheckIn = () => {
   
     doc.save("invitation_list.pdf");
   };
-  
-  const exportRecentCheckinsPDF = () => {
-    const filteredRecentCheckins = recentCheckins;
-    if (!filteredRecentCheckins || filteredRecentCheckins.length === 0) {
-      alert("No recent check-in data to export.");
-      return;
-    }
-  
-    const doc = new jsPDF();
-    doc.text("Recent Check-ins", 14, 10);
-  
-    const tableColumn = [
-      "Guest Name",
-      "Host ID",
-      "Unit ID",
-      "Start Time",
-      "Check-in Time",
-      "Check-out Time",
-      "Duration",
-      "Status",
-    ];
-  
-    const tableRows = filteredRecentCheckins.map((invite) => {
+
+  const exportInvitationsToExcel = () => {
+    const allInvites = [...pendingArrivals];
+
+    const data = allInvites.map((invite) => {
       const guest = invite?.guests?.[0] || {};
-      return [
-        guest.name || "N/A",
-        invite?.Invitation?.HostId || "N/A",
-        invite?.Invitation?.UnitId || "N/A",
-        formatDateTime(invite?.Invitation?.StartTime),
-        formatDateTime(guest?.CheckInTime),
-        formatDateTime(guest?.CheckoutTime),
-        formatDuration(invite?.Invitation?.Duration),
-        guest?.status || "N/A",
-      ];
+      return {
+        "Guest Name": guest.name || "N/A",
+        "Host": invite?.Invitation?.HostId || "N/A",
+        "Unit": invite?.Invitation?.UnitId || "N/A",
+        "Start": formatDateTime(invite?.Invitation?.StartTime),
+        "Check-in": formatDateTime(guest?.CheckInTime),
+        "Check-out": formatDateTime(guest?.CheckoutTime),
+        "Duration": formatDuration(invite?.Invitation?.Duration),
+        "Status": guest?.status || "Pending",
+      };
     });
-  
-    autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      startY: 20,
-      theme: "striped",
-      styles: { fontSize: 8, cellPadding: 2 },
-    });
-  
-    doc.save("Recent_Checkins.pdf");
+
+    const worksheet = utils.json_to_sheet(data);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, "Invitations");
+
+    writeFile(workbook, "invitation_list.xlsx");
   };
-  
-  const exportFailedCheckinsPDF = () => {
-    const filteredFailedCheckins = failedCheckins;
-    if (!filteredFailedCheckins || filteredFailedCheckins.length === 0) {
-      alert("No failed check-in data to export.");
-      return;
-    }
-  
-    const doc = new jsPDF();
-    doc.text("Failed Check-ins", 14, 10);
-  
-    const tableColumn = [
-      "Guest Name",
-      "Host ID",
-      "Unit ID",
-      "Start Time",
-      "Check-in Time",
-      "Check-out Time",
-      "Duration",
-      "Reason",
-    ];
-  
-    const tableRows = filteredFailedCheckins.map((invite) => {
-      const guest = invite?.guests?.[0] || {};
-      return [
-        guest.name || "N/A",
-        invite?.Invitation?.HostId || "N/A",
-        invite?.Invitation?.UnitId || "N/A",
-        formatDateTime(invite?.Invitation?.StartTime),
-        formatDateTime(guest?.CheckInTime),
-        formatDateTime(guest?.CheckoutTime),
-        formatDuration(invite?.Invitation?.Duration),
-        invite?.failureReason || "N/A",
-      ];
-    });
-  
-    autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      startY: 20,
-      theme: "striped",
-      styles: { fontSize: 8, cellPadding: 2 },
-    });
-  
-    doc.save("Failed_Checkins.pdf");
-  };
+
+  // const exportRecentCheckinsPDF = () => {
+  //   const filteredRecentCheckins = recentCheckins;
+  //   if (!filteredRecentCheckins || filteredRecentCheckins.length === 0) {
+  //     alert("No recent check-in data to export.");
+  //     return;
+  //   }
+
+  //   const doc = new jsPDF();
+  //   doc.text("Recent Check-ins", 14, 10);
+
+  //   const tableColumn = [
+  //     "Guest Name",
+  //     "Host",
+  //     "Unit",
+  //     "Start",
+  //     "Check-in",
+  //     "Check-out",
+  //     "Duration",
+  //     "Status",
+  //   ];
+
+  //   const tableRows = filteredRecentCheckins.map((invite) => {
+  //     const guest = invite?.guests?.[0] || {};
+  //     return [
+  //       guest.name || "N/A",
+  //       invite?.Invitation?.HostId || "N/A",
+  //       invite?.Invitation?.UnitId || "N/A",
+  //       formatDateTime(invite?.Invitation?.StartTime),
+  //       formatDateTime(guest?.CheckInTime),
+  //       formatDateTime(guest?.CheckoutTime),
+  //       formatDuration(invite?.Invitation?.Duration),
+  //       guest?.status || "N/A",
+  //     ];
+  //   });
+
+  //   autoTable(doc, {
+  //     head: [tableColumn],
+  //     body: tableRows,
+  //     startY: 20,
+  //     theme: "striped",
+  //     styles: { fontSize: 8, cellPadding: 2 },
+  //   });
+
+  //   doc.save("Recent_Checkins.pdf");
+  // };
+
+  // const exportFailedCheckinsPDF = () => {
+  //   const filteredFailedCheckins = failedCheckins;
+  //   if (!filteredFailedCheckins || filteredFailedCheckins.length === 0) {
+  //     alert("No failed check-in data to export.");
+  //     return;
+  //   }
+
+  //   const doc = new jsPDF();
+  //   doc.text("Failed Check-ins", 14, 10);
+
+  //   const tableColumn = [
+  //     "Guest Name",
+  //     "Host",
+  //     "Unit",
+  //     "Start",
+  //     "Check-in",
+  //     "Check-out",
+  //     "Duration",
+  //     "Reason",
+  //   ];
+
+  //   const tableRows = filteredFailedCheckins.map((invite) => {
+  //     const guest = invite?.guests?.[0] || {};
+  //     return [
+  //       guest.name || "N/A",
+  //       invite?.Invitation?.HostId || "N/A",
+  //       invite?.Invitation?.UnitId || "N/A",
+  //       formatDateTime(invite?.Invitation?.StartTime),
+  //       formatDateTime(guest?.CheckInTime),
+  //       formatDateTime(guest?.CheckoutTime),
+  //       formatDuration(invite?.Invitation?.Duration),
+  //       invite?.failureReason || "N/A",
+  //     ];
+  //   });
+
+  //   autoTable(doc, {
+  //     head: [tableColumn],
+  //     body: tableRows,
+  //     startY: 20,
+  //     theme: "striped",
+  //     styles: { fontSize: 8, cellPadding: 2 },
+  //   });
+
+  //   doc.save("Failed_Checkins.pdf");
+  // };
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", overflow: "hidden" }}>
@@ -391,6 +422,66 @@ const CheckIn = () => {
                   </div>
                 </div>
               )}
+              <div className="col-md-2 mb-2 mb-md-0">
+                <select
+                  className="form-select"
+                  name="host"
+                  value={pendingArrivalsFilters.host}
+                  onChange={handlePendingArrivalsFilterChange}
+                >
+                  <option value="">Select Host</option>
+                  {pendingArrivals?.map((arrival, index) => {
+                    if (
+                      !pendingArrivals
+                        .slice(0, index)
+                        .some((prev) => prev.hostName === arrival.hostName)
+                    ) {
+                      return (
+                        <option key={arrival.hostName} value={arrival.hostName}>
+                          {arrival.hostName}
+                        </option>
+                      );
+                    }
+                    return null;
+                  })}
+                </select>
+              </div>
+              <div className="col-md-3 mb-2 mb-md-0">
+                <select
+                  className="form-select"
+                  name="visitPurpose"
+                  value={pendingArrivalsFilters.visitPurpose}
+                  onChange={handlePendingArrivalsFilterChange}
+                >
+                  <option value="">Select Visit Purpose</option>
+                  {pendingArrivals?.map((arrival, index) => {
+                    if (
+                      !pendingArrivals
+                        .slice(0, index)
+                        .some((prev) => prev.visitPurpose === arrival.visitPurpose)
+                    ) {
+                      return (
+                        <option key={arrival.visitPurpose} value={arrival.visitPurpose}>
+                          {arrival.visitPurpose}
+                        </option>
+                      );
+                    }
+                    return null;
+                  })}
+                </select>
+              </div>
+              <div className="col-md-2 mb-2 mb-md-0">
+                <Dropdown as={ButtonGroup} className="w-100">
+                  <Dropdown.Toggle className="w-100 btn" id="dropdown-basic">
+                    Export
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu className="w-100">
+                    <Dropdown.Item onClick={exportInvitationsToPDF}>Export as PDF</Dropdown.Item>
+                    <Dropdown.Item onClick={exportInvitationsToExcel}>Export as Excel</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
             </div>
           </div>
           {/* Stats Cards */}
@@ -427,8 +518,8 @@ const CheckIn = () => {
           {showPendingCheckins && (
             <div>
               <h2>Pending Arrivals</h2>
-              <div className="row mb-3 align-items-start">
-                <div className="col-md-3 mb-2 mb-md-0">
+              {/* <div className="row mb-3 align-items-start"> */}
+              {/* <div className="col-md-3 mb-2 mb-md-0">
                   <select
                     className="form-select"
                     name="timeWindow"
@@ -440,8 +531,8 @@ const CheckIn = () => {
                     <option value="yesterday">Yesterday</option>
                     <option value="thisWeek">This Week</option>
                   </select>
-                </div>
-                <div className="col-md-2 mb-2 mb-md-0">
+                </div> */}
+              {/* <div className="col-md-2 mb-2 mb-md-0">
                   <select
                     className="form-select"
                     name="host"
@@ -464,9 +555,9 @@ const CheckIn = () => {
                       return null;
                     })}
                   </select>
-                </div>
+                </div> */}
 
-                <div className="col-md-3 mb-2 mb-md-0">
+              {/* <div className="col-md-3 mb-2 mb-md-0">
                   <select
                     className="form-select"
                     name="visitPurpose"
@@ -489,24 +580,24 @@ const CheckIn = () => {
                       return null;
                     })}
                   </select>
-                </div>
-                <div className="col-md-2 mb-2 mb-md-0">
+                </div> */}
+              {/* <div className="col-md-2 mb-2 mb-md-0">
                   <button
-                    className="btn btn-primary w-100"
+                    className="btn w-100"
                     onClick={exportInvitationsToPDF}
                   >
                     Export PDF
                   </button>
-                </div>
-              </div>
+                </div> */}
+              {/* </div> */}
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>Host Id</th>
-                    <th>Unit Id</th>
-                    <th>Start Time</th>
-                    <th>Check-in Time</th>
-                    <th>Check-out Time</th>
+                    <th>Host</th>
+                    <th>Unit</th>
+                    <th>Start</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
                     <th>Duration</th>
                   </tr>
                 </thead>
@@ -528,7 +619,7 @@ const CheckIn = () => {
             </div>
           )}
           {/* //recentCheckins data */}
-          {showRecentCheckins && (
+          {/* {showRecentCheckins && (
             <div>
               <h2>Recent Check-ins (last 4 Hours)</h2>
               <div className="row mb-3 align-items-start">
@@ -577,7 +668,7 @@ const CheckIn = () => {
                 </div>
                 <div className="col-md-2 mb-2 mb-md-0">
                   <button
-                    className="btn btn-primary w-100"
+                    className="btn w-100"
                     onClick={exportRecentCheckinsPDF}
                   >
                     Export PDF
@@ -587,11 +678,11 @@ const CheckIn = () => {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>Host Id</th>
-                    <th>Unit Id</th>
-                    <th>Start Time</th>
-                    <th>Check-in Time</th>
-                    <th>Check-out Time</th>
+                    <th>Host</th>
+                    <th>Unit</th>
+                    <th>Start</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
                     <th>Duration</th>
                   </tr>
                 </thead>
@@ -610,9 +701,9 @@ const CheckIn = () => {
                 </tbody>
               </table>
             </div>
-          )}
+          )} */}
           {/* //Failed Check-ins data */}
-          {showFailedCheckins && (
+          {/* {showFailedCheckins && (
             <div>
               <h2>Failed Check-ins</h2>
               <div className="row mb-3 align-items-start">
@@ -661,7 +752,7 @@ const CheckIn = () => {
                 </div>
                 <div className="col-md-2 mb-2 mb-md-0">
                   <button
-                    className="btn btn-primary w-100"
+                    className="btn w-100"
                     onClick={exportFailedCheckinsPDF}
                   >
                     Export PDF
@@ -671,11 +762,11 @@ const CheckIn = () => {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>Host Id</th>
-                    <th>Unit Id</th>
-                    <th>Start Time</th>
-                    <th>Check-in Time</th>
-                    <th>Check-out Time</th>
+                    <th>Host</th>
+                    <th>Unit</th>
+                    <th>Start</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
                     <th>Duration</th>
                   </tr>
                 </thead>
@@ -694,7 +785,7 @@ const CheckIn = () => {
                 </tbody>
               </table>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

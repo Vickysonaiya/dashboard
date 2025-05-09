@@ -15,8 +15,8 @@ const Dashboard = () => {
   const stats = [
     { id: 1, title: 'Total Invites', count: 523, change: 8.2, increasing: true },
     { id: 2, title: 'Check-ins', count: 384, change: 5.3, increasing: true },
-    { id: 3, title: 'Pending', count: 87, change: 2.1, increasing: false },
-    { id: 4, title: 'Cancelled', count: 52, change: 3.7, increasing: true }
+    { id: 3, title: 'Yet to checkin', count: 87, change: 2.1, increasing: false },
+    { id: 4, title: 'Active visitors', count: 52, change: 3.7, increasing: true }
   ];
 
   const handleDateChange = (e) => {

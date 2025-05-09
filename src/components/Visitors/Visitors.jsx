@@ -11,8 +11,8 @@ const Visitors = () => {
     const stats = [
         { id: 1, title: 'Total Invites', count: 523, change: 8.2, increasing: true },
         { id: 2, title: 'Check-ins', count: 384, change: 5.3, increasing: true },
-        { id: 3, title: 'Pending', count: 87, change: 2.1, increasing: false },
-        { id: 4, title: 'Cancelled', count: 52, change: 3.7, increasing: true }
+        { id: 3, title: 'Yet to checkin', count: 87, change: 2.1, increasing: false },
+        { id: 4, title: 'Active visitors', count: 52, change: 3.7, increasing: true }
     ];
 
     const units = ['Unit A', 'Unit B', 'Unit C'];
@@ -101,18 +101,6 @@ const Visitors = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>
-
-                    {/* Recent */}
-                    <div className="bg-white rounded p-3 shadow-sm">
-                        <h5 className="mb-3">Recent</h5>
-                        {/* Recent content would go here */}
-                    </div>
-                    <div className="bg-white rounded p-3 shadow-sm">
-                        <h5 className="mb-3">Dashboard Content</h5>
-                        <p>Selected Unit: <strong>{selectedUnit || "All Units"}</strong></p>
-                        <p>Selected Desk: <strong>{selectedDesk || "All Desks"}</strong></p>
-                        <p>Selected Date: <strong>{dateRange || "Today"}</strong></p>
                     </div>
                 </div>
             </div>

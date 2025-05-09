@@ -70,4 +70,16 @@
       margin-bottom: 10px;
     }
   }
+
+  .btn{
+    border-color: #1b3631;
+    background-color: #1b3631;
+    color: white;
+  }
+
+  .btn:hover {
+    background-color: #1b3631; /* Darker blue */
+    border-color: #1b3631;
+    color: white;
+  }
   

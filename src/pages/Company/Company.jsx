@@ -2,21 +2,26 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useFetchHostInvitesQuery } from '../../api/apiSlice';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Dashboard = () => {
     const { data, error, isLoading } = useFetchHostInvitesQuery();
     const [selectedUnit, setSelectedUnit] = useState('');
     const [selectedDesk, setSelectedDesk] = useState('');
-    const [dateRange, setDateRange] = useState('Today');
+    // const [dateRange, setDateRange] = useState('Today');
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
     const [customDateFrom, setCustomDateFrom] = useState("");
     const [customDateTo, setCustomDateTo] = useState("");
     const [showCalendar, setShowCalendar] = useState(false);
     const [sidebarVisible, setSidebarVisible] = useState(true);
     const [stats, setStats] = useState([
         { id: 1, title: 'Total Invites', count: 0, change: 0, increasing: true },
-        { id: 2, title: 'Check-ins', count: 0, change: 0, increasing: true },
-        { id: 3, title: 'Pending', count: 0, change: 0, increasing: false },
-        { id: 4, title: 'Cancelled', count: 0, change: 0, increasing: true }
+        { id: 2, title: 'Active visitors', count: 0, change: 0, increasing: true },
+        { id: 3, title: 'Check-ins', count: 0, change: 0, increasing: true },
+        { id: 4, title: 'Yet to checkin', count: 0, change: 0, increasing: false },
     ]);
 
     const predefinedUnits = ['Unit A', 'Unit B', 'Unit C'];
@@ -123,23 +128,23 @@ const Dashboard = () => {
                 },
                 {
                     id: 2,
+                    title: 'Active visitors',
+                    count: filteredCancelled,
+                    change: cancelled ? ((filteredCancelled / cancelled) * 100).toFixed(1) : 0,
+                    increasing: false
+                },
+                {
+                    id: 3,
                     title: 'Check-ins',
                     count: filteredCheckedIn,
                     change: checkedIn ? ((filteredCheckedIn / checkedIn) * 100).toFixed(1) : 0,
                     increasing: true
                 },
                 {
-                    id: 3,
-                    title: 'Pending',
+                    id: 4,
+                    title: 'Yet to checkin',
                     count: filteredPending,
                     change: pending ? ((filteredPending / pending) * 100).toFixed(1) : 0,
-                    increasing: false
-                },
-                {
-                    id: 4,
-                    title: 'Cancelled',
-                    count: filteredCancelled,
-                    change: cancelled ? ((filteredCancelled / cancelled) * 100).toFixed(1) : 0,
                     increasing: false
                 }
             ]);
@@ -171,20 +176,21 @@ const Dashboard = () => {
                 <div className="container-fluid bg-light p-3">
                     {/* Filters */}
                     <div className="bg-white rounded p-3 shadow-sm mb-4">
-                        <div className="row align-items-center">
-                            <div className="col-md-2 mb-2">
-                                <label className="form-label">Unit</label>
+                        <div className="row align-items-end g-2">
+                            {/* Unit */}
+                            <div className="col-md-2">
+                                <label className="form-label"><b>Unit</b></label>
                                 <select className="form-select" value={selectedUnit} onChange={handleUnitChange}>
                                     <option value="">All Units</option>
                                     {predefinedUnits.map((unit) => (
-                                        <option key={unit} value={unit}>
-                                            {unit}
-                                        </option>
+                                        <option key={unit} value={unit}>{unit}</option>
                                     ))}
                                 </select>
                             </div>
-                            <div className="col-md-2 mb-2">
-                                <label className="form-label">Desk</label>
+
+                            {/* Desk */}
+                            <div className="col-md-2">
+                                <label className="form-label"><b>Desk</b></label>
                                 <select
                                     className="form-select"
                                     value={selectedDesk}
@@ -192,68 +198,47 @@ const Dashboard = () => {
                                 >
                                     <option value="">All Desks</option>
                                     {predefinedDesks[selectedUnit]?.map((desk) => (
-                                        <option key={desk} value={desk}>
-                                            {desk}
-                                        </option>
+                                        <option key={desk} value={desk}>{desk}</option>
                                     ))}
                                 </select>
                             </div>
-                            <div className="col-md-2 mb-2">
-                                <label className="form-label">Date Range</label>
-                                <select
-                                    className="form-select"
-                                    value={dateRange}
-                                    onChange={handleDateChange}
-                                >
-                                    <option>Today</option>
-                                    <option>Yesterday</option>
-                                    <option>This Week</option>
-                                    <option>This Month</option>
-                                    <option>Custom Range</option>
-                                </select>
+
+                            {/* From Date */}
+                            <div className="col-md-2">
+                                <label className="form-label"><b>From date</b></label>
+                                <DatePicker
+                                    selected={fromDate}
+                                    onChange={(date) => {
+                                        setFromDate(date);
+                                        if (toDate && date > toDate) setToDate(null);
+                                    }}
+                                    selectsStart
+                                    startDate={fromDate}
+                                    endDate={toDate}
+                                    maxDate={toDate}
+                                    dateFormat="dd-MM-yyyy"
+                                    placeholderText="From date"
+                                    className="form-control"
+                                />
                             </div>
-                            {(dateRange === "Today" || dateRange === "Yesterday") && (
-                                <div className="col-md-2 mb-2">
-                                    <label className="form-label">Selected Date</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        readOnly
-                                        value={
-                                            dateRange === "Today"
-                                                ? new Date().toISOString().split('T')[0]
-                                                : new Date(new Date().getTime() - 86400000).toISOString().split('T')[0]
-                                        }
-                                    />
-                                </div>
-                            )}
+
+                            {/* To Date */}
+                            <div className="col-md-2">
+                                <label className="form-label"><b>To date</b></label>
+                                <DatePicker
+                                    selected={toDate}
+                                    onChange={(date) => setToDate(date)}
+                                    selectsEnd
+                                    startDate={fromDate}
+                                    endDate={toDate}
+                                    minDate={fromDate}
+                                    dateFormat="dd-MM-yyyy"
+                                    placeholderText="To date"
+                                    className="form-control"
+                                />
+                            </div>
                         </div>
-
-                        {showCalendar && (
-                            <div className="row mt-3">
-                                <div className="col-md-2">
-                                    <label className="form-label">From:</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        value={customDateFrom}
-                                        onChange={(e) => setCustomDateFrom(e.target.value)}
-                                    />
-                                </div>
-                                <div className="col-md-2">
-                                    <label className="form-label">To:</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        value={customDateTo}
-                                        onChange={(e) => setCustomDateTo(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                        )}
                     </div>
-
-
                     {/* Stats Cards */}
                     <div className="row mb-4">
                         {stats.map(stat => (
@@ -271,12 +256,6 @@ const Dashboard = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>
-                    <div className="bg-white rounded p-3 shadow-sm">
-                        <h5 className="mb-3">Dashboard Content</h5>
-                        <p>Selected Unit: <strong>{selectedUnit || "All Units"}</strong></p>
-                        <p>Selected Desk: <strong>{selectedDesk || "All Desks"}</strong></p>
-                        <p>Selected Date: <strong>{dateRange || "Today"}</strong></p>
                     </div>
                 </div>
             </div>
