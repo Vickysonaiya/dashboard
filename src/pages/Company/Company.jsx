@@ -237,6 +237,17 @@ const Dashboard = () => {
                                     className="form-control"
                                 />
                             </div>
+                            <div className="col-md-2 d-flex align-items-end">
+                                <button
+                                    className="btn btn-outline-secondary w-100"
+                                    onClick={() => {
+                                        setFromDate(null);
+                                        setToDate(null);
+                                    }}
+                                >
+                                    Clear Dates
+                                </button>
+                            </div>
                         </div>
                     </div>
                     {/* Stats Cards */}

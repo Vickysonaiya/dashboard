@@ -455,6 +455,17 @@ const CheckIn = () => {
                   className="form-control"
                 />
               </div>
+              <div className="col-md-2 d-flex align-items-end">
+                <button
+                  className="btn btn-outline-secondary w-100"
+                  onClick={() => {
+                    setFromDate(null);
+                    setToDate(null);
+                  }}
+                >
+                  Clear Dates
+                </button>
+              </div>
               {dateRange === "Today" && (
                 <div className="col-md-2">
                   <input
@@ -543,7 +554,7 @@ const CheckIn = () => {
               </div>
 
               {/* Export Dropdown */}
-              <div className="col-md-2">
+              <div className="col-md-1">
                 <Dropdown as={ButtonGroup} className="w-100">
                   <Dropdown.Toggle className="w-100 btn btn-primary" id="dropdown-basic">
                     Export

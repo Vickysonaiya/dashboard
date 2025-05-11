@@ -209,7 +209,7 @@ const CheckIn = () => {
       "Duration",
       "Status",
     ];
-  
+
     const tableRows = allInvites.map((invite) => {
       const guest = invite?.guests?.[0] || {};
       return [
@@ -223,7 +223,7 @@ const CheckIn = () => {
         guest?.status || "Pending",
       ];
     });
-  
+
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
@@ -231,7 +231,7 @@ const CheckIn = () => {
       theme: "striped",
       styles: { fontSize: 8, cellPadding: 2 },
     });
-  
+
     doc.save("invitation_list.pdf");
   };
 
@@ -419,6 +419,17 @@ const CheckIn = () => {
                       value={customDateTo}
                       onChange={(e) => setCustomDateTo(e.target.value)}
                     />
+                  </div>
+                  <div className="col-md-2 d-flex align-items-end">
+                    <button
+                      className="btn btn-outline-secondary w-100"
+                      onClick={() => {
+                        setFromDate(null);
+                        setToDate(null);
+                      }}
+                    >
+                      Clear Dates
+                    </button>
                   </div>
                 </div>
               )}
