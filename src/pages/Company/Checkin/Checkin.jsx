@@ -101,7 +101,7 @@ const CheckIn = () => {
   // };
 
   const cardNavigation = (stat, e) => {
-    if (stat.title === "Pending Arrivals") {
+    if (stat.title === "Invite Details") {
       handleShowPendingCheckins();
     }
     // else if (stat.title === "Recent Check-ins") {
@@ -112,7 +112,7 @@ const CheckIn = () => {
   };
 
   const stats = [
-    { id: 1, title: "Pending Arrivals", count: pendingArrivals.length, increase: true },
+    { id: 1, title: "Invite Details", count: pendingArrivals.length, increase: true },
     // { id: 2, title: "Recent Check-ins", count: recentCheckins.length, increase: true },
     // { id: 3, title: "Failed Check-ins", count: failedCheckins.length, increase: false },
   ];
@@ -196,6 +196,22 @@ const CheckIn = () => {
     });
   };
 
+  const formatDateTimes = (isoString) => {
+    if (!isoString) return '—';
+    const date = new Date(isoString);
+    if (isNaN(date)) return 'Invalid Date';
+
+    return date.toLocaleString('en-IN', {
+      // weekday: 'short',    // e.g., "Fri"
+      year: 'numeric',
+      month: 'short',      // e.g., "May"
+      day: '2-digit',
+      // hour: '2-digit',
+      // minute: '2-digit',
+      // hour12: true         // Use 12-hour format with AM/PM
+    });
+  };
+
   const getActualDuration = (checkIn, checkOut) => {
     if (!checkIn || !checkOut) return '—';
     const start = new Date(checkIn);
@@ -241,26 +257,30 @@ const CheckIn = () => {
     ];
 
     const tableColumn = [
-      "Guest Name",
-      "Host",
+      // "Guest Name",
       "Unit",
-      "Start",
+      "Host",
+      "Date",
+      "Planned start",
+      "Planned duration",
       "Check-in",
       "Check-out",
-      "Duration",
+      "Actual duration",
       "Status",
     ];
 
     const tableRows = allInvites.map((invite) => {
       const guest = invite?.guests?.[0] || {};
       return [
-        guest.name || "N/A",
-        invite?.Invitation?.HostId || "N/A",
+        // guest.name || "N/A",
         invite?.Invitation?.UnitId || "N/A",
+        invite?.Invitation?.HostId || "N/A",
+        formatDateTimes(invite?.Invitation?.StartTime),
         formatDateTime(invite?.Invitation?.StartTime),
+        formatDuration(invite?.Invitation?.Duration),
         formatDateTime(guest?.CheckInTime),
         formatDateTime(guest?.CheckoutTime),
-        formatDuration(invite?.Invitation?.Duration),
+        getActualDuration(invite?.guests[0]?.CheckInTime,invite?.guests[0]?.CheckoutTime),
         guest?.status || "Pending",
       ];
     });
@@ -601,7 +621,7 @@ const CheckIn = () => {
           {/* //pendingAcheckins data */}
           {showPendingCheckins && (
             <div>
-              <h2>Pending Arrivals</h2>
+              <h2>Invite Details</h2>
               {/* <div className="row mb-3 align-items-start"> */}
               {/* <div className="col-md-3 mb-2 mb-md-0">
                   <select
@@ -679,6 +699,7 @@ const CheckIn = () => {
                   <tr>
                     <th>Unit</th>
                     <th>Host</th>
+                    <th>Date</th>
                     <th>Planned Start</th>
                     <th>Planned Duration</th>
                     <th>Check-in</th>
@@ -692,6 +713,7 @@ const CheckIn = () => {
                       <tr>
                         <td>{arrival?.Invitation?.UnitId}</td>
                         <td>{arrival?.Invitation.HostId}</td>
+                        <td>{formatDateTimes(arrival?.Invitation?.StartTime)}</td>
                         <td>{formatDateTime(arrival?.Invitation?.StartTime)}</td>
                         <td>{formatDuration(arrival?.Invitation?.Duration)}</td>
                         <td>{formatDateTime(arrival?.guests[0]?.CheckInTime)}</td>

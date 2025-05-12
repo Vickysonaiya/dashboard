@@ -129,7 +129,7 @@ const Dashboard = () => {
                 {
                     id: 2,
                     title: 'Active visitors',
-                    count: filteredCancelled,
+                    count: filteredCancelled || 12,
                     change: cancelled ? ((filteredCancelled / cancelled) * 100).toFixed(1) : 0,
                     increasing: false
                 },

@@ -179,7 +179,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import logoMain from '../../assets/images/1Pass_Logo.svg';
+// import logoMain from '../../assets/images/1Pass_Logo.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -249,7 +249,7 @@ const Sidebar = ({ sidebarVisible }) => {
       }}
     >
       <div className="d-flex align-items-center p-3">
-        <img src={logoMain} alt="1/Pass" className="w-10 h-10" />
+        {/* <img src={logoMain} alt="1/Pass" className="w-10 h-10" /> */}
         <div className="fs-5 fw-bold ms-3">1/Pass</div>
       </div>
       <div>
