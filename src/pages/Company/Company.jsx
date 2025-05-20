@@ -924,6 +924,7 @@ const Dashboard = () => {
                                     maxDate={toDate}
                                     dateFormat="dd-MM-yyyy"
                                     className="form-control"
+                                    placeholderText="From date"
                                 />
                             </div>
                             <div className="col-md-2">
@@ -937,6 +938,7 @@ const Dashboard = () => {
                                     minDate={fromDate}
                                     dateFormat="dd-MM-yyyy"
                                     className="form-control"
+                                    placeholderText="To date"
                                 />
                             </div>
                             <div className="col-md-2">
