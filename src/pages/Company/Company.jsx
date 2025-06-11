@@ -280,7 +280,7 @@
 
 
 
-//with chart code new code ( gemini chart)
+// with chart code new code ( gemini chart)
 // import React, { useState, useEffect } from 'react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -691,7 +691,7 @@ const Dashboard = () => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
     const [stats, setStats] = useState([
         { id: 1, title: 'Total Invites', count: 0, change: 0, increasing: true },
-        { id: 2, title: 'Active visitors', count: 0, change: 0, increasing: true },
+        { id: 2, title: 'Active visitors', count: 18, change: 18, increasing: true },
         { id: 3, title: 'Check-ins', count: 0, change: 0, increasing: true },
         { id: 4, title: 'Yet to checkin', count: 0, change: 0, increasing: false },
     ]);
@@ -711,7 +711,7 @@ const Dashboard = () => {
         activeVisitors: {
             labels: ['Active', 'Inactive'],
             datasets: [{
-                data: [12, 19],
+                data: [12, 19, 18, 20, 15, 10, 5],
                 backgroundColor: [
                     'rgba(54, 162, 235, 0.8)',
                     'rgba(255, 99, 132, 0.8)'
@@ -720,7 +720,8 @@ const Dashboard = () => {
                     'rgba(54, 162, 235, 1)',
                     'rgba(255, 99, 132, 1)'
                 ],
-                borderWidth: 1
+                borderWidth: 1,
+                fill: true
             }]
         },
         checkIns: {
@@ -821,7 +822,7 @@ const Dashboard = () => {
                 {
                     id: 2,
                     title: 'Active visitors',
-                    count: active,
+                    count: 18,
                     change: 2.1,
                     increasing: true
                 },
@@ -848,21 +849,30 @@ const Dashboard = () => {
                     ...prevData.totalInvites,
                     datasets: [{
                         ...prevData.totalInvites.datasets[0],
-                        data: [totalInvites, totalInvites-5, totalInvites+10, totalInvites-2, totalInvites+5, totalInvites-8, totalInvites+3]
+                        data: [totalInvites, totalInvites - 5, totalInvites + 10, totalInvites - 2, totalInvites + 5, totalInvites - 8, totalInvites + 3]
                     }]
                 },
                 activeVisitors: {
-                    ...prevData.activeVisitors,
+                    labels: ['Active', 'Inactive'],
                     datasets: [{
-                        ...prevData.activeVisitors.datasets[0],
-                        data: [active, totalInvites - active]
+                        label: 'Visitors',
+                        data: [active, totalInvites - active],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 99, 132, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
                     }]
                 },
                 checkIns: {
                     ...prevData.checkIns,
                     datasets: [{
                         ...prevData.checkIns.datasets[0],
-                        data: [checkedIn, checkedIn-5, checkedIn+8, checkedIn-3, checkedIn+6, checkedIn-2, checkedIn+4]
+                        data: [checkedIn, checkedIn - 5, checkedIn + 8, checkedIn - 3, checkedIn + 6, checkedIn - 2, checkedIn + 4]
                     }]
                 },
                 pendingCheckIns: {
