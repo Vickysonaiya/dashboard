@@ -685,10 +685,10 @@ const Dashboard = () => {
     const { data, error, isLoading } = useFetchHostInvitesQuery();
     const [selectedUnit, setSelectedUnit] = useState('');
     const [selectedDesk, setSelectedDesk] = useState('');
-    const [dateRange, setDateRange] = useState([null, null]);
+    // const [dateRange, setDateRange] = useState([null, null]);
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
-    const [sidebarVisible, setSidebarVisible] = useState(true);
+    const [sidebarVisible] = useState(true);
     const [stats, setStats] = useState([
         { id: 1, title: 'Total Invites', count: 0, change: 0, increasing: true },
         { id: 2, title: 'Active visitors', count: 18, change: 18, increasing: true },
@@ -884,7 +884,7 @@ const Dashboard = () => {
                 }
             }));
         }
-    }, [data, selectedUnit, selectedDesk, fromDate, toDate]);
+    }, [data, selectedUnit, selectedDesk, fromDate, toDate, invitations]);
 
     const handleUnitChange = (e) => {
         setSelectedUnit(e.target.value);

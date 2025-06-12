@@ -7,7 +7,7 @@ const Dashboard = () => {
   const [customDateFrom, setCustomDateFrom] = useState("");
   const [customDateTo, setCustomDateTo] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
-  const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [sidebarVisible] = useState(true);
 
   const stats = [
     { id: 1, title: 'Pending Check-ins', count: 10 },

@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { useFetchHostInvitesQuery } from "../../../api/apiSlice";
 
 const CheckInHistory = () => {
-  const { data, error, isLoading } = useFetchHostInvitesQuery();
+  const { data } = useFetchHostInvitesQuery();
   const [pendingArrivals, setPendingArrivals] = useState([]);
   // const [recentCheckins, setRecentCheckins] = useState([]);
   // const [failedCheckins, setFailedCheckins] = useState([]);
@@ -13,7 +13,7 @@ const CheckInHistory = () => {
   const [customDateFrom, setCustomDateFrom] = useState("");
   const [customDateTo, setCustomDateTo] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
-  const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [sidebarVisible] = useState(true);
   const [showPendingCheckins, setShowPendingCheckins] = useState(false);
   // const [showRecentCheckins, setShowRecentCheckins] = useState(false);
   // const [showFailedCheckins, setShowFailedCheckins] = useState(false);
@@ -176,7 +176,7 @@ const CheckInHistory = () => {
   };
 
   const formatDuration = (durationString) => {
-    const [hours, minutes, seconds] = durationString.split(':').map(Number);
+    const [hours, minutes] = durationString.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes;
     const hoursDisplay = Math.floor(totalMinutes / 60);
     const minutesDisplay = totalMinutes % 60;

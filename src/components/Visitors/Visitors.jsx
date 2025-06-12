@@ -6,7 +6,7 @@ const Visitors = () => {
     const [selectedUnit, setSelectedUnit] = useState('');
     const [selectedDesk, setSelectedDesk] = useState('');
     const [dateRange, setDateRange] = useState('Today');
-    const [sidebarVisible, setSidebarVisible] = useState(true);
+    const [sidebarVisible] = useState(true);
 
     const stats = [
         { id: 1, title: 'Total Invites', count: 523, change: 8.2, increasing: true },

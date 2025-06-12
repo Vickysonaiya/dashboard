@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "./checkin.css";
 import { useFetchHostInvitesQuery } from "../../../api/apiSlice";
 import jsPDF from "jspdf";
-import * as XLSX from "xlsx";
+// import * as XLSX from "xlsx";
 import { utils, writeFile } from "xlsx";
 import "jspdf-autotable";
 import autoTable from "jspdf-autotable";
@@ -13,17 +13,17 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const CheckIn = () => {
-  const { data, error, isLoading } = useFetchHostInvitesQuery();
+  const { data } = useFetchHostInvitesQuery();
   const [pendingArrivals, setPendingArrivals] = useState([]);
   // const [recentCheckins, setRecentCheckins] = useState([]);
   // const [failedCheckins, setFailedCheckins] = useState([]);
-  const [dateRange, setDateRange] = useState([null, null]);
+  const [dateRange] = useState([null, null]);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [customDateFrom, setCustomDateFrom] = useState("");
   const [customDateTo, setCustomDateTo] = useState("");
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [showCalendar] = useState(false);
+  const [sidebarVisible] = useState(true);
   const [showPendingCheckins, setShowPendingCheckins] = useState(false);
   // const [showRecentCheckins, setShowRecentCheckins] = useState(false);
   // const [showFailedCheckins, setShowFailedCheckins] = useState(false);
@@ -117,31 +117,31 @@ const CheckIn = () => {
     // { id: 3, title: "Failed Check-ins", count: failedCheckins.length, increase: false },
   ];
 
-  const handleDateChange = (e) => {
-    const selectedValue = e.target.value;
-    setDateRange(selectedValue);
-    if (selectedValue === "Today") {
-      const today = new Date();
-      const formattedDate = today.toISOString().split('T')[0];
-      setCustomDateFrom(formattedDate);
-      setCustomDateTo(formattedDate);
-      setShowCalendar(false);
-    } else if (selectedValue === "Yesterday") {
-      const yesterday = new Date(new Date().getTime() - 86400000);
-      const formattedDate = yesterday.toISOString().split('T')[0];
-      setCustomDateFrom(formattedDate);
-      setCustomDateTo(formattedDate);
-      setShowCalendar(false);
-    } else if (selectedValue === "Custom Range") {
-      setShowCalendar(true);
-      setCustomDateFrom("");
-      setCustomDateTo("");
-    } else {
-      setShowCalendar(false);
-      setCustomDateFrom("");
-      setCustomDateTo("");
-    }
-  };
+  // const handleDateChange = (e) => {
+  //   const selectedValue = e.target.value;
+  //   setDateRange(selectedValue);
+  //   if (selectedValue === "Today") {
+  //     const today = new Date();
+  //     const formattedDate = today.toISOString().split('T')[0];
+  //     setCustomDateFrom(formattedDate);
+  //     setCustomDateTo(formattedDate);
+  //     setShowCalendar(false);
+  //   } else if (selectedValue === "Yesterday") {
+  //     const yesterday = new Date(new Date().getTime() - 86400000);
+  //     const formattedDate = yesterday.toISOString().split('T')[0];
+  //     setCustomDateFrom(formattedDate);
+  //     setCustomDateTo(formattedDate);
+  //     setShowCalendar(false);
+  //   } else if (selectedValue === "Custom Range") {
+  //     setShowCalendar(true);
+  //     setCustomDateFrom("");
+  //     setCustomDateTo("");
+  //   } else {
+  //     setShowCalendar(false);
+  //     setCustomDateFrom("");
+  //     setCustomDateTo("");
+  //   }
+  // };
 
   useEffect(() => {
     if (data) {

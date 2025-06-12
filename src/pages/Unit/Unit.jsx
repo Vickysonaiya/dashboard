@@ -5,7 +5,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 const Dashboard = () => {
     // State hooks for interactive elements
     const [dateRange, setDateRange] = useState('Today');
-    const [sidebarVisible, setSidebarVisible] = useState(true);
+    const [sidebarVisible] = useState(true);
 
     // Mock data for statistics
     const stats = [

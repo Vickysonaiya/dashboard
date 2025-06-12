@@ -189,8 +189,7 @@ const Sidebar = ({ sidebarVisible }) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
   const [activeSubmenu, setActiveSubmenu] = useState(null);
 
-  // ✅ Only Company Nav Items
-  const companyNavItems = [
+  const currentNavItems = useMemo(() => [
     { id: 1, title: 'Dashboard', icon: 'bi-grid', path: '/' },
     {
       id: 2,
@@ -204,9 +203,9 @@ const Sidebar = ({ sidebarVisible }) => {
     },
     { id: 3, title: 'Check-outs', icon: 'bi-box-arrow-right', path: '/companyadmin/check-out-history' },
     { id: 4, title: 'Activity Logs', icon: 'bi-clock-history', path: '/activity-logs' },
-  ];
+  ], []);
 
-  const currentNavItems = useMemo(() => companyNavItems, []);
+  // const currentNavItems = useMemo(() => companyNavItems, []);
 
   useEffect(() => {
     // Set active menu/submenu based on path
@@ -256,7 +255,7 @@ const Sidebar = ({ sidebarVisible }) => {
         <ul className="nav flex-column">
           {currentNavItems.map((item) => (
             <li key={item.id} className="nav-item">
-              <a
+              <a href='#'
                 className={`nav-link ${activeNavItem === item.id ? 'active' : ''} d-flex align-items-center`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -279,7 +278,7 @@ const Sidebar = ({ sidebarVisible }) => {
                 <ul className="nav flex-column ms-3">
                   {item.submenu.map((subitem) => (
                     <li key={subitem.id} className="nav-item">
-                      <a
+                      <a href='#'
                         className={`nav-link ${activeNavItem === subitem.id ? 'active' : ''} d-flex align-items-center`}
                         onClick={(e) => {
                           e.preventDefault();
