@@ -1,7 +1,7 @@
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import './header.css';
-import unitolLogo from '../../assets/images/Unitol_logo.jpeg';
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./header.css";
+import unitolLogo from "../../assets/images/Unitol_logo.jpeg";
 
 const Header = ({ sidebarVisible, setSidebarVisible }) => {
   const location = useLocation();
@@ -9,38 +9,42 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
 
   // Determine the admin role based on the active sidebar section
   const getAdminRole = () => {
-    if (location.pathname.startsWith('/property')) return 'Property Admin';
-    if (location.pathname.startsWith('/unit')) return 'Unit Admin';
-    if (location.pathname.startsWith('/deskadmin')) return 'Desk Admin';
-    if (location.pathname.startsWith('/companyadmin')) return 'Company Admin';
-    if (location.pathname.startsWith('/visitors')) return 'Visitor Admin';
-    return 'Company Admin'; // Default
+    if (location.pathname.startsWith("/property")) return "Property Admin";
+    if (location.pathname.startsWith("/unit")) return "Unit Admin";
+    if (location.pathname.startsWith("/active-guests")) return "Unit Admin";
+    if (location.pathname.startsWith("/invited-guests")) return "Unit Admin";
+    if (location.pathname.startsWith("/yet-to-checkin")) return "Unit Admin";
+    if (location.pathname.startsWith("/walk-in-guests")) return "Unit Admin";
+    if (location.pathname.startsWith("/deskadmin")) return "Desk Admin";
+    if (location.pathname.startsWith("/companyadmin")) return "Company Admin";
+    if (location.pathname.startsWith("/visitors")) return "Visitor Admin";
+    return "Company Admin"; // Default
     // return 'Campus Admin'; // Default
   };
 
-  const isCompanyAdmin = getAdminRole() === 'Company Admin';
+  const isCompanyAdmin = getAdminRole() === "Company Admin";
 
   // Redirect to the appropriate dashboard
   const handleRoleClick = () => {
     const role = getAdminRole();
     switch (role) {
-      case 'Company Admin':
-        navigate('/companyadmin');
+      case "Company Admin":
+        navigate("/companyadmin");
         break;
-      case 'Unit Admin':
-        navigate('/unit');
+      case "Unit Admin":
+        navigate("/unit");
         break;
-      case 'Desk Admin':
-        navigate('/deskadmin');
+      case "Desk Admin":
+        navigate("/deskadmin");
         break;
-      case 'Property Admin':
-        navigate('/property');
+      case "Property Admin":
+        navigate("/property");
         break;
-      case 'Visitor Admin':
-        navigate('/visitors');
+      case "Visitor Admin":
+        navigate("/visitors");
         break;
       default:
-        navigate('/campus');
+        navigate("/campus");
     }
   };
 
@@ -62,12 +66,12 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
       <div className="d-flex flex-grow-1 justify-content-start ms-35">
         <span
           className="fw-bold text-truncate headerStyle"
-          style={{ cursor: 'pointer', color: '#000' }}
+          style={{ cursor: "pointer", color: "#000" }}
           onClick={handleRoleClick}
         >
           {getAdminRole()}
         </span>
-        <div className="input-group" style={{ maxWidth: '500px' }}>
+        <div className="input-group" style={{ maxWidth: "500px" }}>
           <span className="input-group-text ms-30">
             <i className="bi bi-search"></i>
           </span>
@@ -82,12 +86,14 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
           <span
             className="badge rounded-pill bg-danger"
             style={{
-              position: 'absolute',
-              top: '-5px',
-              right: '-5px',
-              fontSize: '0.75rem',
+              position: "absolute",
+              top: "-5px",
+              right: "-5px",
+              fontSize: "0.75rem",
             }}
-          >3</span>
+          >
+            3
+          </span>
         </div>
         <i className="bi bi-gear fs-5 me-3"></i>
         <i className="bi bi-question-circle fs-5 me-3"></i>
@@ -98,7 +104,12 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
             <img
               src={unitolLogo}
               alt="Unitol Logo"
-              style={{ height: '40px', width: '40px', borderRadius: '50%', marginRight: '8px' }}
+              style={{
+                height: "40px",
+                width: "40px",
+                borderRadius: "50%",
+                marginRight: "8px",
+              }}
             />
             <div>
               <div className="fw-medium">Unitol Training Solutions</div>
@@ -106,26 +117,26 @@ const Header = ({ sidebarVisible, setSidebarVisible }) => {
             </div>
           </div>
         ) : (
-        <div className="d-flex align-items-center">
-          <div
-            className="d-flex align-items-center justify-content-center"
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              backgroundColor: '#1e3a38',
-              color: 'white',
-              fontWeight: 'bold',
-              marginRight: '8px',
-            }}
-          >
-            JD
+          <div className="d-flex align-items-center">
+            <div
+              className="d-flex align-items-center justify-content-center"
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "#1e3a38",
+                color: "white",
+                fontWeight: "bold",
+                marginRight: "8px",
+              }}
+            >
+              JD
+            </div>
+            <div>
+              <div className="fw-medium">John Doe</div>
+              <div className="small text-muted">{getAdminRole()}</div>
+            </div>
           </div>
-          <div>
-            <div className="fw-medium">John Doe</div>
-            <div className="small text-muted">{getAdminRole()}</div>
-          </div>
-        </div>
         )}
       </div>
     </header>
