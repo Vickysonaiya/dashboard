@@ -495,7 +495,7 @@ const YetToCheckInPage = () => {
       >
         <div className="container-fluid p-3">
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <h5>Active Guests</h5>
+            <h5>Yet to Check-In Guests</h5>
             <div>
               <button className="btn btn-danger me-2" onClick={exportToPDF}>
                 Export to PDF
