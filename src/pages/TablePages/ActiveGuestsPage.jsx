@@ -755,11 +755,11 @@ const ActiveGuestsPage = () => {
               {data.map((item) => {
                 let statusColor = "#6c757d"; // default gray
                 if (item.VisitStatus.toLowerCase().includes("guest-in"))
-                  statusColor = "#28a745";
+                  statusColor = "red";
                 else if (item.VisitStatus.toLowerCase().includes("yet"))
-                  statusColor = "#ffc107";
+                  statusColor = "gray";
                 else if (item.VisitStatus.toLowerCase().includes("check-out"))
-                  statusColor = "#17a2b8";
+                  statusColor = "green";
 
                 return (
                   <tr key={item.id}>
