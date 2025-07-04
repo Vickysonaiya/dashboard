@@ -1,0 +1,16 @@
+/* canvas {
+  transition: filter 0.3s ease;
+}
+
+canvas:hover {
+  filter: drop-shadow(0 0 8px rgba(0, 200, 255, 0.6));
+} */
+
+canvas {
+  border-radius: 18px;
+  box-shadow: 0 5px 20px rgba(30, 136, 229, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+canvas:hover {
+  transform: scale(1.01);
+}

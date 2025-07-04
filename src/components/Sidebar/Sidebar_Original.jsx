@@ -196,25 +196,21 @@ const Sidebar = ({ sidebarVisible }) => {
       id: 2,
       title: "Active Guests",
       icon: "bi-people",
-      path: "/active-guests",
     },
     {
       id: 3,
       title: "Invited Guests",
       icon: "bi-envelope",
-      path: "/invited-guests",
     },
     {
       id: 4,
       title: "Yet to Check-in",
       icon: "bi-calendar",
-      path: "/yet-to-checkin",
     },
     {
       id: 5,
       title: "Walk-in Guests",
       icon: "bi-door-open",
-      path: "/walk-in-guests",
     },
   ];
 

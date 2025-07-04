@@ -1,85 +1,86 @@
 /* Ensure responsiveness and good spacing */
 .table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  /* Table Styling */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Table Styling */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  /* background-color: #fff; */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header */
+.table thead {
+  background-color: #007bff;
+  color: white;
+}
+
+.table thead th {
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Table Rows */
+.table tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table tbody td {
+  padding: 10px;
+  text-align: left;
+}
+
+/* Responsive Select Dropdowns */
+.row .col-md-3,
+.row .col-md-2 {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.form-select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: all 0.3s ease;
+}
+
+.form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Adjust margins for better alignment */
+@media (max-width: 768px) {
   .table {
+    font-size: 14px;
+  }
+  .row .col-md-3,
+  .row .col-md-2 {
     width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
   }
-  
-  /* Table Header */
-  .table thead {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .table thead th {
-    padding: 12px;
-    text-align: left;
-    font-weight: bold;
-    border-bottom: 2px solid #ddd;
-  }
-  
-  /* Table Rows */
-  .table tbody tr {
-    border-bottom: 1px solid #ddd;
-    transition: background 0.3s ease;
-  }
-  
-  .table tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .table tbody td {
-    padding: 10px;
-    text-align: left;
-  }
-  
-  /* Responsive Select Dropdowns */
-  .row .col-md-3, .row .col-md-2 {
-    padding-right: 5px;
-    padding-left: 5px;
-  }
-  
-  .form-select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    transition: all 0.3s ease;
-  }
-  
-  .form-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  }
-  
-  /* Adjust margins for better alignment */
-  @media (max-width: 768px) {
-    .table {
-      font-size: 14px;
-    }
-    .row .col-md-3, .row .col-md-2 {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-  }
+}
 
-  .btn{
-    border-color: #1b3631;
-    background-color: #1b3631;
-    color: white;
-  }
+.btn {
+  border-color: #1b3631;
+  background-color: #1b3631;
+  color: white;
+}
 
-  .btn:hover {
-    background-color: #1b3631; /* Darker blue */
-    border-color: #1b3631;
-    color: white;
-  }
-  
+.btn:hover {
+  background-color: #1b3631; /* Darker blue */
+  border-color: #1b3631;
+  color: white;
+}

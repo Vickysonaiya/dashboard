@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const Dashboard = () => {
   // State hooks for interactive elements
-  const [dateRange, setDateRange] = useState('Today');
-  const [selectedProperty, setSelectedProperty] = useState('All Properties');
+  const [dateRange, setDateRange] = useState("Today");
+  const [selectedProperty, setSelectedProperty] = useState("All Properties");
   const [customDateFrom, setCustomDateFrom] = useState("");
   const [customDateTo, setCustomDateTo] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
@@ -13,10 +13,28 @@ const Dashboard = () => {
 
   // Mock data for statistics
   const stats = [
-    { id: 1, title: 'Total Invites', count: 523, change: 8.2, increasing: true },
-    { id: 2, title: 'Check-ins', count: 384, change: 5.3, increasing: true },
-    { id: 3, title: 'Yet to checkin', count: 87, change: 2.1, increasing: false },
-    { id: 4, title: 'Active visitors', count: 52, change: 3.7, increasing: true }
+    {
+      id: 1,
+      title: "Total Invites",
+      count: 523,
+      change: 8.2,
+      increasing: true,
+    },
+    { id: 2, title: "Check-ins", count: 384, change: 5.3, increasing: true },
+    {
+      id: 3,
+      title: "Yet to checkin",
+      count: 87,
+      change: 2.1,
+      increasing: false,
+    },
+    {
+      id: 4,
+      title: "Active visitors",
+      count: 52,
+      change: 3.7,
+      increasing: true,
+    },
   ];
 
   const handleDateChange = (e) => {
@@ -24,13 +42,13 @@ const Dashboard = () => {
     setDateRange(selectedValue);
     if (selectedValue === "Today") {
       const today = new Date();
-      const formattedDate = today.toISOString().split('T')[0];
+      const formattedDate = today.toISOString().split("T")[0];
       setCustomDateFrom(formattedDate);
       setCustomDateTo(formattedDate);
       setShowCalendar(false);
     } else if (selectedValue === "Yesterday") {
       const yesterday = new Date(new Date().getTime() - 86400000);
-      const formattedDate = yesterday.toISOString().split('T')[0];
+      const formattedDate = yesterday.toISOString().split("T")[0];
       setCustomDateFrom(formattedDate);
       setCustomDateTo(formattedDate);
       setShowCalendar(false);
@@ -46,13 +64,13 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', overflow: 'hidden' }}>
+    <div style={{ display: "flex", minHeight: "100vh", overflow: "hidden" }}>
       <div
         style={{
-          marginLeft: sidebarVisible ? '250px' : '0px',
+          marginLeft: sidebarVisible ? "250px" : "0px",
           flex: 1,
-          transition: 'margin-left 0.3s ease',
-          width: '100%'
+          transition: "margin-left 0.3s ease",
+          width: "100%",
         }}
       >
         {/* Main Dashboard Area */}
@@ -108,7 +126,7 @@ const Dashboard = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value={new Date().toISOString().split('T')[0]}
+                    value={new Date().toISOString().split("T")[0]}
                     readOnly
                   />
                 </div>
@@ -118,7 +136,11 @@ const Dashboard = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value={new Date(new Date().getTime() - 86400000).toISOString().split('T')[0]}
+                    value={
+                      new Date(new Date().getTime() - 86400000)
+                        .toISOString()
+                        .split("T")[0]
+                    }
                     readOnly
                   />
                 </div>
@@ -150,7 +172,7 @@ const Dashboard = () => {
 
           {/* Stats Cards */}
           <div className="row mb-4">
-            {stats.map(stat => (
+            {stats.map((stat) => (
               <div key={stat.id} className="col-md-6 col-lg-3 mb-3">
                 <div className="bg-white rounded p-3 shadow-sm h-100">
                   <div className="d-flex justify-content-between align-items-start mb-2">
@@ -160,15 +182,19 @@ const Dashboard = () => {
                   <div className="h3 mb-2">{stat.count}</div>
                   <div
                     className="small"
-                    style={{ color: stat.increasing ? '#28a745' : '#dc3545' }}
+                    style={{ color: stat.increasing ? "#28a745" : "#dc3545" }}
                   >
-                    <i className={`bi bi-arrow-${stat.increasing ? 'up' : 'down'}`}></i> {stat.change}% vs last week
+                    <i
+                      className={`bi bi-arrow-${
+                        stat.increasing ? "up" : "down"
+                      }`}
+                    ></i>{" "}
+                    {stat.change}% vs last week
                   </div>
                 </div>
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </div>

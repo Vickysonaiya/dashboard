@@ -1,25 +1,31 @@
-import React, { useState } from 'react';
-import './login.css';
-import unitol from '../../assets/images/Unitol_logo.jpeg';
+import React, { useState } from "react";
+import "./login.css";
+import unitol from "../../assets/images/Unitol_logo.jpeg";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ setIsLoggedIn }) => {
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const Navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (phone === '9051737375' && password === '123456') {
+    if (phone === "9051737375" && password === "123456") {
       setIsLoggedIn(true);
-      setError('');
+      Navigate("/unit");
+      setError("");
     } else {
-      setError('Invalid phone number or password');
+      setError("Invalid phone number or password");
     }
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-image">
-      <div className="card p-4 shadow transparent-card" style={{ width: '350px' }}>
+      <div
+        className="card p-4 shadow transparent-card"
+        style={{ width: "350px" }}
+      >
         <h4 className="mb-3 text-center text-white">Login</h4>
         <div className="text-center mb-3">
           <img src={unitol} alt="Logo" className="logo" />
@@ -46,7 +52,9 @@ const Login = ({ setIsLoggedIn }) => {
             />
           </div>
           {error && <div className="text-danger mb-2">{error}</div>}
-          <button type="submit" className="btn btn-primary w-100">Login</button>
+          <button type="submit" className="btn btn-primary w-100">
+            Login
+          </button>
         </form>
       </div>
     </div>
@@ -54,7 +62,6 @@ const Login = ({ setIsLoggedIn }) => {
 };
 
 export default Login;
-
 
 //old code
 // import React, { useState } from 'react';
